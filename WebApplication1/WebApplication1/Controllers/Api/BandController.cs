@@ -19,17 +19,26 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpGet]
         [Route("api/Band/FindAllBandsToUser/{id}")]
-        public List<Band> FindAllBandsToUser(int id)
+        public List<BandClass> FindAllBandsToUser(int id)
         {
             var db = new DbBand();
             return db.FindAllBandsToUser(id);
         }
         [HttpGet]
         [Route("api/Band/FindBand/{id}")]
-        public Band FindBand(int id)
+        public BandClass FindBand(String id)
         {
             var db = new DbBand();
-            return db.FindBand(id);
+            Band b = db.FindBand((int.Parse(id)));
+            BandClass c = new BandClass();
+            c.BandName = b.BandName;
+            c.About = b.About;
+            c.BandId = b.BandId;
+            c.Followers = b.Followers;
+            c.Url = b.Url;
+            c.Xcoordinates = b.Xcoordinates;
+            c.Ycoordinates = b.Ycoordinates;
+            return c;
         }
         [HttpGet]
         [Route("api/Band/Count/{id}")]

@@ -22,7 +22,7 @@ namespace WebApplication1.Models
                 }
             }
         }
-        public List<Band> FindAllBandsToUser(int id) // Find all bands to a user 
+        public List<BandClass> FindAllBandsToUser(int id) // Find all bands to a user 
         {
             using (var db = new ApplicationDbContext())
             {
@@ -31,8 +31,24 @@ namespace WebApplication1.Models
                     List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
                     List<Band> bandsTouser = allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault()).Where(bands => bands != null).ToList();
 
-                    if (bandsTouser.Count == 0) return null;
-                    return bandsTouser;
+                    var band = new List<BandClass>();
+                    if (bandsTouser.Count == 0) return band;
+
+
+
+                    foreach (Band b in bandsTouser) // Loop through List with foreach.
+                    {
+                        BandClass bandClass = new BandClass();
+                        bandClass.BandName = b.BandName;
+                        bandClass.About = b.About;
+                        bandClass.BandId = b.BandId;
+                        bandClass.Followers = b.Followers;
+                        bandClass.Url = b.Url;
+                        bandClass.Xcoordinates = b.Xcoordinates;
+                        bandClass.Ycoordinates = b.Ycoordinates;
+                        band.Add(bandClass);
+                    }              
+                    return band;
                 }
                 catch (Exception)
                 {
