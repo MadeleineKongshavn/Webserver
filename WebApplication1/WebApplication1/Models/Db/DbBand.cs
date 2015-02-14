@@ -40,12 +40,18 @@ namespace WebApplication1.Models
                     {
                         BandClass bandClass = new BandClass();
                         bandClass.BandName = b.BandName;
-                        bandClass.About = b.About;
                         bandClass.BandId = b.BandId;
-                        bandClass.Followers = b.Followers;
-                        bandClass.Url = b.Url;
+                        bandClass.url = b.Url;
                         bandClass.Xcoordinates = b.Xcoordinates;
                         bandClass.Ycoordinates = b.Ycoordinates;
+
+                        List<String> genreList = new List<string>();
+                        List<BandGenre> list = b.BandGenre;
+                        foreach (BandGenre genre in list)
+                        {
+                            genreList.Add((genre.Genre).GenreName);
+                        }
+                        bandClass.Genre = genreList.ToArray();
                         band.Add(bandClass);
                     }              
                     return band;

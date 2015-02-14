@@ -38,23 +38,6 @@ namespace WebApplication1.Controllers.Api
             var db = new DbBand();
             return db.Count(id);
         }
-        [HttpGet]
-        [Route("api/Band/GetFirstBand/")]
-        public BandClass GetFirstBand()
-        {
-            var db = new DbBand();
-            Band b = db.FindBand(1);
-            BandClass c = new BandClass();
-            c.BandName = b.BandName;
-            c.About = b.About;
-            c.BandId = b.BandId;
-            c.Followers = b.Followers;
-            c.Url = b.Url;
-            c.Xcoordinates = b.Xcoordinates;
-            c.Ycoordinates = b.Ycoordinates;
-            return c;
-        }
-
 
    /*     // GET api/band
         public IEnumerable<string> Get()

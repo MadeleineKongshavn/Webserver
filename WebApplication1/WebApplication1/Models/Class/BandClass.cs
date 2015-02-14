@@ -11,8 +11,7 @@ namespace WebApplication1.Models
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
         public String BandName { get; set; }
-        public String About { get; set; }
-        public int Followers { get; set; }
-        public String Url { get; set; }
+        public String[] Genre { get; set; }
+        public String url { get; set; }
     }
 }

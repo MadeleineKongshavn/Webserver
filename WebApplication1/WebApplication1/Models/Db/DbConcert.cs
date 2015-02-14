@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -33,31 +34,34 @@ namespace WebApplication1.Models
                 {
                     List<ConcertFollowers> alleConcertId = (from v in db.ConcertFollowersDb where v.UserId == id select v).ToList();
                     List<Concert> myConcerts = alleConcertId.Select(concert => (from v in db.ConcertDb where v.ConcertId == concert.ConcertId select v).FirstOrDefault()).Where(c => c != null).ToList();
-
+                    
                     foreach (Concert c in myConcerts) // Loop through List with foreach.
                     {
                         ConcertClass con = new ConcertClass();
-                        con.BandId = c.BandId;
                         con.ConcertId = c.ConcertId;
-                        con.Followers = c.Followers;
-                        con.LinkToBand = c.LinkToBand;
-                        con.SeeAttends = c.SeeAttends;
                         con.Title = c.Title;
-                        con.Xcoordinates = c.Xcoordinates;
-                        con.Ycoordinates = c.Ycoordinates;
-                        con.Url = c.Url;
+                        con.url = c.Url;
+                        con.Bandname = c.Band.BandName;
 
-                        con.Date = ((c.Date).Date).ToString("d");
-                        con.Time = ((c.Date).TimeOfDay.ToString("hh\\:mm\\:ss\\.ffffff")); // Kan bli et issue
+                        con.Attending = false; // må endres!!! 
+                        con.FriendsAttending = 5; // må endres!!!                               
                         Concert.Add(con);
                     }
                     return Concert;
                 }
                 catch (Exception)
                 {
-                    return Concert;
+                    return null;
                 }
             }
+        }
+
+        public Bitmap GetConcertImage(String url)
+        {
+            System.Net.WebRequest request =System.Net.WebRequest.Create(url);
+            System.Net.WebResponse response = request.GetResponse();
+            System.IO.Stream responseStream =response.GetResponseStream();
+            return new Bitmap(responseStream);
         }
 
         public List<User> FriendsGoingToConcert(int userId) // Finds all your friends that are going to the same concert 

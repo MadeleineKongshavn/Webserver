@@ -30,8 +30,7 @@ namespace WebApplication1.Controllers.Api
         public List<User> FriendsGoingToConcert(int id)
         {
             var db = new DbConcert();
-            return db.FriendsGoingToConcert(id);
-            
+            return db.FriendsGoingToConcert(id);       
         }
         [HttpGet]
         [Route("api/Concert/FriendsGoingToConcertNumber/{id}")]

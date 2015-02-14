@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers
 {
@@ -16,9 +17,9 @@ namespace WebApplication1.Controllers
 
         public ActionResult About()
         {
-            var db = new DbBand();
-            Band b = db.FindBand(1);
-            ViewBag.Message = b.BandName + " your bands name";
+            var db = new DbConcert();
+            List<ConcertClass> klasser = db.FindAllConcertToUser(1);
+            ViewBag.Message = klasser.Count + " your count name";
 
             return View();
         }
