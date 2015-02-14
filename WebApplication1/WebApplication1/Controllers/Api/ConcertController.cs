@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.Models;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers.Api
 {
@@ -19,11 +20,10 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpGet]
         [Route("api/Concert/FindAllConcertToUser/{id}")]
-        public List<Concert> FindAllConcertToUser(int id)
+        public List<ConcertClass> FindAllConcertToUser(int id)
         {
             var db = new DbConcert();
             return db.FindAllConcertToUser(id);
-            
         }
         [HttpGet]
         [Route("api/Concert/FriendsGoingToConcert/{id}")]

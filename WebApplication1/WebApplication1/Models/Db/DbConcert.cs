@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Models
 {
@@ -23,21 +24,38 @@ namespace WebApplication1.Models
                 }
             }
         }
-        public List<Concert> FindAllConcertToUser(int id) // Find all concerts to a user 
+        public List<ConcertClass> FindAllConcertToUser(int id) // Find all concerts to a user 
         {
             using (var db = new ApplicationDbContext())
             {
+                var Concert = new List<ConcertClass>();
                 try
                 {
                     List<ConcertFollowers> alleConcertId = (from v in db.ConcertFollowersDb where v.UserId == id select v).ToList();
                     List<Concert> myConcerts = alleConcertId.Select(concert => (from v in db.ConcertDb where v.ConcertId == concert.ConcertId select v).FirstOrDefault()).Where(c => c != null).ToList();
 
-                    if (myConcerts.Count == 0) return null;
-                    return myConcerts;
+                    foreach (Concert c in myConcerts) // Loop through List with foreach.
+                    {
+                        ConcertClass con = new ConcertClass();
+                        con.BandId = c.BandId;
+                        con.ConcertId = c.ConcertId;
+                        con.Followers = c.Followers;
+                        con.LinkToBand = c.LinkToBand;
+                        con.SeeAttends = c.SeeAttends;
+                        con.Title = c.Title;
+                        con.Xcoordinates = c.Xcoordinates;
+                        con.Ycoordinates = c.Ycoordinates;
+                        con.Url = c.Url;
+
+                        con.Date = ((c.Date).Date).ToString("d");
+                        con.Time = ((c.Date).TimeOfDay.ToString("hh\\:mm\\:ss\\.ffffff")); // Kan bli et issue
+                        Concert.Add(con);
+                    }
+                    return Concert;
                 }
                 catch (Exception)
-                {                
-                    return null;
+                {
+                    return Concert;
                 }
             }
         }
