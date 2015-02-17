@@ -4,11 +4,22 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApplication1.Models;
+using WebApplication1.Models.Db;
 
 namespace WebApplication1.Controllers.Api
 {
     public class FriendsController : ApiController
     {
+        [HttpGet]
+        [Route("api/Friends/FriendsToUser/{id}")]
+        public List<FriendsClass> FriendsToUser(int id)
+        {
+            DbFriends db = new DbFriends();
+            return db.FriendsToUser(id);
+        }
+
+        /*
         // GET api/friends
         public IEnumerable<string> Get()
         {
@@ -34,6 +45,6 @@ namespace WebApplication1.Controllers.Api
         // DELETE api/friends/5
         public void Delete(int id)
         {
-        }
+        }*/
     }
 }
