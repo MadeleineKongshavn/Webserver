@@ -21,9 +21,6 @@ namespace WebApplication1.Models.Db
                     {
                         FriendsClass f = new FriendsClass();
                         f.FriendsId = friend.Friend;
-                        DateTime time = friend.FriendsSince;
-                        f.FriendsSince = time.ToShortDateString();
-
                         User user = (from u in db.UserDb where u.UserId == f.FriendsId select u).FirstOrDefault();
                         f.Friendsname = user.ProfileName;
                         f.url = user.Url;
