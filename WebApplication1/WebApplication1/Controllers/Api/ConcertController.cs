@@ -25,6 +25,19 @@ namespace WebApplication1.Controllers.Api
             var db = new DbConcert();
             return db.FindAllConcertToUser(id);
         }
+        [Route("api/Concert/GetConcertinfo/{id}")]
+        public ConcertClass GetConcertinfo(int id)
+        {
+            var db = new DbConcert();
+            return db.GetConcertinfo(id);
+        }
+        [HttpGet]
+        [Route("api/Concert/FindConcert/{id}")]
+        public Concert FindConcert(String id)
+        {
+            var db = new DbConcert();
+            return db.FindConcert((int.Parse(id)));
+        }
         [HttpGet]
         [Route("api/Concert/FriendsGoingToConcert/{id}")]
         public List<User> FriendsGoingToConcert(int id)

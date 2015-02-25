@@ -25,6 +25,7 @@ namespace WebApplication1.Models
                 }
             }
         }
+
         public List<ConcertClass> FindAllConcertToUser(int id) // Find all concerts to a user 
         {
             using (var db = new ApplicationDbContext())
@@ -48,6 +49,54 @@ namespace WebApplication1.Models
                         Concert.Add(con);
                     }
                     return Concert;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public ConcertClass GetConcertinfo(int id) //Get all information about one concert
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    Concert c = FindConcert(id);
+                    ConcertClass con = new ConcertClass();
+                    con.ConcertId = c.ConcertId;
+                    con.Title = c.Title;
+                    con.Date = c.Date;
+                    con.Xcoordinates = 1; // må endres
+                    con.Ycoordinates = 1; // må endres
+
+                    con.SeeAttends = c.SeeAttends;
+                    con.url = c.Url;
+                    con.BandId = c.Band.BandId;
+                    con.Bandname = c.Band.BandName;
+                    con.LinkToBand = c.LinkToBand;
+
+                    con.Attending = false; // må endres!!! 
+                    con.FriendsAttending = 5; // må endres!!!    
+
+                    return con;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public Concert FindConcert(int id) // find one concert
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    Concert concert = (from v in db.ConcertDb where v.ConcertId == id select v).FirstOrDefault();
+                    return concert;
                 }
                 catch (Exception)
                 {
