@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Models
 {
@@ -101,6 +102,23 @@ namespace WebApplication1.Models
 
             }          
         }
+
+        public UserClass GetUser(int id)
+        {
+            try
+            {
+                User u = FindUser(id);
+                UserClass user = new UserClass();
+                user.Name = u.ProfileName;
+                user.Url = u.Url;
+                return user;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public User FindUser(int id) // Finds a user
         {
             using (var db = new ApplicationDbContext())

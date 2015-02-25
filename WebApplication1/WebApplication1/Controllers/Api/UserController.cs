@@ -5,11 +5,19 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.Models;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers.Api
 {
     public class UserController : ApiController
     {
+        [HttpGet]
+        [Route("api/User/GetUser/{id}")]
+        public UserClass GetUser(int id)
+        {
+            var db = new DbUser();
+            return db.GetUser(id);
+        }
         [HttpGet]
         [Route("api/User/GetName/{id}")]
         public String GetName(int id)
@@ -73,13 +81,6 @@ namespace WebApplication1.Controllers.Api
             var db = new DbUser();
             return db.ChangeNotifications(ok, id);
         }
-        [HttpGet]
-        [Route("api/User/FindUser/{id}")]
-        public User FindUser(int id)
-        {
-            var db = new DbUser();
-            return db.FindUser(id);
-        }
         [HttpPost]
         [Route("api/User/RemoveGenre/{genreId, id}")]
         public Boolean RemoveGenre(int genreId, int id)
@@ -101,32 +102,5 @@ namespace WebApplication1.Controllers.Api
             var db = new DbUser();
             return db.ChangeName(newName, id);
         }
-
-   /*     // GET api/user
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/user/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/user
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/user/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/user/5
-        public void Delete(int id)
-        {
-        }*/
     }
 }

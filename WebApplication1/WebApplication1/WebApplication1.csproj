@@ -180,6 +180,7 @@
     <Compile Include="Controllers\Api\GenreController.cs" />
     <Compile Include="Models\Class\BandClass.cs" />
     <Compile Include="Models\Class\ConcertClass.cs" />
+    <Compile Include="Models\Class\UserClass.cs" />
     <Compile Include="Models\Db\DbBand.cs" />
     <Compile Include="Models\Db\DbConcert.cs" />
     <Compile Include="Models\Db\DbFriends.cs" />
