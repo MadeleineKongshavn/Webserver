@@ -18,33 +18,19 @@ namespace WebApplication1.Controllers.Api
             DbFriends db = new DbFriends();
             return db.FriendsToUser(id);
         }
-
-        /*
-        // GET api/friends
-        public IEnumerable<string> Get()
+        [HttpGet]
+        [Route("api/Friends/FindFriend/{name}")]
+        public FriendsClass FindFriend(String name)
         {
-            return new string[] { "value1", "value2" };
+            DbFriends db = new DbFriends();
+            return db.FindFriend(name);
         }
-
-        // GET api/friends/5
-        public string Get(int id)
+        [HttpPost]
+        [Route("api/Friends/SendFriendRequest/{userId},{friendId}")]
+        public Boolean SendFriendRequest(String userId, String friendId)
         {
-            return "value";
+            DbFriends db = new DbFriends();
+            return db.SendFriendRequest(userId, friendId);
         }
-
-        // POST api/friends
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/friends/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/friends/5
-        public void Delete(int id)
-        {
-        }*/
     }
 }
