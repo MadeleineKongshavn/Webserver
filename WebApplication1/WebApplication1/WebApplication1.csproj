@@ -203,6 +203,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\Band\P!ink_1000089.jpg" />
+    <Content Include="images\Band\Purple_Apple_1000010.jpg" />
+    <Content Include="images\Band\Selena_Gomez_1000007.jpg" />
+    <Content Include="images\Band\Spider_Band_1000008.jpg" />
+    <Content Include="images\Band\white_feather_1000009.jpg" />
     <Content Include="images\Concert\Purple_swan_Concert_1000003.jpg" />
     <Content Include="images\Concert\The_black_concert_1000005.jpg" />
     <Content Include="images\Concert\The_Ivory_Concert_1000003.jpg" />

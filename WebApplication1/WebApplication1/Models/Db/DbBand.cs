@@ -29,7 +29,7 @@ namespace WebApplication1.Models
                 try
                 {
                     List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
-                    List<Band> bandsTouser = allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault()).Where(bands => bands != null).ToList();
+                    List<Band> bandsTouser = allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId orderby v.BandName ascending select v).FirstOrDefault()).Where(bands => bands != null).ToList();
 
                     var band = new List<BandClass>();
                     if (bandsTouser.Count == 0) return band;
