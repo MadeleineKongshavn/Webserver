@@ -10,10 +10,14 @@ namespace WebApplication1.Models.Class
     {
         public int ConcertId { get; set; }
         public String Title { get; set; }
-        public DateTime Date { get; set; }
         public int Xcoordinates { get; set; }
         public int Ycoordinates { get; set; }
         public String Bandname { get; set; }
+        public String Date { get; set; }
+        public String Time { get; set; }
+        public List<FriendsClass> Friends { get; set; } 
+
+
         public int FriendsAttending { get; set; }
         public Boolean Attending { get; set; }
         public String url { get; set; }

@@ -11,6 +11,13 @@ namespace WebApplication1.Controllers.Api
     public class BandController : ApiController
     {
         [HttpGet]
+        [Route("api/Band/FindBandBasedOnQuery/{query}")]
+        public List<BandClass> FindBandBasedOnQuery(String query)
+        {
+            var db = new DbBand();
+            return db.FindBandBasedOnQuery(query);
+        }
+        [HttpGet]
         [Route("api/Band/FindAllBand/")]
         public List<Band> FindAllBand()
         {
@@ -38,32 +45,5 @@ namespace WebApplication1.Controllers.Api
             var db = new DbBand();
             return db.Count(id);
         }
-
-   /*     // GET api/band
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/band/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/band
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/band/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/band/5
-        public void Delete(int id)
-        {
-        }*/
     }
 }

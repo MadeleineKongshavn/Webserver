@@ -102,8 +102,8 @@ namespace WebApplication1.Models
         public int BandId { get; set; }
         public String LinkToBand { get; set; }
         public String Url { get; set; }
-
-
+        
+        // legge tile venuename 
 
         public virtual Band Band { get; set; }
         public virtual List<ConcertFollowers> ConcertFollowers { get; set; }
@@ -120,7 +120,6 @@ namespace WebApplication1.Models
 
         public virtual Band Band { get; set; }
         public virtual User User { get; set; }
-
     }
 
     public class BandGenre
@@ -134,7 +133,6 @@ namespace WebApplication1.Models
 
         public virtual Genre Genre { get; set; }
         public virtual Band Band { get; set; }
-
     }
 
     public class UserGenre
@@ -148,8 +146,6 @@ namespace WebApplication1.Models
 
         public virtual Genre Genre { get; set; }
         public virtual User User { get; set; }
-
-
     }
     public class Genre
     {
@@ -159,8 +155,6 @@ namespace WebApplication1.Models
 
         public virtual List<UserGenre> UserGenre { get; set; }
         public virtual List<BandGenre> BandGenre { get; set; }
-
-
     }
     public class BandFollowers
     {
@@ -186,7 +180,6 @@ namespace WebApplication1.Models
         public virtual User User { get; set; }
         public virtual Concert Concert { get; set; }
     }
-
     public class ConversationConnection
     {
         [Key]
@@ -209,7 +202,6 @@ namespace WebApplication1.Models
         public virtual List<ConversationConnection> ConversationConnection { get; set; }
         public virtual List<Message> Message { get; set; }
     }
-
     public class Message
     {
         [Key]
@@ -222,7 +214,6 @@ namespace WebApplication1.Models
         public virtual User User { get; set; }
         public virtual Conversation Conversation { get; set; }
     }
-    
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext() : base("Semitone")
@@ -248,7 +239,6 @@ namespace WebApplication1.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // modelBuilder.Entity<Poststeder>().HasKey(p=>p.Postnr);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }

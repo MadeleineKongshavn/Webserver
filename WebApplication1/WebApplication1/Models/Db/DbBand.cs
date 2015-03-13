@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace WebApplication1.Models
 {
@@ -22,6 +23,35 @@ namespace WebApplication1.Models
                 }
             }
         }
+        public List<BandClass> FindBandBasedOnQuery(String query) // finds bands based on the query parameter. 
+        {
+            // ...asper...
+            //asper...
+            //...asper
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    List<Band> allBands = (from b in db.BandDb where query == b.BandName select b).Take()
+                    allBands.OrderBy(b => b.BandName).ToList();
+                    List<BandClass> bands = new List<BandClass>();
+                    foreach (var b in allBands)
+                    {
+                        BandClass newB = new BandClass();
+                        newB.Xcoordinates = b.Xcoordinates;
+                        newB.Ycoordinates = b.Ycoordinates;
+                        newB.BandName = b.BandName;
+                        newB.url = b.Url;
+                        newB.BandId = b.BandId; 
+                    }
+                    return bands;
+                }
+            }
+            catch (Exception)
+            {
+                return new List<BandClass>();   
+            }            
+        }
         public List<BandClass> FindAllBandsToUser(int id) // Find all bands to a user 
         {
             using (var db = new ApplicationDbContext())
@@ -29,12 +59,12 @@ namespace WebApplication1.Models
                 try
                 {
                     List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
-                    List<Band> bandsTouser = allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId orderby v.BandName ascending select v).FirstOrDefault()).Where(bands => bands != null).ToList();
+                    List<Band> bandsTouser = allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault()).Where(bands => bands != null).ToList();
+
+                    bandsTouser = bandsTouser.OrderBy(z => z.BandName).ToList();
 
                     var band = new List<BandClass>();
                     if (bandsTouser.Count == 0) return band;
-
-
 
                     foreach (Band b in bandsTouser) // Loop through List with foreach.
                     {
@@ -62,7 +92,6 @@ namespace WebApplication1.Models
                 }
             }
         }
-
         public Band FindBand(int id) // Finds a band
         {
             using (var db = new ApplicationDbContext())

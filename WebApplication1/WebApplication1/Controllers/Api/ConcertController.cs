@@ -25,11 +25,11 @@ namespace WebApplication1.Controllers.Api
             var db = new DbConcert();
             return db.FindAllConcertToUser(id);
         }
-        [Route("api/Concert/GetConcertinfo/{id}")]
-        public ConcertClass GetConcertinfo(int id)
+        [Route("api/Concert/GetConcertinfo/{id},{userId}")]
+        public ConcertClass GetConcertinfo(int id, int userId)
         {
             var db = new DbConcert();
-            return db.GetConcertinfo(id);
+            return db.GetConcertinfo(id, userId);
         }
         [HttpGet]
         [Route("api/Concert/FindConcert/{id}")]
@@ -37,21 +37,6 @@ namespace WebApplication1.Controllers.Api
         {
             var db = new DbConcert();
             return db.FindConcert((int.Parse(id)));
-        }
-        [HttpGet]
-        [Route("api/Concert/FriendsGoingToConcert/{id}")]
-        public List<User> FriendsGoingToConcert(int id)
-        {
-            var db = new DbConcert();
-            return db.FriendsGoingToConcert(id);       
-        }
-        [HttpGet]
-        [Route("api/Concert/FriendsGoingToConcertNumber/{id}")]
-        public int FriendsGoingToConcertNumber(int id)
-        {
-            var db = new DbConcert();
-            return db.FriendsGoingToConcertNumber(id);
-            
         }
     }
 }

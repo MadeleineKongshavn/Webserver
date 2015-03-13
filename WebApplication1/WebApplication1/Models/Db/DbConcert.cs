@@ -43,7 +43,7 @@ namespace WebApplication1.Models
                         con.Title = c.Title;
                         con.url = c.Url;
                         con.Bandname = c.Band.BandName;
-                        con.Date = c.Date;
+                       // con.Date = c.Date;
 
                         con.Attending = false; // må endres!!! 
                         con.FriendsAttending = 5; // må endres!!!                               
@@ -58,7 +58,7 @@ namespace WebApplication1.Models
             }
         }
 
-        public ConcertClass GetConcertinfo(int id) //Get all information about one concert
+        public ConcertClass GetConcertinfo(int id, int userId) //Get all information about one concert
         {
             using (var db = new ApplicationDbContext())
             {
@@ -68,19 +68,16 @@ namespace WebApplication1.Models
                     ConcertClass con = new ConcertClass();
                     con.ConcertId = c.ConcertId;
                     con.Title = c.Title;
-                    con.Date = c.Date;
-                    con.Xcoordinates = 1; // må endres
-                    con.Ycoordinates = 1; // må endres
-
-                    con.SeeAttends = c.SeeAttends;
+                    con.Xcoordinates = c.Xcoordinates; 
+                    con.Ycoordinates = c.Ycoordinates; 
+                 // con.Bandname = c.Band.BandName;
+                    con.Date = c.Date.ToLongDateString();
+                    con.Time = c.Date.ToShortTimeString();
                     con.url = c.Url;
-                    con.BandId = c.Band.BandId;
-                    con.Bandname = c.Band.BandName;
-                    con.LinkToBand = c.LinkToBand;
 
-                    con.Attending = false; // må endres!!! 
-                    con.FriendsAttending = 5; // må endres!!!    
-
+                    con.Friends = FriendsGoingToConcert(userId, id);
+                    con.FriendsAttending = con.Friends.Count;
+                 // con.Attending = false; // må endres
                     return con;
                 }
                 catch (Exception)
@@ -114,27 +111,36 @@ namespace WebApplication1.Models
             return new Bitmap(responseStream);
         }
 
-        public List<User> FriendsGoingToConcert(int userId) // Finds all your friends that are going to the same concert 
+        public List<FriendsClass> FriendsGoingToConcert(int userId, int concertId) // Finds all your friends that are going to the same concert 
         {
             using (var db = new ApplicationDbContext())
             {
                 try
                 {
                     List<Friends> friends = (from v in db.FriendsDb where v.UserId == userId select v).ToList();
-                    List<User> userList = friends.Select(f => (from v in db.UserDb where v.UserId == f.Friend select v).FirstOrDefault()).ToList();
-                    return userList;
+                    var f = new List<FriendsClass>();
+
+                    foreach (var friend in friends)
+                    {
+                        ConcertFollowers c =
+                            (from v in db.ConcertFollowersDb
+                                where v.ConcertId == concertId && v.UserId == friend.UserId
+                                select v).FirstOrDefault();
+                        if (c != null)
+                        {
+                            FriendsClass fr = new FriendsClass();
+                            fr.FriendsId = friend.Friend;
+                            fr.Friendsname = (from x in db.UserDb where x.UserId == fr.FriendsId select x.ProfileName).FirstOrDefault();
+                            f.Add(fr);
+                        }
+                    }                   
+                    return f;
                 }
                 catch (Exception)
                 {
-                    return null;
+                    return new List<FriendsClass>();
                 }
             }            
         }
-        public int FriendsGoingToConcertNumber(int userId)// Finds all your friends that are going to the same concert number
-        {
-            List<User> users = FriendsGoingToConcert(userId);
-            if (users == null) return 0; else return users.Count;
-        }
-        // they post on facebook and it automatical updates the app
     }
 }

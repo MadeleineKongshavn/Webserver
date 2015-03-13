@@ -18,8 +18,8 @@ namespace WebApplication1.Controllers
         public ActionResult About()
         {
             var db = new DbConcert();
-            List<ConcertClass> klasser = db.FindAllConcertToUser(1);
-            ViewBag.Message = klasser.Count + " your count name";
+            ConcertClass c = db.GetConcertinfo(1,1);
+            ViewBag.Message = c.Title + " your count name";
 
             return View();
         }
