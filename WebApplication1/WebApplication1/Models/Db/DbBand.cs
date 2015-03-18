@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+using Microsoft.SqlServer.Server;
 
 namespace WebApplication1.Models
 {
@@ -25,14 +26,12 @@ namespace WebApplication1.Models
         }
         public List<BandClass> FindBandBasedOnQuery(String query) // finds bands based on the query parameter. 
         {
-            // ...asper...
-            //asper...
-            //...asper
-            try
-            {
+          try
+          {
                 using (var db = new ApplicationDbContext())
                 {
-                    List<Band> allBands = (from b in db.BandDb where query == b.BandName select b).Take()
+                    query = query.Trim();
+                    List<Band> allBands = (from b in db.BandDb where b.BandName.Contains("a") select b).ToList();
                     allBands.OrderBy(b => b.BandName).ToList();
                     List<BandClass> bands = new List<BandClass>();
                     foreach (var b in allBands)
@@ -46,10 +45,12 @@ namespace WebApplication1.Models
                     }
                     return bands;
                 }
-            }
+
+          }
             catch (Exception)
             {
-                return new List<BandClass>();   
+                return null;
+               // return new List<BandClass>();   
             }            
         }
         public List<BandClass> FindAllBandsToUser(int id) // Find all bands to a user 

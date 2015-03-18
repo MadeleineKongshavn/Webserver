@@ -43,6 +43,8 @@ namespace WebApplication1.Models
                         con.Title = c.Title;
                         con.url = c.Url;
                         con.Bandname = c.Band.BandName;
+                        con.Date = c.Date.ToLongDateString();
+
                        // con.Date = c.Date;
 
                         con.Attending = false; // må endres!!! 
