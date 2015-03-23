@@ -15,7 +15,8 @@ namespace WebApplication1.Controllers.Api
         public List<BandClass> FindBandBasedOnQuery(String query)
         {
             var db = new DbBand();
-            return db.FindBandBasedOnQuery(query);
+            return null;
+            // return db.FindBandBasedOnQuery(query);
         }
         [HttpGet]
         [Route("api/Band/FindAllBand/")]

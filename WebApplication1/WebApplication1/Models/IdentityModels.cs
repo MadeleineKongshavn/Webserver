@@ -36,24 +36,26 @@ namespace WebApplication1.Models
     {
         [Key]
         public int UserId { get; set; }
+        public Boolean SeeNotifications { get; set; }
         public String ProfileName { get; set; }
-        public bool Notifications { get; set; }
         public bool Public { get; set; }
         public int Radius { get; set; }
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
         public String Url { get; set; }
+        public DateTime Timestamp { get; set; }
 
 
+        public virtual List<Notifications> Notifications { get; set; }
         public virtual Api Api { get; set; }
         public virtual Password Password { get; set; }
         public virtual List<ConcertFollowers> ConcertFollowers { get; set; }
         public virtual List<BandFollowers> BandFollowers { get; set; }
         public virtual List<UserGenre> UserGenre { get; set; }
         public virtual List<Member> Member { get; set; }
-        public virtual List<Message> Message { get; set; }
         public virtual List<Friends> Friends { get; set; }
-        public virtual List<ConversationConnection> ConversationConnection { get; set; }
+        public virtual List<InviteBandNotifications> InviteBandNotifications { get; set; }
+        public virtual List<InviteConcertNotifications> InviteConcertNotifications { get; set; } 
 
     }
     public class Friends
@@ -80,9 +82,12 @@ namespace WebApplication1.Models
         public String About { get; set; }
         public int Followers { get; set; }
         public String Url { get; set; }
+        public DateTime Timestamp { get; set; }
 
 
+        public virtual List<BandNotifications> BandNotifications { get; set; } 
 
+        public virtual List<InviteBandNotifications> InviteBandNotifications { get; set; } 
         public virtual List<Member> Member { get; set; }
         public virtual List<BandGenre> BandGenre { get; set; }
         public virtual List<BandFollowers> BandFollowers { get; set; }
@@ -102,11 +107,15 @@ namespace WebApplication1.Models
         public int BandId { get; set; }
         public String LinkToBand { get; set; }
         public String Url { get; set; }
-        
-        // legge tile venuename 
+        public String VenueName { get; set; }
+        public DateTime Timestamp { get; set; }
 
+
+        public virtual List<BandNotifications> BandNotifications { get; set; } 
+        public virtual List<InviteConcertNotifications> InviteConcertNotifications { get; set; }
         public virtual Band Band { get; set; }
         public virtual List<ConcertFollowers> ConcertFollowers { get; set; }
+
     }
 
     public class Member
@@ -180,39 +189,74 @@ namespace WebApplication1.Models
         public virtual User User { get; set; }
         public virtual Concert Concert { get; set; }
     }
-    public class ConversationConnection
+    public class Notifications
     {
         [Key]
-        public int ConnectionId { get; set; }
-        public int UserId { get; set; }
-        public int ConversationId { get; set; }
-        public Boolean HasSeen { get; set; }
-
-
-        public virtual Conversation Conversation { get; set; }
-        public virtual User User { get; set; }
-    }
-    public class Conversation
-    {
-        [Key]
-        public int ConversationId { get; set; }
-        public String ConversationName { get; set; }
-        public String ConversationType { get; set; }
-
-        public virtual List<ConversationConnection> ConversationConnection { get; set; }
-        public virtual List<Message> Message { get; set; }
-    }
-    public class Message
-    {
-        [Key]
-        public int MessageId { get; set; }
-        public int ConversationId { get; set; }
-        public int UserId { get; set; }
-        public String Content { get; set; }
+        public int NotificationsId { get; set; }
         public DateTime SendtTime { get; set; }
+        public Boolean Seen { get; set; }
+        public int UserId { get; set; }
+        public int Type { get; set; }
+ 
+        public virtual User User { get; set; }
+        public virtual InviteBandNotifications InviteBandNotifications { get; set; }
+        public virtual InviteConcertNotifications InviteConcertNotifications { get; set; }
+        public virtual BandNotifications BandNotifications { get; set; }
+        public virtual FriendRequestNotifications FriendRequestNotifications { get; set; }
+         
+    }
+
+    public class InviteBandNotifications
+    {
+        [Key, ForeignKey("Notifications")]
+        public int NotificationsId { get; set; }
+        public int UserId { get; set; }
+        public int BandId { get; set; }
+
+
+        public virtual Notifications Notifications { get; set; }
+        public virtual User User { get; set; }
+        public virtual Band Band { get; set; }
+
+    }
+    public class InviteConcertNotifications
+    {
+        [Key, ForeignKey("Notifications")]
+        public int NotificationsId { get; set; }
+        public int UserId { get; set; }
+        public int ConcertId { get; set; }
+
+
+        public virtual Notifications Notifications { get; set; }
+        public virtual User User { get; set; }
+        public virtual Concert Concert { get; set; }
+
+    }
+
+
+    public class BandNotifications
+    {
+        [Key, ForeignKey("Notifications")]
+        public int NotificationsId { get; set; }
+        public int ConcertId { get; set; }
+        public int BandId { get; set; }
+
+
+        public virtual Band Band { get; set; }
+        public virtual Concert Concert { get; set; }
+        public virtual Notifications Notifications { get; set; }
+    }
+    public class FriendRequestNotifications
+    {
+        [Key, ForeignKey("Notifications")]
+        public int NotificationsId { get; set; }
+        public Boolean Answered { get; set; }
+        public Boolean Accepted { get; set; }
+        public int UserId { get; set; }
 
         public virtual User User { get; set; }
-        public virtual Conversation Conversation { get; set; }
+        public virtual Notifications Notifications { get; set; }
+
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -220,10 +264,11 @@ namespace WebApplication1.Models
         {
             Database.CreateIfNotExists();
         }
-
-        public DbSet<ConversationConnection> ConversationConnectionDb { get; set; }
-        public DbSet<Message> MessageDb { get; set; }
-        public DbSet<Conversation> ConversationDb { get; set; }
+        public DbSet<Notifications> NotificationsDb { get; set; }
+        public DbSet<InviteBandNotifications> InviteBandNotificationsDb { get; set; }
+        public DbSet<InviteConcertNotifications> InviteConcertNotificationsDb { get; set; }
+        public DbSet<BandNotifications> BandNotificationsDb { get; set; }
+        public DbSet<FriendRequestNotifications> FriendRequestNotificationsDb { get; set; }
         public DbSet<Friends> FriendsDb { get; set; }
         public DbSet<Password> PasswordDb { get; set; }
         public DbSet<ConcertFollowers> ConcertFollowersDb { get; set; }
@@ -236,10 +281,15 @@ namespace WebApplication1.Models
         public DbSet<Band> BandDb { get; set; }
         public DbSet<User> UserDb { get; set; }
 
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+        
+
         }
     }
 }

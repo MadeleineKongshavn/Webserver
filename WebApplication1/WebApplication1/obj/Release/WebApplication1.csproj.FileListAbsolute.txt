@@ -117,6 +117,6 @@ C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApp
 C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\obj\Release\WebApplication1.csprojResolveAssemblyReference.cache
 C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\obj\Release\WebApplication1.dll
 C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\obj\Release\WebApplication1.pdb
+C:\Users\Madde\Documents\GitHub\WebApplication1\Webserver\WebApplication1\WebApplication1\obj\Release\WebApplication1.csprojResolveAssemblyReference.cache

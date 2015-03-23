@@ -24,14 +24,16 @@ namespace WebApplication1.Models
                 }
             }
         }
-        public List<BandClass> FindBandBasedOnQuery(String query) // finds bands based on the query parameter. 
+        public String FindBandBasedOnQuery(String query) // finds bands based on the query parameter. 
         {
           try
           {
                 using (var db = new ApplicationDbContext())
                 {
                     query = query.Trim();
-                    List<Band> allBands = (from b in db.BandDb where b.BandName.Contains("a") select b).ToList();
+                    List<Band> allBands = (from b in db.BandDb where b.BandName.Contains(query) select b).ToList();
+
+
                     allBands.OrderBy(b => b.BandName).ToList();
                     List<BandClass> bands = new List<BandClass>();
                     foreach (var b in allBands)
@@ -41,16 +43,18 @@ namespace WebApplication1.Models
                         newB.Ycoordinates = b.Ycoordinates;
                         newB.BandName = b.BandName;
                         newB.url = b.Url;
-                        newB.BandId = b.BandId; 
+                        newB.BandId = b.BandId;    
+                        bands.Add(newB);
+                        
                     }
-                    return bands;
+                    return "funket ikke";
                 }
 
           }
-            catch (Exception)
+            catch (Exception e)
             {
-                return null;
-               // return new List<BandClass>();   
+                return e.Message + " " + e.Source + " " + e.InnerException;
+                // return new List<BandClass>();   
             }            
         }
         public List<BandClass> FindAllBandsToUser(int id) // Find all bands to a user 

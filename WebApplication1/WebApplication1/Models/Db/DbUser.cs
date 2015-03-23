@@ -18,7 +18,7 @@ namespace WebApplication1.Models
         public Boolean GetNoticiations(int id) // ???
         {
             User user = FindUser(id);
-            return user.Notifications;
+            return user.SeeNotifications;
         }
 
         public Boolean GetPublic(int id)
@@ -142,7 +142,7 @@ namespace WebApplication1.Models
                 try
                 {
                     User user = FindUser(id);
-                    user.Notifications = ok;
+                    user.SeeNotifications = ok;
                     db.SaveChanges();
                     return true;
 
