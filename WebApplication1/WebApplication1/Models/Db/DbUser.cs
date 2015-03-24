@@ -8,7 +8,46 @@ namespace WebApplication1.Models
 {
     public class DbUser
     {
+        public List<NotificationsClass> GetAllNotifications(int userId)
+        {
+            var newList = new List<NotificationsClass>();
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
 
+                    List<Notifications> noti = (from n in db.NotificationsDb where userId == n.UserId select n).OrderBy(b => b.SendtTime).ToList();
+                    foreach (Notifications n in noti)
+                    {
+                        var newN = new NotificationsClass();
+                        newN.Seen = n.Seen;
+                        newN.Day = n.SendtTime.Day;
+                        newN.Hour = n.SendtTime.Hour;
+                        newN.Minute = n.SendtTime.Minute;
+                        newN.Month = n.SendtTime.Month;
+                        newN.Type = n.Type;
+                        switch (n.Type) // 1 = request, 2 = band invitasjon, 3=concert invitasjon, 4 = band ny konsert 
+                        {
+                            case 1:
+                                var friend = n.FriendRequestNotifications;
+                                newN.Accepted = friend.Accepted;
+                                newN.Answered = friend.Answered;
+                                newN.FriendId = friend.UserId;
+                                newN.FriendName = friend.User.ProfileName;
+                                newN.Url = friend.User.Url;
+                                break;
+                            default: break;
+                        }
+                    }
+                
+                }
+
+            }
+            catch (Exception)
+            {
+                return newList;
+            }
+        }
         public String GetName(int id)
         {
             User user = FindUser(id);

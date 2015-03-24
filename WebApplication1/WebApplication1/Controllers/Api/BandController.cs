@@ -11,6 +11,13 @@ namespace WebApplication1.Controllers.Api
     public class BandController : ApiController
     {
         [HttpGet]
+        [Route("api/Band/AddBand/{band}")]
+        public Boolean AddBand(BandClass band)
+        {
+            var db = new DbBand();
+            return db.AddBand(band);
+        }
+        [HttpGet]
         [Route("api/Band/FindBandBasedOnQuery/{query}")]
         public List<BandClass> FindBandBasedOnQuery(String query)
         {

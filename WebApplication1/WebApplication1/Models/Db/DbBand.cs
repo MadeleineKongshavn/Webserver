@@ -9,6 +9,20 @@ namespace WebApplication1.Models
 {
     public class DbBand
     {
+        public Boolean AddBand(BandClass band)
+        {
+            try
+            {
+                if (band.Bitmap != null) return true;
+                else return false;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+        }
         public List<Band> FindAllBand() // find every band that exist 
         {
             using (var db = new ApplicationDbContext())

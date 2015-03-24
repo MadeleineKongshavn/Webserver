@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 
@@ -13,5 +14,6 @@ namespace WebApplication1.Models
         public String BandName { get; set; }
         public String[] Genre { get; set; }
         public String url { get; set; }
+        public Bitmap Bitmap { get; set; }
     }
 }
