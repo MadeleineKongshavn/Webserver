@@ -56,7 +56,7 @@ namespace WebApplication1.Models
                         newB.Xcoordinates = b.Xcoordinates;
                         newB.Ycoordinates = b.Ycoordinates;
                         newB.BandName = b.BandName;
-                        newB.url = b.Url;
+                      //  newB.url = b.Url;
                         newB.BandId = b.BandId;    
                         bands.Add(newB);
                         
@@ -90,7 +90,7 @@ namespace WebApplication1.Models
                         BandClass bandClass = new BandClass();
                         bandClass.BandName = b.BandName;
                         bandClass.BandId = b.BandId;
-                        bandClass.url = b.Url;
+                        //bandClass.url = b.Url;
                         bandClass.Xcoordinates = b.Xcoordinates;
                         bandClass.Ycoordinates = b.Ycoordinates;
 

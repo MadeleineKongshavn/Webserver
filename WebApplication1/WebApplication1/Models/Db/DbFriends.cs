@@ -24,7 +24,7 @@ namespace WebApplication1.Models.Db
                         f.FriendsId = friend.Friend;
                         User user = (from u in db.UserDb where u.UserId == f.FriendsId select u).FirstOrDefault();
                         f.Friendsname = user.ProfileName;
-                        f.url = user.Url;
+                     //   f.url = user.Url;
 
                         friendsclass.Add(f);
                     }
@@ -50,7 +50,7 @@ namespace WebApplication1.Models.Db
                     var friend = new FriendsClass();
                     friend.FriendsId = found.UserId;
                     friend.Friendsname = found.ProfileName;
-                    friend.url = found.Url;
+                  //  friend.url = found.Url;
                     return friend;
                 }
             }

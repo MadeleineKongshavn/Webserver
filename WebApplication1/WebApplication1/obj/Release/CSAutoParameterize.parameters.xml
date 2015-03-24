@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Semitone-Web.config Connection String" description="Semitone Connection String used in web.config by the application to access the database." defaultValue="Data Source=dyfcpgyjb0.database.windows.net;Initial Catalog=MusicApp;Persist Security Info=True;User ID=AdminUser@dyfcpgyjb0;Password=musicAppPassword33" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Madde\\Documents\\GitHub\\WebApplication1\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Semitone']/@connectionString" />
+  </parameter>
+</parameters>

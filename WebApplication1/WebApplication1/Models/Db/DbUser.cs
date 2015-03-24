@@ -26,6 +26,7 @@ namespace WebApplication1.Models
                         newN.Minute = n.SendtTime.Minute;
                         newN.Month = n.SendtTime.Month;
                         newN.Type = n.Type;
+                        newN.Year = n.SendtTime.Year;
                         switch (n.Type) // 1 = request, 2 = band invitasjon, 3=concert invitasjon, 4 = band ny konsert 
                         {
                             case 1:
@@ -34,12 +35,14 @@ namespace WebApplication1.Models
                                 newN.Answered = friend.Answered;
                                 newN.FriendId = friend.UserId;
                                 newN.FriendName = friend.User.ProfileName;
-                                newN.Url = friend.User.Url;
+                               // newN.Url = friend.User.Url;
                                 break;
                             default: break;
                         }
+                        newList.Add(newN);
                     }
-                
+                    return newList;
+
                 }
 
             }
@@ -149,7 +152,7 @@ namespace WebApplication1.Models
                 User u = FindUser(id);
                 UserClass user = new UserClass();
                 user.Name = u.ProfileName;
-                user.Url = u.Url;
+            //    user.Url = u.Url;
                 return user;
             }
             catch (Exception)

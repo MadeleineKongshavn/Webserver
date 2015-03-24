@@ -41,7 +41,7 @@ namespace WebApplication1.Models
                         ConcertClass con = new ConcertClass();
                         con.ConcertId = c.ConcertId;
                         con.Title = c.Title;
-                        con.url = c.Url;
+                      //  con.url = c.Url;
                         con.Bandname = c.Band.BandName;
                         con.Date = c.Date.ToLongDateString();
 
@@ -75,7 +75,7 @@ namespace WebApplication1.Models
                  // con.Bandname = c.Band.BandName;
                     con.Date = c.Date.ToLongDateString();
                     con.Time = c.Date.ToShortTimeString();
-                    con.url = c.Url;
+                  //  con.url = c.Url;
 
                     con.Friends = FriendsGoingToConcert(userId, id);
                     con.FriendsAttending = con.Friends.Count;

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Drawing;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace WebApplication1.Models
@@ -42,7 +43,8 @@ namespace WebApplication1.Models
         public int Radius { get; set; }
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
-        public String Url { get; set; }
+      //  public String Url { get; set; }
+        public Byte[] Bitmap { get; set; }
         public DateTime Timestamp { get; set; }
 
 
@@ -81,7 +83,8 @@ namespace WebApplication1.Models
         public String BandName { get; set; }
         public String About { get; set; }
         public int Followers { get; set; }
-        public String Url { get; set; }
+        public Byte[] Bitmap { get; set; }
+        public Byte[] SmallBitmap { get; set; }
         public DateTime Timestamp { get; set; }
 
 
@@ -106,7 +109,8 @@ namespace WebApplication1.Models
         public Boolean SeeAttends { get; set; }
         public int BandId { get; set; }
         public String LinkToBand { get; set; }
-        public String Url { get; set; }
+        public Byte[] Bitmap { get; set; }
+        public Byte[] SmallBitmap { get; set; }
         public String VenueName { get; set; }
         public DateTime Timestamp { get; set; }
 
@@ -212,6 +216,7 @@ namespace WebApplication1.Models
         public int NotificationsId { get; set; }
         public int UserId { get; set; }
         public int BandId { get; set; }
+        public Boolean Answered { get; set; }
 
 
         public virtual Notifications Notifications { get; set; }
@@ -225,6 +230,7 @@ namespace WebApplication1.Models
         public int NotificationsId { get; set; }
         public int UserId { get; set; }
         public int ConcertId { get; set; }
+        public Boolean Answered { get; set; }
 
 
         public virtual Notifications Notifications { get; set; }
@@ -287,9 +293,6 @@ namespace WebApplication1.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
-        
-
         }
     }
 }
