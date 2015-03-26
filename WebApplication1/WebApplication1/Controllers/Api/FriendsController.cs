@@ -11,25 +11,32 @@ namespace WebApplication1.Controllers.Api
 {
     public class FriendsController : ApiController
     {
+        [HttpPost]
+        [Route("api/Friends/SetFriendRequestAccept/{id},{ok}")]
+        public Boolean SetFriendRequestAccept(int id, Boolean ok)
+        {
+            var db = new DbFriends();
+            return db.SetFriendRequestAccept(id, ok);
+        }
         [HttpGet]
         [Route("api/Friends/FriendsToUser/{id}")]
         public List<FriendsClass> FriendsToUser(int id)
         {
-            DbFriends db = new DbFriends();
+            var db = new DbFriends();
             return db.FriendsToUser(id);
         }
         [HttpGet]
         [Route("api/Friends/FindFriend/{name}")]
         public FriendsClass FindFriend(String name)
         {
-            DbFriends db = new DbFriends();
+            var db = new DbFriends();
             return db.FindFriend(name);
         }
         [HttpPost]
         [Route("api/Friends/SendFriendRequest/{userId},{friendId}")]
         public Boolean SendFriendRequest(String userId, String friendId)
         {
-            DbFriends db = new DbFriends();
+            var db = new DbFriends();
             return db.SendFriendRequest(userId, friendId);
         }
     }

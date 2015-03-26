@@ -14,7 +14,6 @@ namespace WebApplication1.Models
     {
 
     }
-    
     public class Api
     {
         public int ApiId { get; set; }
@@ -57,7 +56,8 @@ namespace WebApplication1.Models
         public virtual List<Member> Member { get; set; }
         public virtual List<Friends> Friends { get; set; }
         public virtual List<InviteBandNotifications> InviteBandNotifications { get; set; }
-        public virtual List<InviteConcertNotifications> InviteConcertNotifications { get; set; } 
+        public virtual List<InviteConcertNotifications> InviteConcertNotifications { get; set; }
+        public virtual List<AcceptConcertInvitation> AcceptConcertInvitation { get; set; } 
 
     }
     public class Friends
@@ -73,23 +73,26 @@ namespace WebApplication1.Models
 
         public virtual User User { get; set; }
     }
-
     public class Band
     {
         [Key]
         public int BandId { get; set; }
+        public String Area { get; set; }
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
         public String BandName { get; set; }
-        public String About { get; set; }
         public int Followers { get; set; }
         public Byte[] Bitmap { get; set; }
         public Byte[] SmallBitmap { get; set; }
+        public Byte[] Song { get; set; }
+        public String SongName { get; set; }
+        public String UrlFacebook { get; set; }
+        public String UrlSoundCloud { get; set; }
+        public String UrlRandom { get; set; }
         public DateTime Timestamp { get; set; }
 
 
         public virtual List<BandNotifications> BandNotifications { get; set; } 
-
         public virtual List<InviteBandNotifications> InviteBandNotifications { get; set; } 
         public virtual List<Member> Member { get; set; }
         public virtual List<BandGenre> BandGenre { get; set; }
@@ -103,6 +106,7 @@ namespace WebApplication1.Models
         public int ConcertId { get; set; }
         public string Title { get; set; }
         public DateTime Date { get; set; }
+        public String Area { get; set; }
         public int Xcoordinates { get; set; }
         public int Ycoordinates { get; set; }
         public int Followers { get; set; }
@@ -119,6 +123,7 @@ namespace WebApplication1.Models
         public virtual List<InviteConcertNotifications> InviteConcertNotifications { get; set; }
         public virtual Band Band { get; set; }
         public virtual List<ConcertFollowers> ConcertFollowers { get; set; }
+        public virtual List<AcceptConcertInvitation> AcceptConcertInvitation { get; set; }  
 
     }
 
@@ -207,7 +212,7 @@ namespace WebApplication1.Models
         public virtual InviteConcertNotifications InviteConcertNotifications { get; set; }
         public virtual BandNotifications BandNotifications { get; set; }
         public virtual FriendRequestNotifications FriendRequestNotifications { get; set; }
-         
+        public virtual AcceptConcertInvitation AcceptConcertInvitation { get; set; }
     }
 
     public class InviteBandNotifications
@@ -230,7 +235,7 @@ namespace WebApplication1.Models
         public int NotificationsId { get; set; }
         public int UserId { get; set; }
         public int ConcertId { get; set; }
-        public Boolean Answered { get; set; }
+        public Boolean Accepted { get; set; }
 
 
         public virtual Notifications Notifications { get; set; }
@@ -238,8 +243,17 @@ namespace WebApplication1.Models
         public virtual Concert Concert { get; set; }
 
     }
+    public class AcceptConcertInvitation
+    {
+        [Key, ForeignKey("Notifications")]
+        public int NotificationsId { get; set; }
+        public int UserId { get; set; }
+        public int ConcertId { get; set; }
 
-
+        public virtual Notifications Notifications { get; set; }
+        public virtual User User { get; set; }
+        public virtual Concert Concert { get; set; }
+    }
     public class BandNotifications
     {
         [Key, ForeignKey("Notifications")]
@@ -270,6 +284,7 @@ namespace WebApplication1.Models
         {
             Database.CreateIfNotExists();
         }
+        public DbSet<AcceptConcertInvitation> AcceptConcertInvitationDb { get; set; }
         public DbSet<Notifications> NotificationsDb { get; set; }
         public DbSet<InviteBandNotifications> InviteBandNotificationsDb { get; set; }
         public DbSet<InviteConcertNotifications> InviteConcertNotificationsDb { get; set; }

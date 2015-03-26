@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
         public ActionResult About()
         {
             var db = new DbBand();
-            ViewBag.Message = db.FindBandBasedOnQuery("ass") + " your count name";
+            ViewBag.Message = db.AddBand(null) + " your count name";
             return View();
         }
 

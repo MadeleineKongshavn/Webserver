@@ -8,9 +8,52 @@ namespace WebApplication1.Models.Db
 {
     public class DbFriends
     {
+        public Boolean SetFriendRequestAccept(int id, Boolean ok)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    Notifications n = (from x in db.NotificationsDb where x.NotificationsId == id select x).FirstOrDefault();
+                    if (ok)
+                    {
+                        n.FriendRequestNotifications.Accepted = true;
+                        DateTime time = DateTime.Now;
+
+                        var confirm = new Notifications();
+                        confirm.SendtTime = DateTime.Now;
+                        confirm.Seen = false;
+                        confirm.Type = 1;
+                        confirm.UserId = n.FriendRequestNotifications.UserId;
+                        db.NotificationsDb.Add(confirm);
+                        db.SaveChanges();
+
+                        var f = new FriendRequestNotifications();
+                        f.Accepted = true;
+                        f.Answered = true;
+                        f.UserId = n.UserId;
+                        confirm.FriendRequestNotifications = f;
+                        db.SaveChanges();
+
+                        return AddFriend(n.UserId + "", n.FriendRequestNotifications.UserId + "");
+                    }
+                    else
+                    {
+                        db.NotificationsDb.Remove(n);
+                        return true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         public List<FriendsClass> FriendsToUser(int id)
         {
-            List<FriendsClass> friendsclass = new List<FriendsClass>();
+            var friendsclass = new List<FriendsClass>();
 
             try
             {
@@ -29,8 +72,6 @@ namespace WebApplication1.Models.Db
                         friendsclass.Add(f);
                     }
                     return friendsclass;
-
-
                 }
 
             }

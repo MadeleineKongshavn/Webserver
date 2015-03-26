@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -13,9 +16,43 @@ namespace WebApplication1.Models
         {
             try
             {
-                if (band.Bitmap != null) return true;
-                else return false;
+                using (var db = new ApplicationDbContext())
+                {
+                    System.Net.WebRequest request = System.Net.WebRequest.Create("http://assets.rollingstone.com/assets/2015/article/mumford-sons-talk-going-electric-on-new-album-wilder-mind-20150302/187700/medium_rect/1425301454/720x405-Mumford-&-Sons-Press-Shot-2nd-March-(1).jpg");
+                    System.Net.WebResponse response = request.GetResponse();
+                    System.IO.Stream responseStream =  response.GetResponseStream();
+                    var bitmap2 = new Bitmap(responseStream);
 
+                    Band b = new Band();
+                    b.Area = "32. street avenue";
+                    b.BandName = "Mumford and sons";
+                    b.Followers = 0;
+                    b.Song = new byte[0];
+                    b.SongName = " ";
+                    b.Timestamp = DateTime.Now;
+                    b.UrlFacebook = "http://semitone.azurewebsites.net/";
+                    b.UrlRandom = "http://semitone.azurewebsites.net/";
+                    b.UrlSoundCloud = "http://semitone.azurewebsites.net/";
+                    b.Xcoordinates = 0.0;
+                    b.Ycoordinates = 0.0;
+
+                    MemoryStream ms = new MemoryStream();
+                    bitmap2.Save(ms, ImageFormat.Bmp);
+                    b.SmallBitmap = ms.ToArray();
+                    b.Bitmap = ms.ToArray();
+                    db.BandDb.Add(b);
+                    db.SaveChanges();
+
+
+                /*    Bitmap bmp;
+                    using (var mse = new MemoryStream(b.Bitmap))
+                    {
+                        bmp = new Bitmap(mse);
+                    }
+                    if (bmp == null) return false;*/
+                    return true;
+
+                }
             }
             catch (Exception)
             {

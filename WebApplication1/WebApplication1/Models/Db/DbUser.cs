@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApplication1.Models.Class;
+using WebApplication1.Models.Db;
 
 namespace WebApplication1.Models
 {
@@ -27,7 +28,7 @@ namespace WebApplication1.Models
                         newN.Month = n.SendtTime.Month;
                         newN.Type = n.Type;
                         newN.Year = n.SendtTime.Year;
-                        switch (n.Type) // 1 = request, 2 = band invitasjon, 3=concert invitasjon, 4 = band ny konsert 
+                        switch (n.Type) // 1 = request, 2=concert invitasjon, 3 = band ny konsert 
                         {
                             case 1:
                                 var friend = n.FriendRequestNotifications;
@@ -35,16 +36,13 @@ namespace WebApplication1.Models
                                 newN.Answered = friend.Answered;
                                 newN.FriendId = friend.UserId;
                                 newN.FriendName = friend.User.ProfileName;
-                               // newN.Url = friend.User.Url;
                                 break;
                             default: break;
                         }
                         newList.Add(newN);
                     }
                     return newList;
-
                 }
-
             }
             catch (Exception)
             {

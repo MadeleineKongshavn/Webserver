@@ -272,6 +272,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\NewFolder1\" />
+    <Folder Include="music\" />
     <Folder Include="Views\Semitone\" />
   </ItemGroup>
   <ItemGroup>
