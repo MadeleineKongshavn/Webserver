@@ -12,53 +12,119 @@ namespace WebApplication1.Models
 {
     public class DbBand
     {
-        public Boolean AddBand(BandClass band)
+        public String AddBand(BandClass band)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    System.Net.WebRequest request = System.Net.WebRequest.Create("http://assets.rollingstone.com/assets/2015/article/mumford-sons-talk-going-electric-on-new-album-wilder-mind-20150302/187700/medium_rect/1425301454/720x405-Mumford-&-Sons-Press-Shot-2nd-March-(1).jpg");
-                    System.Net.WebResponse response = request.GetResponse();
-                    System.IO.Stream responseStream =  response.GetResponseStream();
-                    var bitmap2 = new Bitmap(responseStream);
-
-                    Band b = new Band();
-                    b.Area = "32. street avenue";
-                    b.BandName = "Mumford and sons";
-                    b.Followers = 0;
-                    b.Song = new byte[0];
-                    b.SongName = " ";
-                    b.Timestamp = DateTime.Now;
-                    b.UrlFacebook = "http://semitone.azurewebsites.net/";
-                    b.UrlRandom = "http://semitone.azurewebsites.net/";
-                    b.UrlSoundCloud = "http://semitone.azurewebsites.net/";
-                    b.Xcoordinates = 0.0;
-                    b.Ycoordinates = 0.0;
-
-                    MemoryStream ms = new MemoryStream();
-                    bitmap2.Save(ms, ImageFormat.Bmp);
-                    b.SmallBitmap = ms.ToArray();
-                    b.Bitmap = ms.ToArray();
-                    db.BandDb.Add(b);
-                    db.SaveChanges();
-
-
-                /*    Bitmap bmp;
-                    using (var mse = new MemoryStream(b.Bitmap))
+                    List<Band> b = (from v in db.BandDb select v).ToList();
+                    foreach (var ba in b)
                     {
-                        bmp = new Bitmap(mse);
+                        ba.SmallBitmap = CompressBitmap(ba.Bitmap);
+                        db.SaveChanges();
                     }
-                    if (bmp == null) return false;*/
-                    return true;
-
+                    //Bitmap bit = ConvertByteToBitmap(b.FirstOrDefault().Bitmap);
+                    return "ok";
                 }
             }
             catch (Exception)
             {
-                return false;
+                return "false";
             }
             
+        }
+
+        private Byte[] ConvertBitmapToByte(Bitmap bitmap)
+        {
+            try
+            {
+                MemoryStream ms = new MemoryStream();
+                bitmap.Save(ms, ImageFormat.Bmp);
+                return ms.ToArray();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        private Bitmap ConvertByteToBitmap(Byte[] bytAarray)
+        {
+            try
+            {
+                Bitmap bmp;
+                using (var mse = new MemoryStream(bytAarray))
+                {
+                    bmp = new Bitmap(mse);
+                    return bmp;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+        private Byte[] CompressBitmap(Bitmap bmp)
+        {
+
+            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+            var myEncoderParameters = new EncoderParameters(1);
+            var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
+
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+            using (var ms = new MemoryStream())
+            {
+                bmp.Save(ms, jpgEncoder, myEncoderParameters);
+                return ms.ToArray();
+            }   
+
+        }
+        private Byte[] CompressExistingByteArrayBitmap(Byte[] bytAarray)
+        {
+            try
+            {
+                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+                var myEncoderParameters = new EncoderParameters(1);
+                var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
+
+                myEncoderParameters.Param[0] = myEncoderParameter;
+
+                Bitmap bmp;
+                Bitmap newBit; 
+                using (var mse = new MemoryStream(bytAarray))
+                {
+                    bmp = new Bitmap(mse);
+                    using (var ms = new MemoryStream())
+                    {
+                        bmp.Save(ms, jpgEncoder, myEncoderParameters);
+                        return ms.ToArray();
+                    }               
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
         public List<Band> FindAllBand() // find every band that exist 
         {
@@ -175,4 +241,17 @@ namespace WebApplication1.Models
             }
         }
     }
+    /*    using (var ms = new MemoryStream())
+    {
+         Bitmap bmp = new Bitmap(bitmap);
+         bitmap.Save(ms, ImageFormat.Bmp);
+    }*/
+
+
+
+    /*        using (var ms = new MemoryStream())
+            {
+                bitmap.Save(ms, jpgEncoder, myEncoderParameters);
+                var imgImage = new Bitmap(ms); //Image.FromStream(ms);
+            }*/
 }

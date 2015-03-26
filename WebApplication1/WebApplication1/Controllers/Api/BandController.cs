@@ -12,7 +12,7 @@ namespace WebApplication1.Controllers.Api
     {
         [HttpGet]
         [Route("api/Band/AddBand/{band}")]
-        public Boolean AddBand(BandClass band)
+        public String AddBand(BandClass band)
         {
             var db = new DbBand();
             return db.AddBand(band);
