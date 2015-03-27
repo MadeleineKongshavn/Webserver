@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Antlr.Runtime;
 
@@ -56,7 +58,7 @@ namespace WebApplication1.Models.Db
         }
 
 
-        public List<FriendsClass> FriendsToUser(int id)
+        public async Task<List<FriendsClass>> GetFriendsByUserId(int id)
         {
             var friendsclass = new List<FriendsClass>();
 
@@ -64,25 +66,36 @@ namespace WebApplication1.Models.Db
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    List<Friends> friends = (from f in db.FriendsDb where f.UserId == id select f).ToList();
 
-                    foreach (Friends friend in friends)
-                    {
-                        FriendsClass f = new FriendsClass();
-                        f.FriendsId = friend.Friend;
-                        User user = (from u in db.UserDb where u.UserId == f.FriendsId select u).FirstOrDefault();
-                        f.Friendsname = user.ProfileName;
-                     //   f.url = user.Url;
+                    friendsclass = await (from f in db.FriendsDb
+                                          where f.UserId == id
+                                           join fri in db.UserDb on f.Friend equals fri.UserId
+                                          select new FriendsClass()
+                                          {
+                                              Friendsname = fri.ProfileName,
+                                              FriendsId = f.Friend,
+                                          }).ToListAsync();
 
-                        friendsclass.Add(f);
-                    }
+
+                    //List<Friends> friends = (from f in db.FriendsDb where f.UserId == id select f).ToList();
+
+                    //foreach (Friends friend in friends)
+                    //{
+                    //    FriendsClass f = new FriendsClass();
+                    //    f.FriendsId = friend.Friend;
+                    //    User user = (from u in db.UserDb where u.UserId == f.FriendsId select u).FirstOrDefault();
+                    //    f.Friendsname = user.ProfileName;
+                    //    //   f.url = user.Url;
+
+                    //    friendsclass.Add(f);
+                    //}
                     return friendsclass;
                 }
 
             }
             catch (Exception e)
             {
-                return friendsclass;
+                return null;
                 
             }
         }

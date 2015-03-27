@@ -178,6 +178,13 @@
     <Compile Include="Controllers\Web\AccountController.cs" />
     <Compile Include="Controllers\Web\HomeController.cs" />
     <Compile Include="Controllers\Api\GenreController.cs" />
+    <Compile Include="Managers\BandManager.cs" />
+    <Compile Include="Managers\BaseManager.cs" />
+    <Compile Include="Managers\ConcertManager.cs" />
+    <Compile Include="Managers\FriendManager.cs" />
+    <Compile Include="Managers\GenreManager.cs" />
+    <Compile Include="Managers\ManagerFactory.cs" />
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Class\BandClass.cs" />
     <Compile Include="Models\Class\ConcertClass.cs" />
     <Compile Include="Models\Class\NotificationsClass.cs" />

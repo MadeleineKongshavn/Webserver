@@ -8,7 +8,5 @@ namespace WebApplication1.Controllers.Api
 {
     public class GenreController : ApiController
     {
-    
-   
     }
 }

@@ -8,22 +8,38 @@ namespace WebApplication1.Models.Class
 {
     public class ConcertClass
     {
+        public ConcertClass(Concert concert)
+        {
+            ConcertId = concert.ConcertId;
+        }
+
+        public ConcertClass()
+        {
+
+        }
+
         public int ConcertId { get; set; }
-        public String Title { get; set; }
+        public string Title { get; set; }
         public int Xcoordinates { get; set; }
         public int Ycoordinates { get; set; }
-        public String Bandname { get; set; }
-        public String Date { get; set; }
-        public String Time { get; set; }
+        public string Bandname { get; set; }//Flyttet inn i band class
+        public DateTime Date { get; set; }
+        public string Time { get; set; }
         public List<FriendsClass> Friends { get; set; } 
 
+        public BandClass BandClass { get; set; }
+
+        public Band Band
+        {
+            set { BandClass = value.ConvertToBandClass(); }
+        }
 
         public int FriendsAttending { get; set; }
         public Boolean Attending { get; set; }
-        public String url { get; set; }
+        public string url { get; set; }
         public int Followers { get; set; }
         public Boolean SeeAttends { get; set; }
         public int BandId { get; set; }
-        public String LinkToBand { get; set; }
+        public string LinkToBand { get; set; }
     }
 }

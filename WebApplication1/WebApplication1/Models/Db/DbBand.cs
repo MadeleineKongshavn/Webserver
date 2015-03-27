@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 using Microsoft.SqlServer.Server;
@@ -142,47 +145,86 @@ namespace WebApplication1.Models
             }
         }
 
-        public List<BandClass> FindAllBandsToUser(int id) // Find all bands to a user 
+        public async Task<List<BandClass>> FindAllBandsToUser(int id) // Find all bands to a user 
         {
             using (var db = new ApplicationDbContext())
             {
                 try
                 {
-                    List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
-                    List<Band> bandsTouser =
-                        allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault())
-                            .Where(bands => bands != null)
-                            .ToList();
 
-                    bandsTouser = bandsTouser.OrderBy(z => z.BandName).ToList();
 
-                    var band = new List<BandClass>();
-                    if (bandsTouser.Count == 0) return band;
+                    var result = await (from v in db.BandFollowersDb
+                                  where v.UserId == id
+                                  //join c in db.BandDb on v.BandId equals c.BandId
+                                  select new BandClass()
+                                  {
+                                      Area = v.Band.Area,
+                                      BandId = v.Band.BandId,
+                                      BandName = v.Band.BandName,
+                                      BandGenre = v.Band.BandGenre,
+                                      //SmallBitmap = v.Band.SmallBitmap,//virker men bytt til url
+                                      UrlFacebook = v.Band.UrlFacebook,
+                                      UrlRandom = v.Band.UrlRandom,
+                                      UrlSoundCloud = v.Band.UrlSoundCloud,
+                                      Xcoordinates = v.Band.Xcoordinates,
+                                      Ycoordinates = v.Band.Ycoordinates
 
-                    foreach (Band b in bandsTouser) // Loop through List with foreach.
-                    {
-                        BandClass bandClass = new BandClass();
-                        bandClass.BandName = b.BandName;
-                        bandClass.BandId = b.BandId;
-                        //bandClass.url = b.Url;
-                        bandClass.Xcoordinates = b.Xcoordinates;
-                        bandClass.Ycoordinates = b.Ycoordinates;
+                                  }).ToListAsync();
 
-                        List<String> genreList = new List<string>();
-                        List<BandGenre> list = b.BandGenre;
-                        foreach (BandGenre genre in list)
-                        {
-                            genreList.Add((genre.Genre).GenreName);
-                        }
-                        bandClass.Genre = genreList.ToArray();
-                        band.Add(bandClass);
-                    }
-                    return band;
+
+                    //List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
+                    //List<Band> bandsTouser =
+                    //    allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault())
+                    //        .Where(bands => bands != null)
+                    //        .ToList();
+
+                    //bandsTouser = bandsTouser.OrderBy(z => z.BandName).ToList();
+
+                    //var band = new List<BandClass>();
+                    //if (bandsTouser.Count == 0) return band;
+
+                    //foreach (Band b in bandsTouser) // Loop through List with foreach.
+                    //{
+                    //    BandClass bandClass = new BandClass();
+                    //    bandClass.BandName = b.BandName;
+                    //    bandClass.BandId = b.BandId;
+                    //    //bandClass.url = b.Url;
+                    //    bandClass.Xcoordinates = b.Xcoordinates;
+                    //    bandClass.Ycoordinates = b.Ycoordinates;
+
+                    //    List<String> genreList = new List<string>();
+                    //    List<BandGenre> list = b.BandGenre;
+                    //    foreach (BandGenre genre in list)
+                    //    {
+                    //        genreList.Add((genre.Genre).GenreName);
+                    //    }
+                    //    bandClass.Genre = genreList.ToArray();
+                    //    band.Add(bandClass);
+                    //}
+                    //return band;
+                    return result;
                 }
                 catch (Exception)
                 {
                     return null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets band by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>BandClass</returns>
+        public async Task<BandClass> GetBandById(int id)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var band = await (from b in db.BandDb
+                                  where b.BandId == id
+                                  select b).FirstOrDefaultAsync();
+
+                return band.ConvertToBandClass();
             }
         }
     }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
 
@@ -13,16 +15,37 @@ namespace WebApplication1.Controllers.Api
     {
         [HttpGet]
         [Route("api/Concert/FindAllConcertToUser/{id}")]
-        public List<ConcertClass> FindAllConcertToUser(int id)
+        public async Task<List<ConcertClass>> FindAllConcertToUser(int id)
         {
-            var db = new DbConcert();
-            return db.FindAllConcertToUser(id);
+            //var db = new DbConcert();
+            //return db.FindAllConcertToUser(id);
+
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.GetAllConcertFromUser(id);
+            }
+
         }
-        [Route("api/Concert/GetConcertinfo/{id},{userId}")]
-        public ConcertClass GetConcertinfo(int id, int userId)
+
+        [Route("api/Concert/GetConcertinfo/{id}")]
+        public async Task<ConcertClass> GetConcertInfo(int id)
         {
-            var db = new DbConcert();
-            return db.GetConcertinfo(id, userId);
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.GetConcertById(id);
+            }
         }
+
+        [Route("api/Concert/GetConcertInfoWithFriends/{id}/{userid}")]
+        public async Task<List<UserClass>> GetConcertInfoWithFriends(int id,int userid)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.GetFriendsGoingToConcertById(id,userid);
+            }
+        }
+
+
+
     }
 }

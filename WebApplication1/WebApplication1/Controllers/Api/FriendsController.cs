@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Db;
 
@@ -13,17 +15,21 @@ namespace WebApplication1.Controllers.Api
     {
         [HttpPost]
         [Route("api/Friends/SetFriendRequestAccept/{id},{ok}")]
-        public Boolean SetFriendRequestAccept(int id, Boolean ok)
+        public bool SetFriendRequestAccept(int id, Boolean ok)
         {
-            var db = new DbFriends();
-            return db.SetFriendRequestAccept(id, ok);
+            using (var mngr = ManagerFactory.GetFriendManager())
+            {
+                return mngr.SetFriendRequestAccept(id,ok);
+            }
         }
         [HttpGet]
         [Route("api/Friends/FriendsToUser/{id}")]
-        public List<FriendsClass> FriendsToUser(int id)
+        public async Task<List<FriendsClass>> FriendsToUser(int id)
         {
-            var db = new DbFriends();
-            return db.FriendsToUser(id);
+            using (var mngr = ManagerFactory.GetFriendManager())
+            {
+                return await mngr.GetFriendsFromUserId(id);
+            }
         }
         [HttpGet]
         [Route("api/Friends/FindFriend/{name}")]
@@ -34,7 +40,7 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpPost]
         [Route("api/Friends/SendFriendRequest/{userId},{friendId}")]
-        public Boolean SendFriendRequest(String userId, String friendId)
+        public bool SendFriendRequest(String userId, String friendId)
         {
             var db = new DbFriends();
             return db.SendFriendRequest(userId, friendId);
