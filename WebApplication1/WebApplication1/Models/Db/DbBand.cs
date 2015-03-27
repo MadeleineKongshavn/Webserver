@@ -18,14 +18,106 @@ namespace WebApplication1.Models
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    List<Band> b = (from v in db.BandDb select v).ToList();
-                    foreach (var ba in b)
-                    {
-                        ba.SmallBitmap = CompressBitmap(ba.Bitmap);
-                        db.SaveChanges();
-                    }
-                    //Bitmap bit = ConvertByteToBitmap(b.FirstOrDefault().Bitmap);
+                    System.Net.WebRequest request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1003.png");
+                    System.Net.WebResponse response = request.GetResponse();
+                    System.IO.Stream responseStream =  response.GetResponseStream();
+                    var bitmap2 = new Bitmap(responseStream);
+
+
+                    User u = new User();
+                    u.ProfileName = "Daenerys ";
+                    u.SeeNotifications = true;
+                    u.Public = true;
+                    u.Radius = 1200;
+                    u.Timestamp = DateTime.Now;
+                    u.Xcoordinates = 0.0;
+                    u.Ycoordinates = 0.0;
+                    u.Bitmap = ConvertBitmapToByte(bitmap2);
+
+                    db.UserDb.Add(u);
+                    db.SaveChanges();
+
+
+
+                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1004.png");
+                    response = request.GetResponse();
+                    responseStream = response.GetResponseStream();
+                     bitmap2 = new Bitmap(responseStream);
+
+
+                    u = new User();
+                    u.ProfileName = "Grubleren";
+                    u.SeeNotifications = true;
+                    u.Public = true;
+                    u.Radius = 1200;
+                    u.Timestamp = DateTime.Now;
+                    u.Xcoordinates = 0.0;
+                    u.Ycoordinates = 0.0;
+                    u.Bitmap = ConvertBitmapToByte(bitmap2);
+
+                    db.UserDb.Add(u);
+                    db.SaveChanges();
+
+
+                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1005.png");
+                    response = request.GetResponse();
+                    responseStream = response.GetResponseStream();
+                    bitmap2 = new Bitmap(responseStream);
+
+
+                    u = new User();
+                    u.ProfileName = "Ukursk23";
+                    u.SeeNotifications = true;
+                    u.Public = true;
+                    u.Radius = 1200;
+                    u.Timestamp = DateTime.Now;
+                    u.Xcoordinates = 0.0;
+                    u.Ycoordinates = 0.0;
+                    u.Bitmap = ConvertBitmapToByte(bitmap2);
+
+                    db.UserDb.Add(u);
+                    db.SaveChanges();
+
+
+                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1006.png");
+                    response = request.GetResponse();
+                    responseStream = response.GetResponseStream();
+                    bitmap2 = new Bitmap(responseStream);
+
+
+                    u = new User();
+                    u.ProfileName = "Taylor";
+                    u.SeeNotifications = true;
+                    u.Public = true;
+                    u.Radius = 1200;
+                    u.Timestamp = DateTime.Now;
+                    u.Xcoordinates = 0.0;
+                    u.Ycoordinates = 0.0;
+                    u.Bitmap = ConvertBitmapToByte(bitmap2);
+
+                    db.UserDb.Add(u);
+                    db.SaveChanges();
+
+                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1007.png");
+                    response = request.GetResponse();
+                    responseStream = response.GetResponseStream();
+                    bitmap2 = new Bitmap(responseStream);
+
+
+                    u = new User();
+                    u.ProfileName = "AndyKr";
+                    u.SeeNotifications = true;
+                    u.Public = true;
+                    u.Radius = 1200;
+                    u.Timestamp = DateTime.Now;
+                    u.Xcoordinates = 0.0;
+                    u.Ycoordinates = 0.0;
+                    u.Bitmap = ConvertBitmapToByte(bitmap2);
+
+                    db.UserDb.Add(u);
+                    db.SaveChanges();
                     return "ok";
+
                 }
             }
             catch (Exception)
@@ -63,7 +155,6 @@ namespace WebApplication1.Models
             {
                 return null;
             }
-
         }
         private Byte[] CompressBitmap(Bitmap bmp)
         {

@@ -11,6 +11,13 @@ namespace WebApplication1.Controllers.Api
 {
     public class UserController : ApiController
     {
+        [HttpPost]
+        [Route("api/User/SetSeenNotifications/{id}")]
+        public Boolean SetSeenNotifications(int id)
+        {
+            var db = new DbUser();
+            return db.SetSeenNotifications(id);
+        }
         [HttpGet]
         [Route("api/User/GetAllNotifications/{id}")]
         public List<NotificationsClass> GetAllNotifications(int id)

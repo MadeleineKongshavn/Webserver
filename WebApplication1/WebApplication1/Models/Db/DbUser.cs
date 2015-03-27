@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using WebApplication1.Models.Class;
@@ -9,6 +11,23 @@ namespace WebApplication1.Models
 {
     public class DbUser
     {
+        public Boolean SetSeenNotifications(int id)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var notifications = (from n in db.NotificationsDb where n.NotificationsId == id select n).FirstOrDefault();
+                    notifications.Seen = true;
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public List<NotificationsClass> GetAllNotifications(int userId)
         {
             var newList = new List<NotificationsClass>();
@@ -28,6 +47,9 @@ namespace WebApplication1.Models
                         newN.Month = n.SendtTime.Month;
                         newN.Type = n.Type;
                         newN.Year = n.SendtTime.Year;
+
+                        n.Seen = true;
+                
                         switch (n.Type) // 1 = request, 2=concert invitasjon, 3 = band ny konsert 
                         {
                             case 1:
@@ -36,9 +58,11 @@ namespace WebApplication1.Models
                                 newN.Answered = friend.Answered;
                                 newN.FriendId = friend.UserId;
                                 newN.FriendName = friend.User.ProfileName;
+                                newN.ByteArray = friend.User.Bitmap;
                                 break;
                             default: break;
                         }
+                        db.SaveChanges();
                         newList.Add(newN);
                     }
                     return newList;
@@ -47,6 +71,22 @@ namespace WebApplication1.Models
             catch (Exception)
             {
                 return newList;
+            }
+        }
+        private Bitmap ConvertByteToBitmap(Byte[] bytAarray)
+        {
+            try
+            {
+                Bitmap bmp;
+                using (var mse = new MemoryStream(bytAarray))
+                {
+                    bmp = new Bitmap(mse);
+                    return bmp;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
         public String GetName(int id)
