@@ -39,6 +39,11 @@ namespace WebApplication1.Models.Db
                     }
                     else
                     {
+                        db.FriendRequestNotificationsDb.Remove(n.FriendRequestNotifications);
+                        db.NotificationsDb.Remove(n);
+                        db.SaveChanges();
+                    }
+                    {
                         db.NotificationsDb.Remove(n);
                         return true;
                     }

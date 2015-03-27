@@ -12,120 +12,6 @@ namespace WebApplication1.Models
 {
     public class DbBand
     {
-        public String AddBand(BandClass band)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    System.Net.WebRequest request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1003.png");
-                    System.Net.WebResponse response = request.GetResponse();
-                    System.IO.Stream responseStream =  response.GetResponseStream();
-                    var bitmap2 = new Bitmap(responseStream);
-
-
-                    User u = new User();
-                    u.ProfileName = "Daenerys ";
-                    u.SeeNotifications = true;
-                    u.Public = true;
-                    u.Radius = 1200;
-                    u.Timestamp = DateTime.Now;
-                    u.Xcoordinates = 0.0;
-                    u.Ycoordinates = 0.0;
-                    u.Bitmap = ConvertBitmapToByte(bitmap2);
-
-                    db.UserDb.Add(u);
-                    db.SaveChanges();
-
-
-
-                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1004.png");
-                    response = request.GetResponse();
-                    responseStream = response.GetResponseStream();
-                     bitmap2 = new Bitmap(responseStream);
-
-
-                    u = new User();
-                    u.ProfileName = "Grubleren";
-                    u.SeeNotifications = true;
-                    u.Public = true;
-                    u.Radius = 1200;
-                    u.Timestamp = DateTime.Now;
-                    u.Xcoordinates = 0.0;
-                    u.Ycoordinates = 0.0;
-                    u.Bitmap = ConvertBitmapToByte(bitmap2);
-
-                    db.UserDb.Add(u);
-                    db.SaveChanges();
-
-
-                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1005.png");
-                    response = request.GetResponse();
-                    responseStream = response.GetResponseStream();
-                    bitmap2 = new Bitmap(responseStream);
-
-
-                    u = new User();
-                    u.ProfileName = "Ukursk23";
-                    u.SeeNotifications = true;
-                    u.Public = true;
-                    u.Radius = 1200;
-                    u.Timestamp = DateTime.Now;
-                    u.Xcoordinates = 0.0;
-                    u.Ycoordinates = 0.0;
-                    u.Bitmap = ConvertBitmapToByte(bitmap2);
-
-                    db.UserDb.Add(u);
-                    db.SaveChanges();
-
-
-                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1006.png");
-                    response = request.GetResponse();
-                    responseStream = response.GetResponseStream();
-                    bitmap2 = new Bitmap(responseStream);
-
-
-                    u = new User();
-                    u.ProfileName = "Taylor";
-                    u.SeeNotifications = true;
-                    u.Public = true;
-                    u.Radius = 1200;
-                    u.Timestamp = DateTime.Now;
-                    u.Xcoordinates = 0.0;
-                    u.Ycoordinates = 0.0;
-                    u.Bitmap = ConvertBitmapToByte(bitmap2);
-
-                    db.UserDb.Add(u);
-                    db.SaveChanges();
-
-                    request = System.Net.WebRequest.Create("http://semitone.azurewebsites.net/images/profile/profile_1007.png");
-                    response = request.GetResponse();
-                    responseStream = response.GetResponseStream();
-                    bitmap2 = new Bitmap(responseStream);
-
-
-                    u = new User();
-                    u.ProfileName = "AndyKr";
-                    u.SeeNotifications = true;
-                    u.Public = true;
-                    u.Radius = 1200;
-                    u.Timestamp = DateTime.Now;
-                    u.Xcoordinates = 0.0;
-                    u.Ycoordinates = 0.0;
-                    u.Bitmap = ConvertBitmapToByte(bitmap2);
-
-                    db.UserDb.Add(u);
-                    db.SaveChanges();
-                    return "ok";
-
-                }
-            }
-            catch (Exception)
-            {
-                return "false";
-            }
-            
-        }
 
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
@@ -140,6 +26,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+
         private Bitmap ConvertByteToBitmap(Byte[] bytAarray)
         {
             try
@@ -156,6 +43,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+
         private Byte[] CompressBitmap(Bitmap bmp)
         {
 
@@ -171,9 +59,10 @@ namespace WebApplication1.Models
             {
                 bmp.Save(ms, jpgEncoder, myEncoderParameters);
                 return ms.ToArray();
-            }   
+            }
 
         }
+
         private Byte[] CompressExistingByteArrayBitmap(Byte[] bytAarray)
         {
             try
@@ -187,7 +76,7 @@ namespace WebApplication1.Models
                 myEncoderParameters.Param[0] = myEncoderParameter;
 
                 Bitmap bmp;
-                Bitmap newBit; 
+                Bitmap newBit;
                 using (var mse = new MemoryStream(bytAarray))
                 {
                     bmp = new Bitmap(mse);
@@ -195,7 +84,7 @@ namespace WebApplication1.Models
                     {
                         bmp.Save(ms, jpgEncoder, myEncoderParameters);
                         return ms.ToArray();
-                    }               
+                    }
                 }
             }
             catch (Exception e)
@@ -203,6 +92,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+
         private ImageCodecInfo GetEncoder(ImageFormat format)
         {
 
@@ -217,25 +107,11 @@ namespace WebApplication1.Models
             }
             return null;
         }
-        public List<Band> FindAllBand() // find every band that exist 
+
+        public String FindBandBasedOnQuery(String query) // delvis under oppbygning
         {
-            using (var db = new ApplicationDbContext())
+            try
             {
-                try
-                {
-                    List<Band> band = (from v in db.BandDb select v).ToList();
-                    return band;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-        }
-        public String FindBandBasedOnQuery(String query) // finds bands based on the query parameter. 
-        {
-          try
-          {
                 using (var db = new ApplicationDbContext())
                 {
                     query = query.Trim();
@@ -250,21 +126,22 @@ namespace WebApplication1.Models
                         newB.Xcoordinates = b.Xcoordinates;
                         newB.Ycoordinates = b.Ycoordinates;
                         newB.BandName = b.BandName;
-                      //  newB.url = b.Url;
-                        newB.BandId = b.BandId;    
+                        //  newB.url = b.Url;
+                        newB.BandId = b.BandId;
                         bands.Add(newB);
-                        
+
                     }
                     return "funket ikke";
                 }
 
-          }
+            }
             catch (Exception e)
             {
                 return e.Message + " " + e.Source + " " + e.InnerException;
                 // return new List<BandClass>();   
-            }            
+            }
         }
+
         public List<BandClass> FindAllBandsToUser(int id) // Find all bands to a user 
         {
             using (var db = new ApplicationDbContext())
@@ -272,7 +149,10 @@ namespace WebApplication1.Models
                 try
                 {
                     List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
-                    List<Band> bandsTouser = allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault()).Where(bands => bands != null).ToList();
+                    List<Band> bandsTouser =
+                        allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault())
+                            .Where(bands => bands != null)
+                            .ToList();
 
                     bandsTouser = bandsTouser.OrderBy(z => z.BandName).ToList();
 
@@ -296,53 +176,14 @@ namespace WebApplication1.Models
                         }
                         bandClass.Genre = genreList.ToArray();
                         band.Add(bandClass);
-                    }              
+                    }
                     return band;
                 }
                 catch (Exception)
                 {
                     return null;
                 }
-            }
-        }
-        public Band FindBand(int id) // Finds a band
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                try
-                {
-                    Band band = (from b in db.BandDb where b.BandId == id select b).FirstOrDefault();
-                    return band;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-        }
-        public int Count(int id) // finds number of followers to this band
-        {
-            try
-            {
-                return (FindBand(id)).Followers;
-            }
-            catch (Exception)
-            {
-                return 0;
             }
         }
     }
-    /*    using (var ms = new MemoryStream())
-    {
-         Bitmap bmp = new Bitmap(bitmap);
-         bitmap.Save(ms, ImageFormat.Bmp);
-    }*/
-
-
-
-    /*        using (var ms = new MemoryStream())
-            {
-                bitmap.Save(ms, jpgEncoder, myEncoderParameters);
-                var imgImage = new Bitmap(ms); //Image.FromStream(ms);
-            }*/
 }

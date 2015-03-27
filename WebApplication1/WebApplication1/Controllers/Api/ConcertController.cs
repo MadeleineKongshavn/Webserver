@@ -12,13 +12,6 @@ namespace WebApplication1.Controllers.Api
     public class ConcertController : ApiController
     {
         [HttpGet]
-        [Route("api/Concert/FindAllConcert/")]
-        public List<Concert> FindAllConcert()
-        {
-            var db = new DbConcert();
-            return db.FindAllConcert();
-        }
-        [HttpGet]
         [Route("api/Concert/FindAllConcertToUser/{id}")]
         public List<ConcertClass> FindAllConcertToUser(int id)
         {
@@ -30,13 +23,6 @@ namespace WebApplication1.Controllers.Api
         {
             var db = new DbConcert();
             return db.GetConcertinfo(id, userId);
-        }
-        [HttpGet]
-        [Route("api/Concert/FindConcert/{id}")]
-        public Concert FindConcert(String id)
-        {
-            var db = new DbConcert();
-            return db.FindConcert((int.Parse(id)));
         }
     }
 }

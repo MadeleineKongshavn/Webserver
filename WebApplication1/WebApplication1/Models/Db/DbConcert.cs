@@ -10,22 +10,7 @@ namespace WebApplication1.Models
 {
     public class DbConcert
     {   
-        public List<Concert> FindAllConcert() // find every concert that exist 
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                try
-                {
-                    List<Concert> concert = (from v in db.ConcertDb select v).ToList();
-                    return concert;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-        }
-
+   
         public List<ConcertClass> FindAllConcertToUser(int id) // Find all concerts to a user 
         {
             using (var db = new ApplicationDbContext())
@@ -89,7 +74,7 @@ namespace WebApplication1.Models
             }
         }
 
-        public Concert FindConcert(int id) // find one concert
+        private Concert FindConcert(int id) // find one concert
         {
             using (var db = new ApplicationDbContext())
             {
@@ -103,14 +88,6 @@ namespace WebApplication1.Models
                     return null;
                 }
             }
-        }
-
-        public Bitmap GetConcertImage(String url)
-        {
-            System.Net.WebRequest request =System.Net.WebRequest.Create(url);
-            System.Net.WebResponse response = request.GetResponse();
-            System.IO.Stream responseStream =response.GetResponseStream();
-            return new Bitmap(responseStream);
         }
 
         public List<FriendsClass> FriendsGoingToConcert(int userId, int concertId) // Finds all your friends that are going to the same concert 
