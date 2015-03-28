@@ -34,7 +34,6 @@ namespace WebApplication1.Models
                                    Type = n.Type,
                                    Year = n.SendtTime.Year,
                                    Accepted = n.FriendRequestNotifications.Accepted,
-                                   Answered = n.FriendRequestNotifications.Answered,
                                    FriendId = n.FriendRequestNotifications.UserId,
                                    FriendName = n.FriendRequestNotifications.User.ProfileName,
                                }).ToList();

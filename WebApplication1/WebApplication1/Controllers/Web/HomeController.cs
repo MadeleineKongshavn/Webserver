@@ -18,6 +18,7 @@ namespace WebApplication1.Controllers
         public ActionResult About()
         {
             var db = new DbBand();
+            db.FindAllBandsToUser(1);
             ViewBag.Message = " your count name";
             return View();
         }

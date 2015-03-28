@@ -32,7 +32,6 @@ namespace WebApplication1.Models.Db
 
                         var f = new FriendRequestNotifications();
                         f.Accepted = true;
-                        f.Answered = true;
                         f.UserId = n.UserId;
                         confirm.FriendRequestNotifications = f;
                         db.SaveChanges();
@@ -75,20 +74,6 @@ namespace WebApplication1.Models.Db
                                               Friendsname = fri.ProfileName,
                                               FriendsId = f.Friend,
                                           }).ToListAsync();
-
-
-                    //List<Friends> friends = (from f in db.FriendsDb where f.UserId == id select f).ToList();
-
-                    //foreach (Friends friend in friends)
-                    //{
-                    //    FriendsClass f = new FriendsClass();
-                    //    f.FriendsId = friend.Friend;
-                    //    User user = (from u in db.UserDb where u.UserId == f.FriendsId select u).FirstOrDefault();
-                    //    f.Friendsname = user.ProfileName;
-                    //    //   f.url = user.Url;
-
-                    //    friendsclass.Add(f);
-                    //}
                     return friendsclass;
                 }
 
@@ -149,15 +134,6 @@ namespace WebApplication1.Models.Db
                    Friends f2 = new Friends();
                    f2.UserId = Int32.Parse(userId2);
                    f2.Friend = Int32.Parse(userId);
-
-
-                    f1.Blocked = false;
-                    f2.Blocked = false;
-
-                    DateTime  date = new DateTime(2009, 11, 11);
-                    f2.FriendsSince = date;
-                    f1.FriendsSince = date;
-
 
                    db.FriendsDb.Add(f1);
                    db.FriendsDb.Add(f2);

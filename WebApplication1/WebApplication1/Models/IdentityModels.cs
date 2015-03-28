@@ -42,8 +42,7 @@ namespace WebApplication1.Models
         public int Radius { get; set; }
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
-      //  public String Url { get; set; }
-        public Byte[] Bitmap { get; set; }
+        public String Url { get; set; }
         public DateTime Timestamp { get; set; }
 
 
@@ -68,8 +67,6 @@ namespace WebApplication1.Models
         [Key]
         [Column(Order = 1)]
         public int Friend { get; set; }
-        public Boolean Blocked { get; set; }
-        public DateTime FriendsSince { get; set; }
 
         public virtual User User { get; set; }
     }
@@ -82,8 +79,9 @@ namespace WebApplication1.Models
         public Double Ycoordinates { get; set; }
         public String BandName { get; set; }
         public int Followers { get; set; }
-        public Byte[] Bitmap { get; set; }
-        public Byte[] SmallBitmap { get; set; }
+        public String BitmapUrl { get; set; }
+        public String BitmapSmalUrl { get; set; }
+        public String Songurl { get; set; }
         public Byte[] Song { get; set; }
         public String SongName { get; set; }
         public String UrlFacebook { get; set; }
@@ -115,8 +113,8 @@ namespace WebApplication1.Models
         public Boolean SeeAttends { get; set; }
         public int BandId { get; set; }
         public String LinkToBand { get; set; }
-        public Byte[] Bitmap { get; set; }
-        public Byte[] SmallBitmap { get; set; }
+        public String BitmapUrl { get; set; }
+        public String BitmapSmalUrl { get; set; }
         public String VenueName { get; set; }
         public DateTime Timestamp { get; set; }
 
@@ -272,7 +270,6 @@ namespace WebApplication1.Models
     {
         [Key, ForeignKey("Notifications")]
         public int NotificationsId { get; set; }
-        public Boolean Answered { get; set; }
         public Boolean Accepted { get; set; }
         public int UserId { get; set; }
 
