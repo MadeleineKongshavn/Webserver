@@ -14,12 +14,21 @@ namespace WebApplication1.Controllers.Api
     public class FriendsController : ApiController
     {
         [HttpPost]
-        [Route("api/Friends/SetFriendRequestAccept/{id},{ok}")]
-        public bool SetFriendRequestAccept(int id, Boolean ok)
+        [Route("api/Friends/AddFriendRequest/{userId},{friendId}")]
+        public async Task<Boolean> AddFriendRequest(int userId, int friendId)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
-                return mngr.SetFriendRequestAccept(id,ok);
+                return await mngr.AddFriendRequest(userId, friendId);
+            }
+        }
+        [HttpPost]
+        [Route("api/Friends/SetFriendAccept/{id},{ok}")]
+        public async Task<Boolean> SetFriendAccept(int id, Boolean ok)
+        {
+            using (var mngr = ManagerFactory.GetFriendManager())
+            {
+                return await mngr.SetFriendAccept(id, ok);
             }
         }
         [HttpGet]
@@ -33,17 +42,13 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpGet]
         [Route("api/Friends/FindFriend/{name}")]
-        public FriendsClass FindFriend(String name)
+        public async Task<FriendsClass> FindFriend(String name)
         {
-            var db = new DbFriends();
-            return db.FindFriend(name);
+            using (var mngr = ManagerFactory.GetFriendManager())
+            {
+                return await mngr.FindFriend(name);
+            }
         }
-        [HttpPost]
-        [Route("api/Friends/SendFriendRequest/{userId},{friendId}")]
-        public bool SendFriendRequest(String userId, String friendId)
-        {
-            var db = new DbFriends();
-            return db.SendFriendRequest(userId, friendId);
-        }
+
     }
 }

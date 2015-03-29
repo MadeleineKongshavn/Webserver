@@ -11,6 +11,25 @@ namespace WebApplication1.Managers
 {
     public class ConcertManager : BaseManager
     {
+        public async Task<Boolean> AddConcertToUser(int userId, int concertId)
+        {
+            var db = new DbConcert();
+            var cacheKey = String.Format("Concert_User_Get_{0}", userId);
+            RemoveCacheKeysByPrefix(cacheKey); 
+            return await db.AddConcertToUser(userId, concertId);
+        }
+        public async Task<Boolean> ChangeConcert(ConcertClass c, Byte[] pic)
+        {
+            var db = new DbConcert();
+            var cacheKey = String.Format("Concert_Get_{0}", c.ConcertId);
+            RemoveCacheKeysByPrefix(cacheKey);
+            return await db.ChangeConcert(c, pic);
+        }
+        public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic)
+        {
+            var db = new DbConcert();
+            return await db.AddConcert(c, pic);
+        }
         public async Task<ConcertClass> GetConcertById(int id)
         {
             ConcertClass objectDto;
@@ -50,7 +69,7 @@ namespace WebApplication1.Managers
 
 
             List<ConcertClass> objectDto;
-            var cacheKey = String.Format("Concert_Get_{0}", userId);
+            var cacheKey = String.Format("Concert_User_Get_{0}", userId);
             if ((objectDto = (List<ConcertClass>)Cache.Get(cacheKey)) != null)
                 return objectDto;
             try

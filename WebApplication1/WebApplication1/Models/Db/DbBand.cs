@@ -1,21 +1,134 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.UI.WebControls;
-using Microsoft.SqlServer.Server;
+
 
 namespace WebApplication1.Models
 {
     public class DbBand
     {
+        // legger et band på en bruker
+        public async Task<bool> AddBandToUser(int userId, int bandId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    db.BandFollowersDb.Add(new BandFollowers()
+                    {
+                        UserId = userId,
+                        BandId = bandId,
+                    });
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+        }
+        // legger til basisk funksjonene til et band
+        public async Task<bool> AddBand(BandClass b, Byte[] pic)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    Band band = new Band()
+                    {
+                        UrlSoundCloud = b.UrlSoundCloud,
+                        UrlFacebook = b.UrlFacebook,
+                        Xcoordinates = b.Xcoordinates,
+                        Ycoordinates = b.Ycoordinates,
+                        Area = b.Area,
+                        BandName = b.BandName,
+                        Followers = 0,
+                        BitmapSmalUrl = "bitmap small url her",
+                        BitmapUrl = "bitmap big url her",
+                        Songurl = "hvis sangen skal lastes opp istedenfor, url her",
+                        SongName = b.SongName,
+                        Song = null, //hvis sangen skal være en byte array
+                        Timestamp = DateTime.Now,     
+                        UrlRandom = b.UrlRandom,
 
+                    };
+                    db.BandDb.Add(band);
+                    int bandId = band.BandId;
+
+                    List<Member> listMembers = new List<Member>();
+                    foreach (var id in b.Member)
+                    {
+                        listMembers.Add(new Member()
+                        {
+                            BandId = bandId,
+                            UserId = id,
+                        });
+                    }
+                    band.Member = listMembers;
+                    db.SaveChanges();
+                    return true;
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        // endrer på basisk funskjonene til et band
+        public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var b1 = (from ban in db.BandDb
+                              where b.BandId == ban.BandId
+                              select ban).FirstOrDefault();
+
+                    // lagre pic i bitmapurl og bitmapsmallurl
+
+                    b1.UrlRandom = b.UrlRandom;
+                    b1.UrlSoundCloud = b.UrlSoundCloud;
+                    b1.UrlFacebook = b.UrlFacebook;
+                    b1.Xcoordinates = b.Xcoordinates;
+                    b1.Ycoordinates = b.Ycoordinates;
+                    b1.Area = b.Area;
+                    b1.BandName = b.BandName;
+                    b1.BitmapSmalUrl = "bitmap small url her";
+                    b1.BitmapUrl = "bitmap big url her";
+                    b1.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
+                    b1.SongName = b.SongName;
+                    b1.Song = null; //hvis sangen skal være en byte array
+                    b1.Timestamp = DateTime.Now;
+
+                    List<Member> listMembers = new List<Member>();
+                    foreach (var id in b.Member)
+                    {
+                        listMembers.Add(new Member()
+                        {
+                            BandId = b.BandId,
+                            UserId = id,
+                        });
+                    }
+                    b1.Member = listMembers;
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }  
+            
+        }
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
             try
@@ -24,7 +137,7 @@ namespace WebApplication1.Models
                 bitmap.Save(ms, ImageFormat.Bmp);
                 return ms.ToArray();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -66,7 +179,7 @@ namespace WebApplication1.Models
 
         }
 
-        private Byte[] CompressExistingByteArrayBitmap(Byte[] bytAarray)
+        private String CompressExistingByteArrayBitmap(Byte[] bytAarray)
         {
             try
             {
@@ -77,20 +190,13 @@ namespace WebApplication1.Models
                 var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
 
                 myEncoderParameters.Param[0] = myEncoderParameter;
+                var mse = new MemoryStream(bytAarray);
+                var bmp = new Bitmap(mse);
 
-                Bitmap bmp;
-                Bitmap newBit;
-                using (var mse = new MemoryStream(bytAarray))
-                {
-                    bmp = new Bitmap(mse);
-                    using (var ms = new MemoryStream())
-                    {
-                        bmp.Save(ms, jpgEncoder, myEncoderParameters);
-                        return ms.ToArray();
-                    }
-                }
+                bmp.Save(@"c:\filenamejpg", jpgEncoder, myEncoderParameters);
+                return "url";
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -169,39 +275,7 @@ namespace WebApplication1.Models
                                       Xcoordinates = v.Band.Xcoordinates,
                                       Ycoordinates = v.Band.Ycoordinates
 
-                                  }).ToListAsync();
-
-
-                    //List<BandFollowers> allBands = (from v in db.BandFollowersDb where v.UserId == id select v).ToList();
-                    //List<Band> bandsTouser =
-                    //    allBands.Select(b => (from v in db.BandDb where v.BandId == b.BandId select v).FirstOrDefault())
-                    //        .Where(bands => bands != null)
-                    //        .ToList();
-
-                    //bandsTouser = bandsTouser.OrderBy(z => z.BandName).ToList();
-
-                    //var band = new List<BandClass>();
-                    //if (bandsTouser.Count == 0) return band;
-
-                    //foreach (Band b in bandsTouser) // Loop through List with foreach.
-                    //{
-                    //    BandClass bandClass = new BandClass();
-                    //    bandClass.BandName = b.BandName;
-                    //    bandClass.BandId = b.BandId;
-                    //    //bandClass.url = b.Url;
-                    //    bandClass.Xcoordinates = b.Xcoordinates;
-                    //    bandClass.Ycoordinates = b.Ycoordinates;
-
-                    //    List<String> genreList = new List<string>();
-                    //    List<BandGenre> list = b.BandGenre;
-                    //    foreach (BandGenre genre in list)
-                    //    {
-                    //        genreList.Add((genre.Genre).GenreName);
-                    //    }
-                    //    bandClass.Genre = genreList.ToArray();
-                    //    band.Add(bandClass);
-                    //}
-                    //return band;
+                                  }).ToListAsync();      
                     return result;
                 }
                 catch (Exception)

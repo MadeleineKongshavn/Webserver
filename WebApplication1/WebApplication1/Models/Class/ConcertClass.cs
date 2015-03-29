@@ -41,5 +41,9 @@ namespace WebApplication1.Models.Class
         public Boolean SeeAttends { get; set; }
         public int BandId { get; set; }
         public string LinkToBand { get; set; }
+        public String VenueName { get; set; }
+        public String Area { get; set; }
+
+
     }
 }

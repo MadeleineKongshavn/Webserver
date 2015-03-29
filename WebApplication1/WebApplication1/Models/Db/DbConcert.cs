@@ -12,15 +12,104 @@ namespace WebApplication1.Models
 {
     public class DbConcert
     {
+        public async Task<Boolean> AddConcertToUser(int userId, int ConcertId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    db.ConcertFollowersDb.Add(new ConcertFollowers()
+                    {
+                        UserId = userId,
+                        ConcertId = ConcertId,
+                    });
+                    db.SaveChanges();
+                    return true;
+                }
 
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        // legger til en konsert, pic er bilde som skal inn
+        public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    // er en SmallUrl og en Url så det mindre bildet som finnes i lister kan komprimeres mer.
+                    // lagre pic i bitmapurl og bitmapsmallurl
+
+                    var c1 = new Concert()
+                    {
+                        Title = c.Title,
+                        Timestamp = DateTime.Now,
+                        Xcoordinates = c.Xcoordinates,
+                        Ycoordinates = c.Ycoordinates,
+                        Area = c.Area,
+                        Followers = 0,
+                        SeeAttends = c.SeeAttends,
+                        BandId = c.BandId,
+                        LinkToBand = c.LinkToBand,
+                        BitmapUrl = "stor url her :)",
+                        BitmapSmalUrl = "small url her :)",
+                        VenueName = c.VenueName,
+                        Date = Convert.ToDateTime(c.Time),
+                    };
+                    db.ConcertDb.Add(c1);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        // endrer på en konsert med den gitte ideen inni ConcertClass
+        public async Task<Boolean> ChangeConcert(ConcertClass c, Byte[] pic)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var c1 = (from con in db.ConcertDb
+                              where con.ConcertId == c.ConcertId
+                              select con).FirstOrDefault();
+
+                    // lagre pic i bitmapurl og bitmapsmallurl
+
+                    c1.Title = c.Title;
+                    c1.Timestamp = DateTime.Now;
+                    c1.Xcoordinates = c.Xcoordinates;
+                    c1.Ycoordinates = c.Ycoordinates;
+                    c1.Area = c.Area;
+                    c1.SeeAttends = c.SeeAttends;
+                    c1.BandId = c.BandId;
+                    c1.LinkToBand = c.LinkToBand;
+                    c1.BitmapUrl = "stor url her :)";
+                    c1.BitmapSmalUrl = "small url her :)";
+                    c1.VenueName = c.VenueName;
+                    c1.Date = Convert.ToDateTime(c.Time);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }  
+        }
         public async Task<List<ConcertClass>> FindAllConcertToUser(int id) // Find all concerts to a user 
         {
             using (var db = new ApplicationDbContext())
             {
-                //var Concert = new List<ConcertClass>();
                 try
                 {
-
                     //Mye bedre :)
                     var result = await (from v in db.ConcertFollowersDb
                                         where v.UserId == id
@@ -33,28 +122,6 @@ namespace WebApplication1.Models
                                             Attending = true,
                                             Date = c.Date,
                                         }).ToListAsync();
-
-
-                    //Console.WriteLine(result);
-
-                    //List<ConcertFollowers> alleConcertId = (from v in db.ConcertFollowersDb where v.UserId == id select v).ToList();
-                    //List<Concert> myConcerts = alleConcertId.Select(concert => (from v in db.ConcertDb where v.ConcertId == concert.ConcertId select v).FirstOrDefault()).Where(c => c != null).ToList();
-                    ////List<ConcertClass> allConcertClasses = (from )
-                    //foreach (Concert c in myConcerts) // Loop through List with foreach.
-                    //{
-                    //    ConcertClass con = new ConcertClass();
-                    //    con.ConcertId = c.ConcertId;
-                    //    con.Title = c.Title;
-                    //    //  con.url = c.Url;
-                    //    con.Bandname = c.Band.BandName;
-                    //    //con.Date = c.Date.ToLongDateString();
-
-                    //    // con.Date = c.Date;
-
-                    //    con.Attending = false; // må endres!!! 
-                    //    con.FriendsAttending = 5; // må endres!!!                               
-                    //    Concert.Add(con);
-                    //}
                     return result;
                 }
                 catch (Exception)
@@ -63,36 +130,6 @@ namespace WebApplication1.Models
                 }
             }
         }
-
-        //public async Task<ConcertClass> GetConcertinfo(int id, int userId) //Get all information about one concert
-        //{
-        //    using (var db = new ApplicationDbContext())
-        //    {
-        //        try
-        //        {
-        //            var c = await GetConcert(id);
-        //            ConcertClass con = new ConcertClass();
-        //            con.ConcertId = c.ConcertId;
-        //            con.Title = c.Title;
-        //            con.Xcoordinates = c.Xcoordinates;
-        //            con.Ycoordinates = c.Ycoordinates;
-        //            // con.Bandname = c.Band.BandName;
-        //            //con.Date = c.Date.ToLongDateString();
-        //            //con.Time = c.Date.ToShortTimeString(); //WUUT?
-        //            //  con.url = c.Url;
-
-        //            con.Friends = FriendsGoingToConcert(userId, id);
-        //            con.FriendsAttending = con.Friends.Count;
-        //            // con.Attending = false; // må endres
-        //            return con;
-        //        }
-        //        catch (Exception)
-        //        {
-        //            return null;
-        //        }
-        //    }
-        //}
-
         public async Task<ConcertClass> GetConcertById(int id) // find one concert
         {
             using (var db = new ApplicationDbContext())
@@ -143,26 +180,6 @@ namespace WebApplication1.Models
                                     Url = "?"
                                 }
                             ).ToListAsync();
-
-                    //Console.WriteLine(cf);
-                    //List<Friends> friends = (from v in db.FriendsDb where v.UserId == userId select v).ToList();
-                    //var f = new List<FriendsClass>();
-
-                    //foreach (var friend in friends)
-                    //{
-                    //    ConcertFollowers c =
-                    //        (from v in db.ConcertFollowersDb
-                    //         where v.ConcertId == concertId && v.UserId == friend.UserId
-                    //         select v).FirstOrDefault();
-                    //    if (c != null)
-                    //    {
-                    //        FriendsClass fr = new FriendsClass();
-                    //        fr.FriendsId = friend.Friend;
-                    //        fr.Friendsname = (from x in db.UserDb where x.UserId == fr.FriendsId select x.ProfileName).FirstOrDefault();
-                    //        f.Add(fr);
-                    //    }
-                    //}
-                    //Console.WriteLine(f);
                     return cf;
                 }
                 catch (Exception)

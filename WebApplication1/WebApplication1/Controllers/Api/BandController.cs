@@ -12,7 +12,33 @@ namespace WebApplication1.Controllers.Api
 {
     public class BandController : ApiController
     {
- 
+        [HttpPost]
+        [Route("api/Band/AddBandToUser/{userId},{bandId}")]
+        public async Task<bool> AddBandToUser(int userId, int bandId)
+        {
+            using (var bmgr = ManagerFactory.GetBandManager())
+            {
+                return await bmgr.AddBandToUser(userId, bandId);
+            }
+        }
+        [HttpPost]
+        [Route("api/Band/AddBand/{b},{pic}")]
+        public async Task<bool> AddBand(BandClass b, Byte[] pic)
+        {
+            using (var bmgr = ManagerFactory.GetBandManager())
+            {
+                return await bmgr.AddBand(b, pic);
+            }
+        }
+        [HttpPost]
+        [Route("api/Band/ChangeBand/{b},{pic}")]
+        public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
+        {
+            using (var bmgr = ManagerFactory.GetBandManager())
+            {
+                return await bmgr.ChangeBand(b, pic);
+            }
+        } 
         [HttpGet]
         [Route("api/Band/FindBandBasedOnQuery/{query}")]
         public List<BandClass> FindBandBasedOnQuery(String query)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 using Antlr.Runtime;
@@ -10,44 +11,80 @@ namespace WebApplication1.Models.Db
 {
     public class DbFriends
     {
-        public Boolean SetFriendRequestAccept(int id, Boolean ok)
+        // legger til et nytt vennerequest userid er personen som får requestet 
+        public async Task<Boolean> AddFriendRequest(int userId, int friendId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    db.NotificationsDb.Add(new Notifications()
+                    {
+                        SendtTime = DateTime.Now,
+                        Seen = false,
+                        UserId = friendId,
+                        Type = 1,
+                        FriendRequestNotifications = new FriendRequestNotifications()
+                        {
+                            Accepted = false,
+                            UserId = userId,
+                        }
+                    });
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        // aksepterer eller sier nei til en venneforespørsel
+        public async Task<Boolean> SetFriendAccept(int id, Boolean ok)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
                     Notifications n = (from x in db.NotificationsDb where x.NotificationsId == id select x).FirstOrDefault();
-                    if (ok)
-                    {
-                        n.FriendRequestNotifications.Accepted = true;
-                        DateTime time = DateTime.Now;
-
-                        var confirm = new Notifications();
-                        confirm.SendtTime = DateTime.Now;
-                        confirm.Seen = false;
-                        confirm.Type = 1;
-                        confirm.UserId = n.FriendRequestNotifications.UserId;
-                        db.NotificationsDb.Add(confirm);
-                        db.SaveChanges();
-
-                        var f = new FriendRequestNotifications();
-                        f.Accepted = true;
-                        f.UserId = n.UserId;
-                        confirm.FriendRequestNotifications = f;
-                        db.SaveChanges();
-
-                        return AddFriend(n.UserId + "", n.FriendRequestNotifications.UserId + "");
-                    }
-                    else
+                    if (!ok)
                     {
                         db.FriendRequestNotificationsDb.Remove(n.FriendRequestNotifications);
                         db.NotificationsDb.Remove(n);
                         db.SaveChanges();
-                    }
-                    {
-                        db.NotificationsDb.Remove(n);
                         return true;
                     }
+                    int userIde = n.FriendRequestNotifications.UserId;
+                    int friendIde = n.UserId;
+
+
+                    n.FriendRequestNotifications.Accepted = true;
+                    n.SendtTime = DateTime.Now;
+
+                    db.NotificationsDb.Add(new Notifications()
+                    {
+                        SendtTime = DateTime.Now,
+                        Seen = false,
+                        UserId = userIde,
+                        Type = 1,
+                        FriendRequestNotifications = new FriendRequestNotifications()
+                        {
+                            Accepted = true,
+                            UserId = friendIde,
+                        }
+                    });
+                    db.FriendsDb.Add(new Friends()
+                    {
+                        UserId = userIde,
+                        Friend = friendIde,
+                    });
+                    db.FriendsDb.Add(new Friends()
+                    {
+                        UserId = friendIde,
+                        Friend = userIde,
+                    });
+                    db.SaveChanges();
+                    return true;
                 }
             }
             catch (Exception)
@@ -78,13 +115,14 @@ namespace WebApplication1.Models.Db
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
                 
             }
         }
-        public FriendsClass FindFriend(String name)
+        // finds a friend based on a query
+        public async Task<FriendsClass> FindFriend(String name)
         {
             try
             {
@@ -94,57 +132,12 @@ namespace WebApplication1.Models.Db
                     var friend = new FriendsClass();
                     friend.FriendsId = found.UserId;
                     friend.Friendsname = found.ProfileName;
-                  //  friend.url = found.Url;
                     return friend;
                 }
             }
             catch (Exception)
             {
                 return null;
-            }
-        }
-
-        public Boolean SendFriendRequest(String userId, String friendId)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    return AddFriend(userId, friendId);
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public Boolean AddFriend(String userId, String userId2)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-
-                   Friends f1 = new Friends();
-                   f1.UserId = Int32.Parse(userId);
-                   f1.Friend = Int32.Parse(userId2);
-
-
-                   Friends f2 = new Friends();
-                   f2.UserId = Int32.Parse(userId2);
-                   f2.Friend = Int32.Parse(userId);
-
-                   db.FriendsDb.Add(f1);
-                   db.FriendsDb.Add(f2);
-                   db.SaveChanges();
-                   return true;
-
-                }
-            }
-            catch (Exception)
-            {
-                return false;
             }
         }
     }

@@ -12,6 +12,19 @@ namespace WebApplication1.Managers
 {
     public class UserManager : BaseManager
     {
+        public async Task<Boolean> AddUser(UserClass u, Byte[] pic) 
+        {
+            var db = new DbUser();
+            return await db.AddUser(u, pic);
+        }
+
+        public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
+        {
+            UpdateUser(u.UserId);
+            var db = new DbUser();
+            return await db.ChangeUser(u, pic);
+        }
+
         public async Task<UserClass> GetUserById(int userId)
         {
             UserClass objectDto;
@@ -31,6 +44,7 @@ namespace WebApplication1.Managers
             }
             return objectDto;
         }
+        
 
         public void UpdateUser(int userId)
         {

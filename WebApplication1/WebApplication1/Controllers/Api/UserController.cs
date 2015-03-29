@@ -13,6 +13,24 @@ namespace WebApplication1.Controllers.Api
 {
     public class UserController : ApiController
     {
+        [HttpPost]
+        [Route("api/User/ChangeUser/{u},{pic}")]
+        public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.ChangeUser(u, pic);
+            }
+        }
+        [HttpPost]
+        [Route("api/User/AddUser/{u},{pic}")]
+        public async Task<Boolean> AddUser(UserClass u, Byte[] pic) // Ny metode
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.AddUser(u, pic);
+            }
+        }
         [HttpGet]
         [Route("api/User/GetAllNotifications/{id}")]
         public List<NotificationsClass> GetAllNotifications(int id)

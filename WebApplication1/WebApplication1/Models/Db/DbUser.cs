@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -14,6 +15,65 @@ namespace WebApplication1.Models
 {
     public class DbUser
     {
+
+        // legger til basisk funksjonene til en bruker
+        public async Task<Boolean> AddUser(UserClass u, Byte[] pic) 
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var u1 = new User()
+                    {
+                        ProfileName = u.Name,
+                        SeeNotifications = u.SeeNotifications,
+                        Public = u.Public,
+                        Radius = u.Radius,
+                        Xcoordinates = u.Xcoordinates,
+                        Ycoordinates = u.Ycoordinates,
+                        Timestamp = DateTime.Now,
+                        Url = "bilde url uer",
+                    };
+                    db.UserDb.Add(u1);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        // endrer basisk funksjonene til en bruker
+        public async Task<Boolean> ChangeUser(UserClass u1, Byte[] pic) 
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var u2 = (from u in db.UserDb
+                              where u1.UserId == u.UserId
+                              select u).FirstOrDefault();
+
+                    // lagre nytt bilde her?
+
+                    u2.Url = "ny url her";
+                    u2.Public = u1.Public;
+                    u2.SeeNotifications = u1.SeeNotifications;
+                    u2.Radius = u1.Radius;
+                    u2.ProfileName = u1.Name;
+                    u2.Xcoordinates = u1.Xcoordinates;
+                    u2.Ycoordinates = u1.Ycoordinates;
+                    u2.Timestamp = DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+                }            
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public List<NotificationsClass> GetAllNotifications(int userId)
         {
             var newList = new List<NotificationsClass>();
@@ -38,40 +98,6 @@ namespace WebApplication1.Models
                                    FriendName = n.FriendRequestNotifications.User.ProfileName,
                                }).ToList();
                     newList = not;
-
-                    //SEND HELLER MED ALT, OG LA APPEN VIKSE DET :)
-
-                    //List<Notifications> noti = (from n in db.NotificationsDb where userId == n.UserId select n).OrderBy(b => b.SendtTime).ToList();
-                    //foreach (Notifications n in noti)
-                    //{
-                    //    var newN = new NotificationsClass();
-                    //    newN.Seen = n.Seen;
-                    //    newN.Day = n.SendtTime.Day;
-                    //    newN.Hour = n.SendtTime.Hour;
-                    //    newN.Minute = n.SendtTime.Minute;
-                    //    newN.Month = n.SendtTime.Month;
-                    //    newN.Type = n.Type;
-                    //    newN.Year = n.SendtTime.Year;
-
-                    //    n.Seen = true;
-
-                    //    switch (n.Type) // 1 = request, 2=concert invitasjon, 3 = band ny konsert 
-                    //    {
-                    //        case 1:
-                    //            var friend = n.FriendRequestNotifications;
-                    //            newN.Accepted = friend.Accepted;
-                    //            newN.Answered = friend.Answered;
-                    //            newN.FriendId = friend.UserId;
-                    //            newN.FriendName = friend.User.ProfileName;
-                    //            newN.ByteArray = friend.User.Bitmap;
-                    //            break;
-                    //        default: break;
-                    //    }
-                    //    db.SaveChanges();
-                    //    newList.Add(newN);
-                    //}
-
-
 
                     return newList;
                 }
