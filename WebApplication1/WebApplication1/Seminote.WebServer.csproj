@@ -216,9 +216,9 @@
     <Content Include="images\Band\Selena_Gomez_07.jpg" />
     <Content Include="images\Band\Spider_Band_08.jpg" />
     <Content Include="images\Band\white_feather_09.jpg" />
-    <Content Include="images\Concert\Purple_swan_Concert_1000003.jpg" />
-    <Content Include="images\Concert\The_black_concert_1000005.jpg" />
-    <Content Include="images\Concert\The_Ivory_Concert_1000003.jpg" />
+    <Content Include="images\Concert\Purple_swan_Concert.jpg" />
+    <Content Include="images\Concert\The_black_concert.jpg" />
+    <Content Include="images\Concert\The_Ivory_Concert.jpg" />
     <Content Include="images\Band\mumford_and_sons_01.jpg" />
     <Content Include="images\Band\passenger_00.jpg" />
     <Content Include="images\Band\Sam_Smith_06.jpg" />

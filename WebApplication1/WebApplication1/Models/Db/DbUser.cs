@@ -86,17 +86,20 @@ namespace WebApplication1.Models
                                where n.UserId == userId
                                select new NotificationsClass()
                                {
+                                   FriendId = n.FriendRequestNotifications.UserId,
                                    Seen = n.Seen,
                                    Day = n.SendtTime.Day,
                                    Hour = n.SendtTime.Hour,
                                    Minute = n.SendtTime.Minute,
                                    Month = n.SendtTime.Month,
                                    Type = n.Type,
+                                   Date = n.SendtTime,
+                                   Url = n.FriendRequestNotifications.User.Url,
                                    Year = n.SendtTime.Year,
                                    Accepted = n.FriendRequestNotifications.Accepted,
-                                   FriendId = n.FriendRequestNotifications.UserId,
+                                   NotificationsId = n.NotificationsId,
                                    FriendName = n.FriendRequestNotifications.User.ProfileName,
-                               }).ToList();
+                               }).OrderBy( d => d.Date).ToList();
                     newList = not;
 
                     return newList;
