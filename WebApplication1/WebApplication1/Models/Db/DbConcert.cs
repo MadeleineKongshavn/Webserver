@@ -116,6 +116,8 @@ namespace WebApplication1.Models
                                         join c in db.ConcertDb on v.ConcertId equals c.ConcertId
                                         select new ConcertClass()
                                         {
+                                            SmallBitmapUrl = c.BitmapSmalUrl,
+                                            BitmapUrl = c.BitmapUrl,
                                             ConcertId = c.ConcertId,
                                             Band = c.Band,
                                             Title = c.Title,

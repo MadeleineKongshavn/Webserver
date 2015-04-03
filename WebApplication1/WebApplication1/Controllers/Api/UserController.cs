@@ -37,7 +37,11 @@ namespace WebApplication1.Controllers.Api
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return mngr.GetNotificationByUserId(id);
+                var list = mngr.GetNotificationByUserId(id);
+                ReadNotifications(id);
+                return list;
+
+
             }
         }
 

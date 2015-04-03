@@ -82,7 +82,7 @@ namespace WebApplication1.Models
                 using (var db = new ApplicationDbContext())
                 {
 
-                    var not = (from n in db.NotificationsDb
+                    var not =  (from n in db.NotificationsDb
                                where n.UserId == userId
                                select new NotificationsClass()
                                {
@@ -99,9 +99,8 @@ namespace WebApplication1.Models
                                    Accepted = n.FriendRequestNotifications.Accepted,
                                    NotificationsId = n.NotificationsId,
                                    FriendName = n.FriendRequestNotifications.User.ProfileName,
-                               }).OrderBy( d => d.Date).ToList();
+                               }).OrderByDescending( d => d.Date).ToList();
                     newList = not;
-
                     return newList;
                 }
             }
@@ -115,19 +114,27 @@ namespace WebApplication1.Models
 
         public void UserHasSeenAllNotifications(int userId)
         {
-            ThreadPool.QueueUserWorkItem(delegate//Kjør når du får tid :)
-             {
-                 using (var db = new ApplicationDbContext())
-                 {
-                     var res = (from n in db.NotificationsDb where userId == n.UserId select n);
+           //ThreadPool.QueueUserWorkItem(delegate//Kjør når du får tid :) funker ikke?
+           //  {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var res = (from n in db.NotificationsDb where userId == n.UserId select n);
 
-                     foreach (var n in res)
-                     {
-                         n.Seen = true;
-                     }
-                     db.SaveChangesAsync();
-                 }
-             });
+                    foreach (var n in res)
+                    {
+                        n.Seen = true;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
+
+           // });
         }
 
 

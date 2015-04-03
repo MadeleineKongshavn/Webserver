@@ -30,9 +30,9 @@ namespace WebApplication1.Models
 
             }
         }
+        public String SmallBitmapUrl { get; set; }
+        public String BitmapUrl { get; set; }
 
-        public Bitmap Bitmap { get; set; }
-        public byte[] SmallBitmap { get; set; }
         public Byte[] Song { get; set; }
         public String SongName { get; set; }
         public String UrlFacebook { get; set; }

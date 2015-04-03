@@ -110,6 +110,7 @@ namespace WebApplication1.Models.Db
                                           {
                                               Friendsname = fri.ProfileName,
                                               FriendsId = f.Friend,
+                                              url = fri.Url,
                                           }).ToListAsync();
                     return friendsclass;
                 }

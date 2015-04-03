@@ -36,7 +36,8 @@ namespace WebApplication1.Models.Class
 
         public int FriendsAttending { get; set; }
         public Boolean Attending { get; set; }
-        public string url { get; set; }
+        public String SmallBitmapUrl { get; set; }
+        public String BitmapUrl { get; set; }
         public int Followers { get; set; }
         public Boolean SeeAttends { get; set; }
         public int BandId { get; set; }

@@ -51,7 +51,7 @@ namespace WebApplication1.Controllers
             new ConcertController().AddConcertToUser(1, 1);*/
 
 
-            BandClass b = new BandClass();
+        /*    BandClass b = new BandClass();
             b.BandId = 3;
             b.Area = "area here";
             b.BandName = "Olly";
@@ -63,7 +63,9 @@ namespace WebApplication1.Controllers
             b.Xcoordinates = 0;
             b.Ycoordinates = 0;
 
-            new BandController().AddBandToUser(1,3);
+            new BandController().AddBandToUser(1,3);*/
+
+            new UserController().GetAllNotifications(1);
 
 
             ViewBag.Message = " your count name";
