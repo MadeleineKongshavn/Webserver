@@ -40,8 +40,6 @@ namespace WebApplication1.Controllers.Api
                 var list = mngr.GetNotificationByUserId(id);
                 ReadNotifications(id);
                 return list;
-
-
             }
         }
 
