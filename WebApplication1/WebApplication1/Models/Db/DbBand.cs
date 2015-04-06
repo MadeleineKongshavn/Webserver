@@ -35,7 +35,7 @@ namespace WebApplication1.Models
             
         }
         // legger til basisk funksjonene til et band
-        public async Task<bool> AddBand(BandClass b, Byte[] pic)
+        public async Task<bool> AddBand(BandClass b)
         {
             try
             {
@@ -50,8 +50,8 @@ namespace WebApplication1.Models
                         Area = b.Area,
                         BandName = b.BandName,
                         Followers = 0,
-                        BitmapSmalUrl = "bitmap small url her",
-                        BitmapUrl = "bitmap big url her",
+                        BitmapSmalUrl = b.BitmapUrl,
+                        BitmapUrl = b.BitmapUrl,
                         Songurl = "hvis sangen skal lastes opp istedenfor, url her",
                         SongName = b.SongName,
                         Song = null, //hvis sangen skal være en byte array
@@ -83,7 +83,7 @@ namespace WebApplication1.Models
             }
         }
         // endrer på basisk funskjonene til et band
-        public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
+        public async Task<bool> ChangeBand(BandClass b)
         {
             try
             {
@@ -102,8 +102,8 @@ namespace WebApplication1.Models
                     b1.Ycoordinates = b.Ycoordinates;
                     b1.Area = b.Area;
                     b1.BandName = b.BandName;
-                    b1.BitmapSmalUrl = "bitmap small url her";
-                    b1.BitmapUrl = "bitmap big url her";
+                    b1.BitmapSmalUrl = b.BitmapUrl;
+                    b1.BitmapUrl = b.BitmapUrl;
                     b1.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
                     b1.SongName = b.SongName;
                     b1.Song = null; //hvis sangen skal være en byte array

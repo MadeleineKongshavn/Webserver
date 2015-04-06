@@ -17,7 +17,7 @@ namespace WebApplication1.Models
     {
 
         // legger til basisk funksjonene til en bruker
-        public async Task<Boolean> AddUser(UserClass u, Byte[] pic) 
+        public async Task<Boolean> AddUser(UserClass u) 
         {
             try
             {
@@ -32,7 +32,7 @@ namespace WebApplication1.Models
                         Xcoordinates = u.Xcoordinates,
                         Ycoordinates = u.Ycoordinates,
                         Timestamp = DateTime.Now,
-                        Url = "bilde url uer",
+                        Url = u.Url,
                     };
                     db.UserDb.Add(u1);
                     db.SaveChanges();
@@ -45,7 +45,7 @@ namespace WebApplication1.Models
             }
         }
         // endrer basisk funksjonene til en bruker
-        public async Task<Boolean> ChangeUser(UserClass u1, Byte[] pic) 
+        public async Task<Boolean> ChangeUser(UserClass u1) 
         {
             try
             {
@@ -57,7 +57,7 @@ namespace WebApplication1.Models
 
                     // lagre nytt bilde her?
 
-                    u2.Url = "ny url her";
+                    u2.Url = u1.Url;
                     u2.Public = u1.Public;
                     u2.SeeNotifications = u1.SeeNotifications;
                     u2.Radius = u1.Radius;

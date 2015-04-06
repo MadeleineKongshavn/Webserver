@@ -20,14 +20,20 @@ namespace WebApplication1.Managers
         public async Task<bool> AddBand(BandClass b, Byte[] pic)
         {
             var db = new DbBand();
-            return await db.AddBand(b, pic);
+            var imgUrl = await UploadImage(pic);
+            b.BitmapUrl = imgUrl;
+            b.SmallBitmapUrl = imgUrl;
+            return await db.AddBand(b);
         }
         public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
         {
             var db = new DbBand();
             var cacheKey = String.Format("Band_GetBandToUser_{0}", b.BandId);
             RemoveCacheKeysByPrefix(cacheKey);
-            return await db.ChangeBand(b, pic);
+            var imgUrl = await UploadImage(pic);
+            b.BitmapUrl = imgUrl;
+            b.SmallBitmapUrl = imgUrl;
+            return await db.ChangeBand(b);
         }
         public async Task<BandClass> GetBandById(int bandId)
         {

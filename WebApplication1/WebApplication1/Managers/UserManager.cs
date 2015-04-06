@@ -15,14 +15,18 @@ namespace WebApplication1.Managers
         public async Task<Boolean> AddUser(UserClass u, Byte[] pic) 
         {
             var db = new DbUser();
-            return await db.AddUser(u, pic);
+            var imgUrl = await UploadImage(pic);
+            u.Url = imgUrl;
+            return await db.AddUser(u);
         }
 
         public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
         {
             UpdateUser(u.UserId);
             var db = new DbUser();
-            return await db.ChangeUser(u, pic);
+            var imgUrl = await UploadImage(pic);
+            u.Url = imgUrl;
+            return await db.ChangeUser(u);
         }
 
         public async Task<UserClass> GetUserById(int userId)
