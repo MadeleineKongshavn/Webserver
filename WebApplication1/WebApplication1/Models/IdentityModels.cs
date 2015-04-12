@@ -78,16 +78,16 @@ namespace WebApplication1.Models
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
         public String BandName { get; set; }
-        public int Followers { get; set; }
+        public int Followers { get; set; } // fjerne
         public String BitmapUrl { get; set; }
         public String BitmapSmalUrl { get; set; }
         public String Songurl { get; set; }
-        public Byte[] Song { get; set; }
+        public Byte[] Song { get; set; } // fjerne 
         public String SongName { get; set; }
         public String UrlFacebook { get; set; }
         public String UrlSoundCloud { get; set; }
         public String UrlRandom { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime Timestamp { get; set;} // fjerne
 
 
         public virtual List<BandNotifications> BandNotifications { get; set; } 

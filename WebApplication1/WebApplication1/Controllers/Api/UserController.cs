@@ -37,9 +37,9 @@ namespace WebApplication1.Controllers.Api
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                var list = mngr.GetNotificationByUserId(id);
+                List<NotificationsClass> not =  mngr.GetNotificationByUserId(id);
                 ReadNotifications(id);
-                return list;
+                return not;
             }
         }
 
@@ -61,6 +61,16 @@ namespace WebApplication1.Controllers.Api
             {
                 return await mngr.GetUserById(id);
             }
+        }
+
+        [HttpGet]
+        [Route("api/User/CheckNewNotifications/{id}")]
+        public async Task<Boolean> CheckNewNotifications(int id)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.CheckNewNotifications(id);
+            }            
         }
     }
 }

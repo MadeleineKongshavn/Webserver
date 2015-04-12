@@ -57,7 +57,6 @@ namespace WebApplication1.Models.Db
                     int userIde = n.FriendRequestNotifications.UserId;
                     int friendIde = n.UserId;
 
-
                     n.FriendRequestNotifications.Accepted = true;
                     n.SendtTime = DateTime.Now;
 
@@ -73,6 +72,7 @@ namespace WebApplication1.Models.Db
                             UserId = friendIde,
                         }
                     });
+                    db.SaveChanges();
                     db.FriendsDb.Add(new Friends()
                     {
                         UserId = userIde,

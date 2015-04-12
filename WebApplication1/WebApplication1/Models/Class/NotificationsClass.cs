@@ -25,6 +25,7 @@ namespace WebApplication1.Models.Class
         public String FriendName { get; set; }
         public String Url { get; set; }
         public Byte[] ByteArray { get; set; }
+        public String ConcertName { get; set; }
 
 
     }

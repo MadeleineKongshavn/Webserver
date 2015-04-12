@@ -6,12 +6,88 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication1.Models.Class;
 
 
 namespace WebApplication1.Models
 {
     public class DbBand
     {
+        public async Task<bool> AddBand(String name, int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    Band b = new Band()
+                    {
+                        Timestamp = DateTime.Now,
+                        Xcoordinates = 0,
+                        Ycoordinates = 0,
+                        Followers = 0,
+                        BandName = name,
+                    };
+                    db.BandDb.Add(b);
+                    List<Member> members = new List<Member>();
+                    Member mem = new Member()
+                    {
+                        BandId = b.BandId,
+                        UserId = userId,
+                    };
+                    members.Add(mem);
+                    b.Member = members;
+                    db.SaveChanges();
+                    return true;
+                }
+
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<List<MemberClass>> GetAllAdminBands(int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    List<MemberClass> members = new List<MemberClass>();
+                    List<Member> m = await (from v in db.MemberDb where v.UserId == userId select v).ToListAsync();
+                    foreach(Member b in m)
+                    {
+                        MemberClass mem = new MemberClass();
+                        mem.BandName = b.Band.BandName;
+                        mem.Id = b.BandId;
+                        mem.Url = b.Band.BitmapUrl;
+                        members.Add(mem);
+                    }
+                    return members;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public async Task<bool> UpdateMusicUrl(int bandId, String url)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var ob =  (from b in db.BandDb where b.BandId == bandId select b).FirstOrDefault();
+                    ob.Songurl = url;
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
         // legger et band på en bruker
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {

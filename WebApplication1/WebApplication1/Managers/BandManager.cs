@@ -5,11 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Caching;
 using WebApplication1.Models;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
+        public async Task<bool> AddBand(String name, int userId)
+        {
+            var db = new DbBand();
+            return await db.AddBand(name, userId);
+        }
+        public async Task<List<MemberClass>> GetAllAdminBands(int userId)
+        {
+            var db = new DbBand();
+            return await db.GetAllAdminBands(userId);
+        }
+        public async Task<bool> UpdateMusicUrl(int bandId, String url)
+        {
+            var db = new DbBand();
+            return await db.UpdateMusicUrl(bandId, url);
+        }
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {
             var db = new DbBand();
@@ -69,7 +85,7 @@ namespace WebApplication1.Managers
             //cacher :D
             var cacheKey = String.Format("Band_GetBandToUser_{0}", userId);
             if ((bandList = (List<BandClass>)Cache.Get(cacheKey)) != null)
-               return bandList;
+            return bandList;
 
             try
             {

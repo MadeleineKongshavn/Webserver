@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using WebApplication1.Managers;
 using WebApplication1.Models;
+using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers.Api
 {
@@ -57,7 +58,6 @@ namespace WebApplication1.Controllers.Api
                 return  await bmgr.FindAllBandsToUser(id);
             }
         }
-
         [HttpGet]
         [Route("api/Band/GetBandById/{id}")]
         public async Task<BandClass> GetBandById(int id)
@@ -66,6 +66,41 @@ namespace WebApplication1.Controllers.Api
             {
                 return await bmngr.GetBandById(id);
             }
+        }
+        [HttpGet]
+        [Route("api/Band/GetAllAdminBands/{userId}")]
+        public async Task<List<MemberClass>> GetAllAdminBands(int userId)
+        {
+            using (var bmngr = ManagerFactory.GetBandManager())
+            {
+                return await bmngr.GetAllAdminBands(userId);
+            }
+        }
+        [HttpPost]
+        [Route("api/Band/UpdateMusicUrl/{bandId},{url}")]
+        public async Task<bool> UpdateMusicUrl(int bandId, String url)
+        {
+            using (var bmngr = ManagerFactory.GetBandManager())
+            {
+                return await bmngr.UpdateMusicUrl(bandId, url);              
+            }
+        }
+        
+        [HttpPost]
+        [Route("api/Band/TestObject/{b}")]
+        public async Task<bool> TestObject(BandClass b)
+        {
+            return true;
+        }
+        [HttpPost]
+        [Route("api/Band/AddBand/{name},{userId}")]
+        public async Task<bool> AddBand(String name, int userId)
+        {
+            using (var bmngr = ManagerFactory.GetBandManager())
+            {
+                return await bmngr.AddBand(name, userId);
+            }
+        
         }
 
     }

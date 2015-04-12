@@ -12,6 +12,11 @@ namespace WebApplication1.Managers
 {
     public class UserManager : BaseManager
     {
+        public async Task<Boolean> CheckNewNotifications(int id)
+        {
+            var db = new DbUser();
+            return await db.CheckNewNotifications(id);
+        }
         public async Task<Boolean> AddUser(UserClass u, Byte[] pic) 
         {
             var db = new DbUser();

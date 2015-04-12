@@ -14,6 +14,24 @@ namespace WebApplication1.Controllers.Api
     public class ConcertController : ApiController
     {
         [HttpPost]
+        [Route("api/Concert/AcceptConcertRequest/{id},{ok}")]
+        public async Task<bool> AcceptConcertRequest(int id, Boolean ok)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.AcceptConcertRequest(ok, id);
+            }
+        }
+        [HttpPost]
+        [Route("api/Concert/AddConcertRequest/{fromUsr},{toUsr},{ConcertId}")]
+        public async Task<bool> AddConcertRequest(int fromUsr, int toUsr, int ConcertId)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.AddConcertRequest(fromUsr, toUsr, ConcertId);
+            }
+        }
+        [HttpPost]
         [Route("api/Concert/AddConcertToUser/{userId},{concertId}")]
         public async Task<Boolean> AddConcertToUser(int userId, int concertId)
         {

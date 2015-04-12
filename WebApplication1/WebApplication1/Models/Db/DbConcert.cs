@@ -6,12 +6,92 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
+using Microsoft.Ajax.Utilities;
 using WebApplication1.Models.Class;
 
 namespace WebApplication1.Models
 {
     public class DbConcert
     {
+        public async Task<int> AcceptConcertRequest(Boolean ok, int id)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    Notifications n = (from x in db.NotificationsDb where x.NotificationsId == id select x).FirstOrDefault();
+
+                    int Usrid = n.UserId;
+                    int concrtId = n.InviteConcertNotifications.ConcertId;
+                    int friendUsr = n.InviteConcertNotifications.UserId;
+                    
+                    if (!ok)
+                    {
+                        db.InviteConcertNotificationsDb.Remove(n.InviteConcertNotifications);
+                        db.NotificationsDb.Remove(n);
+                        db.SaveChanges();
+                        return Usrid;
+                    
+                    }
+                    // 1 friends, 2 inviter concert, 3 bekreftelse
+                    n.InviteConcertNotifications.Accepted = true;
+                    n.Seen = false;
+                    n.SendtTime = DateTime.Now;
+
+                    Notifications conf = new Notifications()
+                    {
+                        SendtTime = DateTime.Now,
+                        Seen = false,
+                        UserId = friendUsr,
+                        Type = 3,
+                    };
+                    db.NotificationsDb.Add(conf);
+                    conf.AcceptConcertInvitation = new AcceptConcertInvitation()
+                    {
+                        UserId = Usrid,
+                        ConcertId = concrtId,
+                    };
+
+                    AddConcertToUser(Usrid, concrtId);
+
+                    db.SaveChanges();
+                    return Usrid;
+                }
+            }
+            catch (Exception)
+            {
+                return -1;
+            }            
+        }
+        public async Task<bool> AddConcertRequest(int fromUsr, int toUsr, int ConcertId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    Notifications n = new Notifications()
+                    {
+                        SendtTime = DateTime.Now,
+                        Seen = false,
+                        Type = 2,
+                        UserId = toUsr,
+                    };
+                    db.NotificationsDb.Add(n);
+                    n.InviteConcertNotifications = new InviteConcertNotifications()
+                    {
+                        UserId = fromUsr,
+                        ConcertId = ConcertId,
+                        Accepted = false,
+                    };
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {    
+                return false;
+            }            
+        }
         public async Task<Boolean> AddConcertToUser(int userId, int ConcertId)
         {
             try
@@ -29,6 +109,25 @@ namespace WebApplication1.Models
 
             }
             catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task <Boolean> ConcertAlreadyAdded(int concertId, int UserId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var concert =
+                        (from v in db.ConcertFollowersDb where v.ConcertId == concertId && v.UserId == UserId select v)
+                            .FirstOrDefaultAsync();
+                    if (concert == null) return false;
+                    return true;
+
+                }
+            }
+            catch (Exception e)
             {
                 return false;
             }

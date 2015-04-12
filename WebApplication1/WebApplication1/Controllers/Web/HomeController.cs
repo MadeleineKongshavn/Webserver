@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Controllers.Api;
@@ -16,7 +17,7 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public async Task<ActionResult> About()
         {
           /*  UserController u = new UserController();
             UserClass us = new UserClass()
@@ -65,10 +66,15 @@ namespace WebApplication1.Controllers
 
             new BandController().AddBandToUser(1,3);*/
 
-            new UserController().GetAllNotifications(1);
+            
+           // List <MemberClass> m = await new BandController().GetAllAdminBands(2);
+            //new ConcertController().AcceptConcertRequest(true, 28);
 
+            
+            
 
-            ViewBag.Message = " your count name";
+          //  new ConcertController().AddConcertRequest(2, 1, 1);
+            ViewBag.Message = " your count name" + new DbUser().GetAllNotifications(1).Count + "er informasjonen";// + m.Count;
             return View();
         }
 
