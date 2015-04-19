@@ -340,17 +340,10 @@ namespace WebApplication1.Models
                                   //join c in db.BandDb on v.BandId equals c.BandId
                                   select new BandClass()
                                   {
-                                      Area = v.Band.Area,
                                       BandId = v.Band.BandId,
                                       BandName = v.Band.BandName,
                                       BandGenre = v.Band.BandGenre,
-                                      BitmapUrl = v.Band.BitmapUrl,
-                                      SmallBitmapUrl = v.Band.BitmapSmalUrl,
-                                      
-                                      //SmallBitmap = v.Band.SmallBitmap,//virker men bytt til url
-                                      UrlFacebook = v.Band.UrlFacebook,
-                                      UrlRandom = v.Band.UrlRandom,
-                                      UrlSoundCloud = v.Band.UrlSoundCloud,
+                                      SmallBitmapUrl = v.Band.BitmapSmalUrl,  
                                       Xcoordinates = v.Band.Xcoordinates,
                                       Ycoordinates = v.Band.Ycoordinates
 

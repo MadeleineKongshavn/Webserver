@@ -74,7 +74,10 @@ namespace WebApplication1.Controllers
             
 
           //  new ConcertController().AddConcertRequest(2, 1, 1);
-            ViewBag.Message = " your count name" + new DbUser().GetAllNotifications(1).Count + "er informasjonen";// + m.Count;
+            new BandController().AddBandToUser(1, 16);
+           // var b = await new BandController().FindAllBandsToUser(1);
+            
+            ViewBag.Message = " your count name"  + "er informasjonen";// + m.Count;
             return View();
         }
 
