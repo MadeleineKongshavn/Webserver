@@ -222,6 +222,7 @@ namespace WebApplication1.Models
             }
         }
         // endrer på basisk funskjonene til et band
+        
         public async Task<bool> ChangeBand(BandClass b)
         {
             try
@@ -268,6 +269,29 @@ namespace WebApplication1.Models
             }  
             
         }
+        
+        public async Task<bool> UpdateBandName(String name, int bandId)
+        {
+            try 
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band= (from getBand in db.BandDb
+                              where getBand.BandId==bandId
+                              select getBand).FirstOrDefault();
+
+                    band.BandName = name;
+                    db.SaveChanges();
+
+                }
+            }
+            catch(Exception){
+                return false;
+            }
+
+            return true;
+        }
+        
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
             try
