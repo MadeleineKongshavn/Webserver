@@ -77,6 +77,12 @@ namespace WebApplication1.Managers
             
         //}
 
+        public async Task<bool> updateBandName(String name, int bandId)
+        {
+            var db=new DbBand();
+            return await db.UpdateBandName(name,bandId);
+
+        }
 
         public async Task<List<BandClass>> FindAllBandsToUser(int userId)
         {

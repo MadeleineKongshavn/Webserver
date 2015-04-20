@@ -102,6 +102,17 @@ namespace WebApplication1.Controllers.Api
             }
         
         }
+        
+        [HttpPost]
+        [Route("api/Band/updateBandName/{name},{bandId}")]
+        public async Task<bool> updateBandName(String name, int bandId)
+        {
+            using (var mng = ManagerFactory.GetBandManager())
+            {
+                return await mng.updateBandName(name, bandId);
+            }
+        }
+
 
     }
 }
