@@ -11,6 +11,11 @@ namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
+        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
+        {
+            var db = new DbBand();
+            return await db.GetRandomBands(userId);
+        }
         public async Task<bool> AddBand(String name, int userId)
         {
             var db = new DbBand();
@@ -40,6 +45,11 @@ namespace WebApplication1.Managers
             b.BitmapUrl = imgUrl;
             b.SmallBitmapUrl = imgUrl;
             return await db.AddBand(b);
+        }
+
+        public async Task<String> Upload(Byte[] pic)
+        {
+            return await UploadImage(pic);
         }
         public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
         {

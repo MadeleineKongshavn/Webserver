@@ -5,7 +5,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Policy;
 using System.Threading.Tasks;
+using WebApplication1.Managers;
 using WebApplication1.Models.Class;
 
 
@@ -13,6 +16,66 @@ namespace WebApplication1.Models
 {
     public class DbBand
     {
+
+       /* private String CompressExistingByteArrayBitmap(Byte[] bytAarray, int number)
+        {
+            try
+            {
+                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+                var myEncoderParameters = new EncoderParameters(1);
+                var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
+
+                myEncoderParameters.Param[0] = myEncoderParameter;
+                var mse = new MemoryStream(bytAarray);
+                var bmp = new Bitmap(mse);
+
+                bmp.Save(@"c:\Band " + number + ".jpg", jpgEncoder, myEncoderParameters);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }*/
+        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    List<BandsImagesClass> ob = await (from b in db.BandDb
+                        select new BandsImagesClass()
+                        {
+                            BandId = b.BandId,
+                            Title = b.BandName,
+                            SmallBitmapUrl = b.BitmapSmalUrl,
+
+                        }).ToListAsync();
+                    DbBand.Shuffle(ob);
+                    var o = ob.Take(15);
+                    return o.ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static void Shuffle<T>(IList<T> list)
+        {
+            int n = list.Count;
+            Random rnd = new Random();
+            while (n > 1)
+            {
+                int k = (rnd.Next(0, n) % n);
+                n--;
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+
         public async Task<bool> AddBand(String name, int userId)
         {
             try
@@ -236,46 +299,58 @@ namespace WebApplication1.Models
             }
         }
 
-        private Byte[] CompressBitmap(Bitmap bmp)
-        {
-
-            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
-
-            var myEncoderParameters = new EncoderParameters(1);
-            var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
-
-            myEncoderParameters.Param[0] = myEncoderParameter;
-
-            using (var ms = new MemoryStream())
-            {
-                bmp.Save(ms, jpgEncoder, myEncoderParameters);
-                return ms.ToArray();
-            }
-
-        }
-
-        private String CompressExistingByteArrayBitmap(Byte[] bytAarray)
+        public  async Task<String> CompressBitmap()
         {
             try
             {
-                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-                System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                using (var db = new ApplicationDbContext())
+                {
+                    var result = await (from v in db.BandDb select v).ToListAsync();
+                    foreach (var b in result)
+                    {
 
-                var myEncoderParameters = new EncoderParameters(1);
-                var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
+                        var request = WebRequest.Create(b.BitmapSmalUrl);
 
-                myEncoderParameters.Param[0] = myEncoderParameter;
-                var mse = new MemoryStream(bytAarray);
-                var bmp = new Bitmap(mse);
+                        Image i;
+                        using (var response = request.GetResponse())
+                        using (var stream = response.GetResponseStream())
+                        {
 
-                bmp.Save(@"c:\filenamejpg", jpgEncoder, myEncoderParameters);
-                return "url";
+                            i = Bitmap.FromStream(stream);
+                        }
+
+                        ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                        System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+                        var myEncoderParameters = new EncoderParameters(1);
+                        var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
+
+                        myEncoderParameters.Param[0] = myEncoderParameter;
+
+                        Byte[] arr;
+                        using (var ms = new MemoryStream())
+                        {
+                            i.Save(ms, jpgEncoder, myEncoderParameters);
+                            arr = ms.ToArray();
+
+                        }
+                        using (var bmgr = ManagerFactory.GetBandManager())
+                        {
+                            var v = await bmgr.Upload(arr);
+                            b.BitmapSmalUrl = v;
+                            db.SaveChanges();
+                        }                  
+                    }
+                    return "funket";
+
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return null;
+                return e.Message + "";
             }
+       
+
         }
 
         private ImageCodecInfo GetEncoder(ImageFormat format)

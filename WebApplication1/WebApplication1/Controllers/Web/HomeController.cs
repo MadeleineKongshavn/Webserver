@@ -74,10 +74,17 @@ namespace WebApplication1.Controllers
             
 
           //  new ConcertController().AddConcertRequest(2, 1, 1);
-            new BandController().AddBandToUser(1, 16);
+            //new BandController().AddBandToUser(1, 16);
            // var b = await new BandController().FindAllBandsToUser(1);
-            
-            ViewBag.Message = " your count name"  + "er informasjonen";// + m.Count;
+
+
+            var ba = await new DbBand().CompressBitmap();
+
+
+            //List<BandsImagesClass> v = await new BandController().GetRandomBands(1);
+            //BandsImagesClass c = v.FirstOrDefault();
+
+            ViewBag.Message = " your count name"  + ba + "er informasjonen";// + m.Count;
             return View();
         }
 

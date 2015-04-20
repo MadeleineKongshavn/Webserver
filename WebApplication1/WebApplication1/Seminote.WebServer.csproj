@@ -207,6 +207,7 @@
     <Compile Include="Managers\ManagerFactory.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Class\BandClass.cs" />
+    <Compile Include="Models\Class\BandsImagesClass.cs" />
     <Compile Include="Models\Class\ConcertClass.cs" />
     <Compile Include="Models\Class\MemberClass.cs" />
     <Compile Include="Models\Class\NotificationsClass.cs" />

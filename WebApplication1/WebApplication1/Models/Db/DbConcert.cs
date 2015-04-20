@@ -216,11 +216,9 @@ namespace WebApplication1.Models
                                         select new ConcertClass()
                                         {
                                             SmallBitmapUrl = c.BitmapSmalUrl,
-                                            BitmapUrl = c.BitmapUrl,
                                             ConcertId = c.ConcertId,
-                                            Band = c.Band,
+                                            Bandname = c.Band.BandName,
                                             Title = c.Title,
-                                            Attending = true,
                                             Date = c.Date,
                                         }).ToListAsync();
                     return result;
