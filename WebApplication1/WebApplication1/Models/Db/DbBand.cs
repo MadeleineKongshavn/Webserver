@@ -91,14 +91,14 @@ namespace WebApplication1.Models
                         BandName = name,
                     };
                     db.BandDb.Add(b);
-                    List<Member> members = new List<Member>();
+              /*      List<Member> members = new List<Member>();
                     Member mem = new Member()
                     {
                         BandId = b.BandId,
                         UserId = userId,
                     };
                     members.Add(mem);
-                    b.Member = members;
+                    b.Member = members;*/
                     db.SaveChanges();
                     return true;
                 }
@@ -249,7 +249,7 @@ namespace WebApplication1.Models
                     b1.Song = null; //hvis sangen skal være en byte array
                     b1.Timestamp = DateTime.Now;
 
-                    List<Member> listMembers = new List<Member>();
+               /*     List<Member> listMembers = new List<Member>();
                     foreach (var id in b.Member)
                     {
                         listMembers.Add(new Member()
@@ -258,7 +258,7 @@ namespace WebApplication1.Models
                             UserId = id,
                         });
                     }
-                    b1.Member = listMembers;
+                    b1.Member = listMembers;*/
                     db.SaveChanges();
                     return true;
                 }

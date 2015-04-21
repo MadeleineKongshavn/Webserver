@@ -9,7 +9,7 @@ namespace WebApplication1.Models
 {
     public class BandClass
     {
-        public int[] Member { get; set; }
+  //      public int[] Member { get; set; }
         public int BandId { get; set; }
         public Double Xcoordinates { get; set; }
         public Double Ycoordinates { get; set; }
