@@ -40,7 +40,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.AddBand(b, pic);
             }
         }
-        [HttpPost]
+ /*       [HttpPost]
         [Route("api/Band/ChangeBand/{b},{pic}")]
         public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
         {
@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers.Api
             {
                 return await bmgr.ChangeBand(b, pic);
             }
-        } 
+        } */
         [HttpGet]
         [Route("api/Band/FindBandBasedOnQuery/{query}")]
         public List<BandClass> FindBandBasedOnQuery(String query)
@@ -121,6 +121,16 @@ namespace WebApplication1.Controllers.Api
                 return await mng.updateBandName(name, bandId);
             }
         }
+        [HttpPost]
+        [Route("api/Band/updateBand{bandObject}")]
+        public async Task<bool> updateBand(BandClass b)
+        {
+            using (var mng = ManagerFactory.GetBandManager())
+            {
+                return await mng.UpdateBand(b);
+            }
+        }
+
 
 
     }

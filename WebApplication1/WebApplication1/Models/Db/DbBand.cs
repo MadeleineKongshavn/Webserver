@@ -223,53 +223,7 @@ namespace WebApplication1.Models
         }
         // endrer på basisk funskjonene til et band
         
-        public async Task<bool> ChangeBand(BandClass b)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var b1 = (from ban in db.BandDb
-                              where b.BandId == ban.BandId
-                              select ban).FirstOrDefault();
 
-                    // lagre pic i bitmapurl og bitmapsmallurl
-
-                    b1.UrlRandom = b.UrlRandom;
-                    b1.UrlSoundCloud = b.UrlSoundCloud;
-                    b1.UrlFacebook = b.UrlFacebook;
-                    b1.Xcoordinates = b.Xcoordinates;
-                    b1.Ycoordinates = b.Ycoordinates;
-                    b1.Area = b.Area;
-                    b1.BandName = b.BandName;
-                    b1.BitmapSmalUrl = b.BitmapUrl;
-                    b1.BitmapUrl = b.BitmapUrl;
-                    b1.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
-                    b1.SongName = b.SongName;
-                    b1.Song = null; //hvis sangen skal være en byte array
-                    b1.Timestamp = DateTime.Now;
-
-                    List<Member> listMembers = new List<Member>();
-                    foreach (var id in b.Member)
-                    {
-                        listMembers.Add(new Member()
-                        {
-                            BandId = b.BandId,
-                            UserId = id,
-                        });
-                    }
-                    b1.Member = listMembers;
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }  
-            
-        }
-        
         public async Task<bool> UpdateBandName(String name, int bandId)
         {
             try 
@@ -291,7 +245,31 @@ namespace WebApplication1.Models
 
             return true;
         }
-        
+
+        public async Task<bool> UpdateBand(BandClass b)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from tempBand in db.BandDb
+                                where tempBand.BandId == b.BandId
+                                select tempBand).FirstOrDefault();
+
+                    if (b.BandName != null)
+                        band.BandName = b.BandName;
+                    db.SaveChanges();
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
             try

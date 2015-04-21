@@ -51,16 +51,15 @@ namespace WebApplication1.Managers
         {
             return await UploadImage(pic);
         }
-        public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
+   
+        public async Task<bool> UpdateBand(BandClass b)
         {
             var db = new DbBand();
-            var cacheKey = String.Format("Band_GetBandToUser_{0}", b.BandId);
-            RemoveCacheKeysByPrefix(cacheKey);
-            var imgUrl = await UploadImage(pic);
-            b.BitmapUrl = imgUrl;
-            b.SmallBitmapUrl = imgUrl;
-            return await db.ChangeBand(b);
+            return await db.UpdateBand(b);
+              
         }
+
+
         public async Task<BandClass> GetBandById(int bandId)
         {
             BandClass bandClass;
