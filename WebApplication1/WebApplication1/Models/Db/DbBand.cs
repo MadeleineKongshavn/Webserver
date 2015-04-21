@@ -201,7 +201,7 @@ namespace WebApplication1.Models
                     db.BandDb.Add(band);
                     int bandId = band.BandId;
 
-                    List<Member> listMembers = new List<Member>();
+            /*        List<Member> listMembers = new List<Member>();
                     foreach (var id in b.Member)
                     {
                         listMembers.Add(new Member()
@@ -211,7 +211,7 @@ namespace WebApplication1.Models
                         });
                     }
                     band.Member = listMembers;
-                    db.SaveChanges();
+                    db.SaveChanges();*/
                     return true;
                 }
 
