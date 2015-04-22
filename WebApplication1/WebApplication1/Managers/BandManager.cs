@@ -82,11 +82,6 @@ namespace WebApplication1.Managers
             return bandClass;
         }
 
-        //public async bool Create()
-        //{
-            
-        //}
-
         public async Task<bool> updateBandName(String name, int bandId)
         {
             var db=new DbBand();

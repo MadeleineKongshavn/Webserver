@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Security.Policy;
 using System.Threading.Tasks;
@@ -463,13 +464,31 @@ namespace WebApplication1.Models
         /// <returns>BandClass</returns>
         public async Task<BandClass> GetBandById(int id)
         {
-            using (var db = new ApplicationDbContext())
+            try
             {
-                var band = await (from b in db.BandDb
-                                  where b.BandId == id
-                                  select b).FirstOrDefaultAsync();
-
-                return band.ConvertToBandClass();
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = await (from b in db.BandDb
+                        where b.BandId == id
+                        select new BandClass()
+                        {
+                            BandId = b.BandId,
+                            Xcoordinates = b.Xcoordinates,
+                            Ycoordinates = b.Ycoordinates,
+                            BandName = b.BandName,
+                            SmallBitmapUrl = b.BitmapSmalUrl,
+                            BitmapUrl = b.BitmapUrl,
+                            UrlFacebook = b.UrlFacebook,
+                            UrlRandom = b.UrlRandom,
+                            UrlSoundCloud = b.UrlSoundCloud,
+                            Area = b.Area,
+                        }).FirstOrDefaultAsync();
+                    return band;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
     }

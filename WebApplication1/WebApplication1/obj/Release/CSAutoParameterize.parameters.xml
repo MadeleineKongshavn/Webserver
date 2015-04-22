@@ -6,4 +6,7 @@
   <parameter name="BlobStorage-Web.config Connection String" description="BlobStorage Connection String used in web.config by the application to access the database." defaultValue="DefaultEndpointsProtocol=https;AccountName=seminote;AccountKey=RHDJCFZhukAZSZdxZaUw92TPwabeIUEhtosEWGLz/nfu0ibVwrQoojMGalOCmynA9vx2ynMfxRjSYvL3/t5rdA==" tags="SqlConnectionString">
     <parameterEntry kind="XmlFile" scope="C:\\Users\\Madde\\Documents\\GitHub\\WebApplication1\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BlobStorage']/@connectionString" />
   </parameter>
+  <parameter name="WebApplication1.Models.ApplicationDbContext-Web.config Connection String" description="WebApplication1.Models.ApplicationDbContext Connection String used in web.config by the application to access the database." defaultValue="WebApplication1.Models.ApplicationDbContext_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Madde\\Documents\\GitHub\\WebApplication1\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WebApplication1.Models.ApplicationDbContext']/@connectionString" />
+  </parameter>
 </parameters>
