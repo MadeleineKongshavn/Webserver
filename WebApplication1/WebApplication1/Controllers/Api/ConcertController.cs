@@ -13,6 +13,33 @@ namespace WebApplication1.Controllers.Api
 {
     public class ConcertController : ApiController
     {
+        [HttpGet]
+        [Route("api/Band/FindConcertBasedOnQuery/{query},{uid}")]
+        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query, int uid)
+        {
+            using (var bmgr = ManagerFactory.GetConcertManager())
+            {
+                return await bmgr.FindConcertBasedOnQuery(query, uid);
+            }
+        }
+        [HttpGet]
+        [Route("api/Concert/GetAttendingConcertTask/{cid},{uid}")]
+        public async Task<Boolean> GetAttendingConcertTask(int cid, int uid)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.GetAttendingConcerTask(cid, uid);
+            }
+        }
+        [HttpGet]
+        [Route("api/Concert/SetAttendingConcertTask/{cid},{uid},{ok}")]
+        public async Task<Boolean> SetAttendingConcertTask(int cid, int uid, Boolean ok)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.SetAttendingConcertTask(cid, uid, ok);
+            }     
+        }
         [HttpPost]
         [Route("api/Concert/AcceptConcertRequest/{id},{ok}")]
         public async Task<bool> AcceptConcertRequest(int id, Boolean ok)

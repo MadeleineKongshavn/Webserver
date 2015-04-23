@@ -11,6 +11,25 @@ namespace WebApplication1.Managers
 {
     public class ConcertManager : BaseManager
     {
+        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query, int uid)
+        {
+            var db = new DbConcert();
+            return await db.FindConcertBasedOnQuery(query, uid);
+        }
+        public async Task<Boolean> GetAttendingConcerTask(int cid, int uid)
+        {
+            var db = new DbConcert();
+            return await db.GetAttendingConcerTask(cid, uid);
+        }
+
+        public async Task<Boolean> SetAttendingConcertTask(int cid, int uid, Boolean ok)
+        {
+            var db = new DbConcert();
+            var cacheKey = String.Format("Concert_User_Get_{0}", cid);
+            RemoveCacheKeysByPrefix(cacheKey); 
+            return await db.SetAttendingConcertTask(cid, uid, ok);
+        }
+
         public async Task<bool> AcceptConcertRequest(Boolean ok, int id)
         {
             var db = new DbConcert();

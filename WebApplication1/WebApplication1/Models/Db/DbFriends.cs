@@ -123,14 +123,18 @@ namespace WebApplication1.Models.Db
             }
         }
         // finds a friend based on a query
-        public async Task<FriendsClass> FindFriend(String name)
+        public async Task<FriendsClass> FindFriend(String name, int uid)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
                     User found = (from f in db.UserDb where f.ProfileName == name select f).FirstOrDefault();
+                    var ok = await
+                        (from f in db.FriendsDb where f.UserId == found.UserId && f.Friend == uid select f)
+                            .FirstOrDefaultAsync();
                     var friend = new FriendsClass();
+                    if (ok == null) friend.Friends = false; else friend.Friends = true;
                     friend.FriendsId = found.UserId;
                     friend.Friendsname = found.ProfileName;
                     return friend;

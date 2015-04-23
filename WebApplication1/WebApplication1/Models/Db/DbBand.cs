@@ -393,38 +393,26 @@ namespace WebApplication1.Models
             return null;
         }
 
-        public String FindBandBasedOnQuery(String query) // delvis under oppbygning
+        public async Task<List<BandClass>>  FindBandBasedOnQuery(String query) // delvis under oppbygning
         {
-            try
+            using (var db = new ApplicationDbContext())
             {
-                using (var db = new ApplicationDbContext())
+                query = query.Trim();
+                List<Band> allBands = (from b in db.BandDb where b.BandName.Contains(query) select b).ToList();
+
+                allBands.OrderBy(b => b.BandName).ToList();
+                List<BandClass> bands = new List<BandClass>();
+                foreach (var b in allBands)
                 {
-                    query = query.Trim();
-                    List<Band> allBands = (from b in db.BandDb where b.BandName.Contains(query) select b).ToList();
-
-
-                    allBands.OrderBy(b => b.BandName).ToList();
-                    List<BandClass> bands = new List<BandClass>();
-                    foreach (var b in allBands)
-                    {
-                        BandClass newB = new BandClass();
-                        newB.Xcoordinates = b.Xcoordinates;
-                        newB.Ycoordinates = b.Ycoordinates;
-                        newB.BandName = b.BandName;
-                        //  newB.url = b.Url;
-                        newB.BandId = b.BandId;
-                        bands.Add(newB);
-
-                    }
-                    return "funket ikke";
-                }
-
-            }
-            catch (Exception e)
-            {
-                return e.Message + " " + e.Source + " " + e.InnerException;
-                // return new List<BandClass>();   
-            }
+                    BandClass newB = new BandClass();
+                    newB.Area = b.Area;
+                    newB.BandName = b.BandName;
+                    newB.SmallBitmapUrl = b.BitmapSmalUrl;
+                    newB.BandId = b.BandId;
+                    bands.Add(newB);
+                 }
+                 return bands;
+             }
         }
 
         public async Task<List<BandClass>> FindAllBandsToUser(int id) // Find all bands to a user 

@@ -42,11 +42,11 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpGet]
         [Route("api/Friends/FindFriend/{name}")]
-        public async Task<FriendsClass> FindFriend(String name)
+        public async Task<FriendsClass> FindFriend(String name, int uid)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
-                return await mngr.FindFriend(name);
+                return await mngr.FindFriend(name, uid);
             }
         }
 

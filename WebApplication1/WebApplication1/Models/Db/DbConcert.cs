@@ -8,11 +8,24 @@ using System.Web;
 using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
 using WebApplication1.Models.Class;
-
 namespace WebApplication1.Models
 {
     public class DbConcert
     {
+        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query, int uid)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var con = await (from c in db.ConcertDb
+                    where c.Title.Contains(query)
+                    select new ConcertClass()
+                    {
+                        Title = c.Title,
+                        SmallBitmapUrl = c.BitmapSmalUrl,
+                    }).ToListAsync();
+                return con;
+            }
+        }
         public async Task<int> AcceptConcertRequest(Boolean ok, int id)
         {
             try
@@ -285,6 +298,56 @@ namespace WebApplication1.Models
                 {
                     return null;
                 }
+            }
+        }
+        public async Task<Boolean> GetAttendingConcerTask(int cid, int uid)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    var v  = (from f in db.ConcertFollowersDb where f.UserId == uid && f.ConcertId == cid select f)
+                                .FirstOrDefaultAsync();
+                    if (v != null) return true;
+                    else return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task<Boolean> SetAttendingConcertTask(int cid, int uid, Boolean ok)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    if (ok)
+                    {
+                        db.ConcertFollowersDb.Add(new ConcertFollowers()
+                        {
+                            ConcertId = cid,
+                            UserId = uid,
+                        });
+                    }
+                    else
+                    {
+                        ConcertFollowers c = await
+                            (from f in db.ConcertFollowersDb where f.UserId == uid && f.ConcertId == cid select f)
+                                .FirstOrDefaultAsync();
+                        db.ConcertFollowersDb.Remove(c);
+                    }
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

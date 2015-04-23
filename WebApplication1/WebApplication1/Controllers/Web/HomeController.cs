@@ -78,13 +78,16 @@ namespace WebApplication1.Controllers
            // var b = await new BandController().FindAllBandsToUser(1);
 
 
-            var ba = await new DbBand().CompressBitmap();
+          //  var ba = await new DbBand().CompressBitmap();
 
 
             //List<BandsImagesClass> v = await new BandController().GetRandomBands(1);
             //BandsImagesClass c = v.FirstOrDefault();
 
-            ViewBag.Message = " your count name"  + ba + "er informasjonen";// + m.Count;
+           //Boolean ok =  await new ConcertController(). GetAttendingConcerTask(2, 1);
+           Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
+
+            ViewBag.Message = " your count name " + ok + "er informasjonen";// + m.Count;
             return View();
         }
 
