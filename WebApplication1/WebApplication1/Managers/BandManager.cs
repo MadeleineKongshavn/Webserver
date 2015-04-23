@@ -11,6 +11,11 @@ namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
+        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
+        {
+            var db = new DbBand();
+            return await db.FindBandBasedOnQuery(query, uid);
+        }
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             var db = new DbBand();

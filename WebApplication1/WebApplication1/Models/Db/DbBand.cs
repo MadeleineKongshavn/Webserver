@@ -11,8 +11,6 @@ using System.Security.Policy;
 using System.Threading.Tasks;
 using WebApplication1.Managers;
 using WebApplication1.Models.Class;
-
-
 namespace WebApplication1.Models
 {
     public class DbBand

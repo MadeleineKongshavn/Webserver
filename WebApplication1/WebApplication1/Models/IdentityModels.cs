@@ -96,8 +96,6 @@ namespace WebApplication1.Models
         public virtual List<BandGenre> BandGenre { get; set; }
         public virtual List<BandFollowers> BandFollowers { get; set; }
         public virtual List<Concert> Concert { get; set; }
-
-      
     }
 
     public class Concert

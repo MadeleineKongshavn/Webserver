@@ -14,6 +14,15 @@ namespace WebApplication1.Controllers.Api
     public class UserController : ApiController
     {
         [HttpPost]
+        [Route("api/User/AddFaceUser/{uid},{profilename},{xCord},{yCord}")]
+        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.AddFaceUser(uid, profilename, xCord, yCord);
+            }  
+        }
+        [HttpPost]
         [Route("api/User/ChangeUser/{u},{pic}")]
         public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
         {
@@ -42,7 +51,6 @@ namespace WebApplication1.Controllers.Api
                 return not;
             }
         }
-
         [HttpGet]
         [Route("api/User/UserHasReadNotification/{userId}")]
         public void ReadNotifications(int userId)
@@ -52,7 +60,6 @@ namespace WebApplication1.Controllers.Api
                 mngr.ReadAllNotifications(userId);
             }
         }
-
         [HttpGet]
         [Route("api/User/GetUserById/{id}")]
         public async Task<UserClass> GetUserById(int id)
@@ -62,7 +69,6 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.GetUserById(id);
             }
         }
-
         [HttpGet]
         [Route("api/User/CheckNewNotifications/{id}")]
         public async Task<Boolean> CheckNewNotifications(int id)

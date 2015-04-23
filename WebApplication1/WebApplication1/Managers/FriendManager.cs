@@ -25,10 +25,10 @@ namespace WebApplication1.Managers
             return await db.SetFriendAccept(id, status);
         }
 
-        public async Task<FriendsClass> FindFriend(String name)
+        public async Task<FriendsClass> FindFriend(String name, int uid)
         {
             var db = new DbFriends();
-            return await db.FindFriend(name);
+            return await db.FindFriend(name, uid);
         }
         public void UpdateFriendList(int userId)
         {

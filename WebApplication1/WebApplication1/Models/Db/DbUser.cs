@@ -62,6 +62,32 @@ namespace WebApplication1.Models
                 return false;
             }
         }
+
+        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+
+                var u1 = new User()
+                {
+                    ProfileName = profilename,
+                    SeeNotifications = true,
+                    Public = true,
+                    Radius = 500,
+                    Xcoordinates = xCord,
+                    Ycoordinates = yCord,
+                    Timestamp = DateTime.Now,
+                };
+                db.UserDb.Add(u1);
+                u1.Api = new Api()
+                {
+                    ApiId = uid,
+                };
+                db.SaveChanges();
+                return true;
+            }
+            
+        }
         // endrer basisk funksjonene til en bruker
         public async Task<Boolean> ChangeUser(UserClass u1) 
         {
