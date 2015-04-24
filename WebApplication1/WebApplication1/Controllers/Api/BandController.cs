@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
@@ -132,10 +133,12 @@ namespace WebApplication1.Controllers.Api
         }
 
         [HttpPost]
-        [Route("api/Band/UpdateBand/{b}")]
-        public async Task<bool> UpdateBand(BandClass b)
+        [Route("api/Band/UpdateBand/{jsonBand}")]
+        public async Task<bool> UpdateBand(String jsonBand)
         {
             BandManager mng=ManagerFactory.GetBandManager();
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            BandClass b = (BandClass)serializer.Deserialize<BandClass>(jsonBand);
             return await mng.UpdateBand(b);
         } 
 

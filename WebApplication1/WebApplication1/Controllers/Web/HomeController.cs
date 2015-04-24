@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using WebApplication1.Controllers.Api;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
@@ -54,12 +55,14 @@ namespace WebApplication1.Controllers
 
             BandClass b = new BandClass();
             b.BandId = 21;
-            b.BandName = "Pony up";
+            b.BandName = "Pony down";
             b.SongName = "Last Trick";
             b.Xcoordinates = 0;
             b.Ycoordinates = 0;
 
-            Boolean ok= await new BandController().UpdateBand(b);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            String band = serializer.Serialize(b);
 
             
            // List <MemberClass> m = await new BandController().GetAllAdminBands(2);
@@ -81,6 +84,7 @@ namespace WebApplication1.Controllers
 
            //Boolean ok =  await new ConcertController(). GetAttendingConcerTask(2, 1);
         //   Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
+            Boolean ok = await new BandController().UpdateBand(band);   
 
             ViewBag.Message = " your count name " + ok + "er informasjonen";// + m.Count;
             return View();
