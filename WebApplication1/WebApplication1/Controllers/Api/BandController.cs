@@ -22,6 +22,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.GetRandomBands(userId);                
             }
         }
+       
         [HttpPost]
         [Route("api/Band/AddBandToUser/{userId},{bandId}")]
         public async Task<bool> AddBandToUser(int userId, int bandId)
@@ -31,6 +32,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.AddBandToUser(userId, bandId);
             }
         }
+        
         [HttpPost]
         [Route("api/Band/AddBand/{b},{pic}")]
         public async Task<bool> AddBand(BandClass b, Byte[] pic)
@@ -40,6 +42,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.AddBand(b, pic);
             }
         }
+       
         [HttpPost]
         [Route("api/Band/ChangeBand/{b},{pic}")]
         public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
@@ -49,7 +52,8 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.ChangeBand(b, pic);
             }
         } 
-        [HttpGet]
+  
+        /*      [HttpGet]
         [Route("api/Band/FindBandBasedOnQuery/{query},{uid}")]
         public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
         {
@@ -57,7 +61,7 @@ namespace WebApplication1.Controllers.Api
             {
                 return await bmgr.FindBandBasedOnQuery(query, uid);
             }
-        }
+        }*/
 
         [HttpGet]
         [Route("api/Band/FindAllBandsToUser/{id}")]
@@ -68,6 +72,7 @@ namespace WebApplication1.Controllers.Api
                 return  await bmgr.FindAllBandsToUser(id);
             }
         }
+       
         [HttpGet]
         [Route("api/Band/GetBandById/{id}")]
         public async Task<BandClass> GetBandById(int id)
@@ -77,6 +82,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmngr.GetBandById(id);
             }
         }
+       
         [HttpGet]
         [Route("api/Band/GetAllAdminBands/{userId}")]
         public async Task<List<MemberClass>> GetAllAdminBands(int userId)
@@ -86,6 +92,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmngr.GetAllAdminBands(userId);
             }
         }
+        
         [HttpPost]
         [Route("api/Band/UpdateMusicUrl/{bandId},{url}")]
         public async Task<bool> UpdateMusicUrl(int bandId, String url)
@@ -102,6 +109,7 @@ namespace WebApplication1.Controllers.Api
         {
             return true;
         }
+        
         [HttpPost]
         [Route("api/Band/AddBand/{name},{userId}")]
         public async Task<bool> AddBand(String name, int userId)
@@ -123,6 +131,13 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
+        [HttpPost]
+        [Route("api/Band/UpdateBand/{b}")]
+        public async Task<bool> UpdateBand(BandClass b)
+        {
+            BandManager mng=ManagerFactory.GetBandManager();
+            return await mng.UpdateBand(b);
+        } 
 
     }
 }

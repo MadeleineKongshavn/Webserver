@@ -11,31 +11,35 @@ namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
-        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
+/*        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
         {
             var db = new DbBand();
             return await db.FindBandBasedOnQuery(query, uid);
-        }
+        }*/
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             var db = new DbBand();
             return await db.GetRandomBands(userId);
         }
+
         public async Task<bool> AddBand(String name, int userId)
         {
             var db = new DbBand();
             return await db.AddBand(name, userId);
         }
+        
         public async Task<List<MemberClass>> GetAllAdminBands(int userId)
         {
             var db = new DbBand();
             return await db.GetAllAdminBands(userId);
         }
+        
         public async Task<bool> UpdateMusicUrl(int bandId, String url)
         {
             var db = new DbBand();
             return await db.UpdateMusicUrl(bandId, url);
         }
+        
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {
             var db = new DbBand();
@@ -43,6 +47,7 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
             return await db.AddBandToUser(userId, bandId);
         }
+        
         public async Task<bool> AddBand(BandClass b, Byte[] pic)
         {
             var db = new DbBand();
@@ -56,6 +61,7 @@ namespace WebApplication1.Managers
         {
             return await UploadImage(pic);
         }
+        
         public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
         {
             var db = new DbBand();
@@ -66,6 +72,7 @@ namespace WebApplication1.Managers
             b.SmallBitmapUrl = imgUrl;
             return await db.ChangeBand(b);
         }
+      
         public async Task<BandClass> GetBandById(int bandId)
         {
             BandClass bandClass;
@@ -92,6 +99,12 @@ namespace WebApplication1.Managers
             var db=new DbBand();
             return await db.UpdateBandName(name,bandId);
 
+        }
+
+        public async Task<bool> UpdateBand(BandClass b)
+        {
+            var db = new DbBand();
+            return await db.UpdateBand(b);
         }
 
         public async Task<List<BandClass>> FindAllBandsToUser(int userId)

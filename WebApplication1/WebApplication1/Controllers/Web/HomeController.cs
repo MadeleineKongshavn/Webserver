@@ -52,19 +52,14 @@ namespace WebApplication1.Controllers
             new ConcertController().AddConcertToUser(1, 1);*/
 
 
-        /*    BandClass b = new BandClass();
-            b.BandId = 3;
-            b.Area = "area here";
-            b.BandName = "Olly";
-            b.SongName = "songname";
-            b.UrlFacebook = "http";
-            b.UrlRandom = "http";
-            b.UrlSoundCloud = "http";
-            b.Member = new[] {1};
+            BandClass b = new BandClass();
+            b.BandId = 21;
+            b.BandName = "Pony up";
+            b.SongName = "Last Trick";
             b.Xcoordinates = 0;
             b.Ycoordinates = 0;
 
-            new BandController().AddBandToUser(1,3);*/
+            Boolean ok= await new BandController().UpdateBand(b);
 
             
            // List <MemberClass> m = await new BandController().GetAllAdminBands(2);
@@ -85,7 +80,7 @@ namespace WebApplication1.Controllers
             //BandsImagesClass c = v.FirstOrDefault();
 
            //Boolean ok =  await new ConcertController(). GetAttendingConcerTask(2, 1);
-           Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
+        //   Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
 
             ViewBag.Message = " your count name " + ok + "er informasjonen";// + m.Count;
             return View();

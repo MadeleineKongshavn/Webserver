@@ -477,5 +477,53 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+
+        public async Task<bool> UpdateBand(BandClass b)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from ban in db.BandDb
+                                where b.BandId == ban.BandId
+                                select ban).FirstOrDefault();
+
+                    if (b.UrlRandom != null)
+                        band.UrlRandom = b.UrlRandom;
+                    if (b.UrlSoundCloud != null)
+                        band.UrlSoundCloud = b.UrlSoundCloud;
+                    if (b.UrlFacebook != null)
+                        band.UrlFacebook = b.UrlFacebook;
+                    if (b.Xcoordinates != null)
+                        band.Xcoordinates = b.Xcoordinates;
+                    if (b.Ycoordinates != null)
+                        band.Ycoordinates = b.Ycoordinates;
+                    if (b.Area != null)
+                        band.Area = b.Area;
+                    if (b.BandName != null)
+                        band.BandName = b.BandName;
+                    if (b.BitmapUrl != null)
+                        band.BitmapSmalUrl = b.BitmapUrl;
+                    if (b.SmallBitmapUrl != null)
+                        band.BitmapUrl = b.BitmapUrl;
+                    if (b.SongName != null)
+                        band.SongName = b.SongName;
+                    if (true)
+                        band.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
+                    if (true)
+                        band.Song = null; //hvis sangen skal være en byte array
+                    band.Timestamp = DateTime.Now;
+
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+    
     }
 }
