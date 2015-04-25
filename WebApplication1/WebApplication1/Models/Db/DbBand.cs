@@ -223,6 +223,7 @@ namespace WebApplication1.Models
                     band.Area = area;
                     band.Xcoordinates = x;
                     band.Ycoordinates = y;
+                    band.Timestamp = DateTime.Now;
                     db.SaveChanges();
                     return true;
                 }
@@ -251,6 +252,7 @@ namespace WebApplication1.Models
                     if (soundcloud != null)
                         band.UrlSoundCloud = soundcloud;
 
+                    band.Timestamp = DateTime.Now;
                     db.SaveChanges();
                     return true;
                 }
@@ -341,6 +343,7 @@ namespace WebApplication1.Models
                               select getBand).FirstOrDefault();
 
                     band.BandName = name;
+                    band.Timestamp = DateTime.Now;
                     db.SaveChanges();
 
                 }

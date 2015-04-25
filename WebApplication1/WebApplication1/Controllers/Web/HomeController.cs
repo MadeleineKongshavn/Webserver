@@ -86,10 +86,10 @@ namespace WebApplication1.Controllers
         //   Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
             BandController bc = new BandController();
             long x = (long)66.33; long y = (long)22.04; int id = 21; string area = "Oslo";
-            Boolean ok = await bc.UpdateBandLocation(id,x,y,area);
-
-           // String www = "new www"; String fb = "new fb"; String soundcloud = "new soundcloud";
            
+            String www = "new www"; String fb = "new fb"; String soundcloud = "new soundcloud";
+            Boolean ok = await bc.UpdateBandLinks(id,www,fb,soundcloud);
+
 
             ViewBag.Message = " Oppdatering av området: "+ok;// + m.Count;
             return View();
