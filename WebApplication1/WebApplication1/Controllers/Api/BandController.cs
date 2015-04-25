@@ -134,7 +134,7 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/Band/UpdateBand/{jsonBand}")]
-        public async Task<bool> UpdateBand(String jsonBand)
+        public async Task<bool> UpdateBand([FromBody]String jsonBand)
         {
             BandManager mng=ManagerFactory.GetBandManager();
             JavaScriptSerializer serializer = new JavaScriptSerializer();
