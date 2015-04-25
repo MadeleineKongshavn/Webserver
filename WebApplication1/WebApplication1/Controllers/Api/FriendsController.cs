@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers.Api
             }
         }
         [HttpGet]
-        [Route("api/Friends/FindFriend/{name}")]
+        [Route("api/Friends/FindFriend/{name},{uid}")]
         public async Task<FriendsClass> FindFriend(String name, int uid)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
