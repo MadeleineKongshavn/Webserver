@@ -101,6 +101,22 @@ namespace WebApplication1.Managers
 
         }
 
+        public async Task<bool> UpdateBandLocation(int bandid, long x, long y, string area)
+        {
+            var db = new DbBand();
+            return await db.UpdateBandLocation(bandid,x,y,area);
+
+        }
+
+        public async Task<bool> UpdateBandLinks(int bandid, string www, string fb, string soundcloud)
+        {
+            var db = new DbBand();
+            return await db.UpdateBandLinks(bandid, www, fb, soundcloud);
+        }
+
+
+
+
         public async Task<bool> UpdateBand(BandClass b)
         {
             var db = new DbBand();

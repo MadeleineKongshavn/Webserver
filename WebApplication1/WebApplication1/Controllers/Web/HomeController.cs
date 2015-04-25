@@ -53,7 +53,7 @@ namespace WebApplication1.Controllers
             new ConcertController().AddConcertToUser(1, 1);*/
 
 
-            BandClass b = new BandClass();
+            /*BandClass b = new BandClass();
             b.BandId = 21;
             b.BandName = "Pony down";
             b.SongName = "Last Trick";
@@ -62,7 +62,7 @@ namespace WebApplication1.Controllers
 
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            String band = serializer.Serialize(b);
+            String band = serializer.Serialize(b);*/
 
             
            // List <MemberClass> m = await new BandController().GetAllAdminBands(2);
@@ -84,9 +84,14 @@ namespace WebApplication1.Controllers
 
            //Boolean ok =  await new ConcertController(). GetAttendingConcerTask(2, 1);
         //   Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
-            Boolean ok = await new BandController().UpdateBand(band);   
+            BandController bc = new BandController();
+            long x = (long)66.33; long y = (long)22.04; int id = 21; string area = "Oslo";
+            Boolean ok = await bc.UpdateBandLocation(id,x,y,area);
 
-            ViewBag.Message = " your count name " + ok + "er informasjonen";// + m.Count;
+           // String www = "new www"; String fb = "new fb"; String soundcloud = "new soundcloud";
+           
+
+            ViewBag.Message = " Oppdatering av området: "+ok;// + m.Count;
             return View();
         }
 

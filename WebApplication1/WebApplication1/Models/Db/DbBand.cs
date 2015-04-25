@@ -37,6 +37,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }*/
+      
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             try
@@ -61,6 +62,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+        
         public static void Shuffle<T>(IList<T> list)
         {
             int n = list.Count;
@@ -109,6 +111,7 @@ namespace WebApplication1.Models
                 return false;
             }
         }
+        
         public async Task<List<MemberClass>> GetAllAdminBands(int userId)
         {
             try
@@ -133,24 +136,8 @@ namespace WebApplication1.Models
                 return null;
             }
         }
-        public async Task<bool> UpdateMusicUrl(int bandId, String url)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var ob =  (from b in db.BandDb where b.BandId == bandId select b).FirstOrDefault();
-                    ob.Songurl = url;
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-        // legger et band på en bruker
+        
+         // legger et band på en bruker
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {
             try
@@ -172,7 +159,9 @@ namespace WebApplication1.Models
             }
             
         }
-        // legger til basisk funksjonene til et band
+        
+        
+        // legger til basisk funksjonene til et band      
         public async Task<bool> AddBand(BandClass b)
         {
             try
@@ -220,8 +209,80 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-        // endrer på basisk funskjonene til et band
+
+        public async Task<bool> UpdateBandLocation(int bandid, long x,long y,string area)
+        {
+            try
+            {
+
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from b in db.BandDb
+                                where b.BandId == bandid
+                                select b).FirstOrDefault();
+                    band.Area = area;
+                    band.Xcoordinates = x;
+                    band.Ycoordinates = y;
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<bool> UpdateBandLinks(int bandid, string www, string fb, string soundcloud)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from b in db.BandDb
+                            where b.BandId == bandid
+                            select b).FirstOrDefault();
+
+                    if (www != null)
+                        band.UrlRandom = www;
+                    if (fb != null)
+                        band.UrlFacebook = fb;
+                    if (soundcloud != null)
+                        band.UrlSoundCloud = soundcloud;
+
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateMusicUrl(int bandId, String url)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var ob =  (from b in db.BandDb where b.BandId == bandId select b).FirstOrDefault();
+                    ob.Songurl = url;
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+   
+
         
+        
+        // endrer på basisk funskjonene til et band
         public async Task<bool> ChangeBand(BandClass b)
         {
             try
