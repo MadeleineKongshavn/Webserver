@@ -146,7 +146,7 @@ namespace WebApplication1.Models
             }
         }
         // legger til en konsert, pic er bilde som skal inn
-        public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic)
+        public async Task<Boolean> AddConcert(ConcertClass c)
         {
             try
             {
