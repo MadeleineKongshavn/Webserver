@@ -11,16 +11,47 @@ namespace WebApplication1.Models.Db
 {
     public class DbFriends
     {
+
+        public async Task<bool> CancelFriendTask(int fuid, int uid)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    var v = await (from f in db.FriendsDb
+                                   where f.Friend == fuid && f.UserId == uid ||
+                                         f.Friend == uid && f.UserId == fuid
+                                   select f).ToListAsync();
+
+                   if(v != null) v.ForEach(i => db.FriendsDb.Remove(i));
+
+                   var n = await (from f in db.NotificationsDb
+                                   where f.UserId == fuid && f.Type == 1 && f.FriendRequestNotifications.UserId == fuid ||
+                                         f.Type == 1 && f.FriendRequestNotifications.UserId == uid && f.UserId == uid
+                                   select f).ToListAsync();
+
+                    n.ForEach(i => db.FriendRequestNotificationsDb.Remove(i.FriendRequestNotifications));
+                    n.ForEach(i => db.NotificationsDb.Remove(i));
+                    db.SaveChangesAsync();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+          
+            }
+        }
         // legger til et nytt vennerequest userid er personen som får requestet 
         public async Task<Boolean> AddFriendRequest(int userId, int friendId)
         {
             try
-            {
+            {                
                 using (var db = new ApplicationDbContext())
                 {
                     db.NotificationsDb.Add(new Notifications()
                     {
-                        SendtTime = DateTime.Now,
+                        SendtTime = DateTime.UtcNow,
                         Seen = false,
                         UserId = friendId,
                         Type = 1,
@@ -130,11 +161,18 @@ namespace WebApplication1.Models.Db
                 using (var db = new ApplicationDbContext())
                 {
                     User found = (from f in db.UserDb where f.ProfileName == name select f).FirstOrDefault();
-                    var ok = await
-                        (from f in db.FriendsDb where f.UserId == found.UserId && f.Friend == uid select f)
-                            .FirstOrDefaultAsync();
+                    var ok = await (from f in db.FriendsDb where f.UserId == found.UserId && f.Friend == uid select f).FirstOrDefaultAsync();
+                    
                     var friend = new FriendsClass();
-                    if (ok == null) friend.Friends = false; else friend.Friends = true;
+                    if (ok != null) friend.Friends = true;
+                    else
+                    {
+                        var ok2 = await (from n in db.NotificationsDb
+                        where n.UserId == found.UserId && n.Type == 1 && n.FriendRequestNotifications.UserId == uid
+                        select n).FirstOrDefaultAsync();
+                        if (ok2 != null) friend.Friends = true;
+                        else friend.Friends = false;
+                    }                  
                     friend.FriendsId = found.UserId;
                     friend.Friendsname = found.ProfileName;
                     return friend;

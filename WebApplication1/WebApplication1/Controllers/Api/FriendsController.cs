@@ -40,6 +40,16 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.GetFriendsFromUserId(id);
             }
         }
+
+        [HttpPost]
+        [Route("api/Friends/CancelFriendTask/{uid},{friendId}")]
+        public async Task<bool> CancelFriendTask(int uid, int friendId)
+        {
+            using (var mngr = ManagerFactory.GetFriendManager())
+            {
+                return await mngr.CancelFriendTask(friendId, uid);
+            }
+        }
         [HttpGet]
         [Route("api/Friends/FindFriend/{name},{uid}")]
         public async Task<FriendsClass> FindFriend(String name, int uid)

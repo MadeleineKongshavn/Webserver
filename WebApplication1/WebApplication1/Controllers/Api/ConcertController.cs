@@ -77,11 +77,19 @@ namespace WebApplication1.Controllers.Api
             }
         }
         [HttpPost]
-        [Route("api/Concert/AddConcert/{c},{pic}")]
-        public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic)
+        [Route("api/Concert/AddConcert/{title},{xCord},{yCord},{area},{bandId},{venue},{year},{month},{day},{hour},{min},{pic}")]
+        public async Task<Boolean> AddConcert(String title, long xCord, long yCord, String area, int bandId, String venue, int year, int month, int day, int hour, int min,  Byte[] pic)
         {
             using (var cMgr = ManagerFactory.GetConcertManager())
             {
+                ConcertClass c = new ConcertClass();
+                c.Title = title;
+                c.Area = area;
+                c.BandId = bandId;
+                c.VenueName = venue;
+                c.Date = new DateTime(year, month, day, hour, min, 0);
+                c.Xcoordinates = (int) xCord;
+                c.Ycoordinates = (int) yCord;
                 return await cMgr.AddConcert(c, pic);
             }
         }

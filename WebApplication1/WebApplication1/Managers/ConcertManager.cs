@@ -67,7 +67,13 @@ namespace WebApplication1.Managers
         public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic)
         {
             var db = new DbConcert();
-            return await db.AddConcert(c, pic);
+            var imgUrl = await UploadImage(pic);
+            if (pic != null && pic.Length != 0)
+            {
+                c.BitmapUrl = imgUrl;
+                c.SmallBitmapUrl = imgUrl;
+            }
+            return await db.AddConcert(c);
         }
         public async Task<ConcertClass> GetConcertById(int id)
         {

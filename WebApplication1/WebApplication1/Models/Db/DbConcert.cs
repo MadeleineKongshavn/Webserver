@@ -152,23 +152,20 @@ namespace WebApplication1.Models
             {
                 using (var db = new ApplicationDbContext())
                 {
-
-                    // er en SmallUrl og en Url så det mindre bildet som finnes i lister kan komprimeres mer.
-                    // lagre pic i bitmapurl og bitmapsmallurl
-
                     var c1 = new Concert()
                     {
+                        Timestamp = DateTime.Now, // skal fjernes
+                        LinkToBand = "link", // fjernes
+                        SeeAttends = false, // fjernes
+                       
+                        Followers = 0,
                         Title = c.Title,
-                        Timestamp = DateTime.Now,
                         Xcoordinates = c.Xcoordinates,
                         Ycoordinates = c.Ycoordinates,
                         Area = c.Area,
-                        Followers = 0,
-                        SeeAttends = c.SeeAttends,
                         BandId = c.BandId,
-                        LinkToBand = c.LinkToBand,
-                        BitmapUrl = "stor url her :)",
-                        BitmapSmalUrl = "small url her :)",
+                        BitmapUrl = c.BitmapUrl,
+                        BitmapSmalUrl = c.SmallBitmapUrl,
                         VenueName = c.VenueName,
                         Date = Convert.ToDateTime(c.Time),
                     };
