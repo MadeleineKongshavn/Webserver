@@ -146,7 +146,7 @@ namespace WebApplication1.Models
             }
         }
         // legger til en konsert, pic er bilde som skal inn
-        public async Task<Boolean> AddConcert(ConcertClass c)
+        public async Task<String> AddConcert(ConcertClass c)
         {
             try
             {
@@ -167,16 +167,16 @@ namespace WebApplication1.Models
                         BitmapUrl = c.BitmapUrl,
                         BitmapSmalUrl = c.SmallBitmapUrl,
                         VenueName = c.VenueName,
-                        Date = Convert.ToDateTime(c.Time),
+                        Date = Convert.ToDateTime(c.Date),
                     };
                     db.ConcertDb.Add(c1);
-                    db.SaveChanges();
-                    return true;
+                    await db.SaveChangesAsync();
+                    return "sant";
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return e.ToString() + e.Message;
             }
         }
         // endrer på en konsert med den gitte ideen inni ConcertClass
