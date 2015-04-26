@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,13 @@ using System.Net;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
 
+
 namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
 
-        private String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-        private String DETAILED_INFO = "/details/json?reference=";
+        private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?reference=";
         private String DETAILED_SETIING = "&sensor=true&key=";
         private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
@@ -125,28 +126,42 @@ namespace WebApplication1.Managers
             return await db.UpdateBandLocation(bandid,area,x,y);
         }
 
+
         public void GetCoordinates(String placesRef){
 
-            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(@"https://maps.googleapis.com/maps/api/place/details/json?reference=CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA&sensor=false&key=AIzaSyD3jfeMZK1SWfRFDgMfxn_zrGRSjE7S8Vg") as HttpWebRequest;
-
-            //"CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA"
-            ///details/json?reference=CiQYAAAA0Q_JA...kT3ufVLDDvTQsOwZ_tc&sensor=true&key=AddYourOwnKeyHere
-            
+            StringBuilder query = new StringBuilder(PLACES_API_QUERY);
+            query.Append(placesRef);
+            query.Append(DETAILED_SETIING);
+            query.Append(SERVER_API_KEY);
+            Console.Write(query.ToString());
+            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(query.ToString()) as HttpWebRequest;            
             webRequest.Timeout = 20000;
             webRequest.Method = "GET";
 
-            webRequest.BeginGetResponse(new AsyncCallback(RequestCompleted), webRequest);
+            HttpWebResponse myWebResponse =(HttpWebResponse) webRequest.GetResponse();
+            Console.Write("jupp");
+
+            RequestCompleted(myWebResponse);
+           // webRequest.BeginGetResponse(new AsyncCallback(RequestCompleted), webRequest);
             
         }
 
-        private void RequestCompleted(IAsyncResult result)
+        private void RequestCompleted(HttpWebResponse res)
         {
-            var request = (HttpWebRequest)result.AsyncState;
-            var response = (HttpWebResponse)request.EndGetResponse(result);
+           // var request = (HttpWebRequest)result.AsyncState;
+            var response = (HttpWebResponse)res;
             using (var stream = response.GetResponseStream())
             {
                 var r = new System.IO.StreamReader(stream);
                 var resp = r.ReadToEnd();
+                JObject jsonResp = JObject.Parse(resp.ToString());
+                JValue lng = (JValue)jsonResp["result"]["geometry"]["location"]["lng"];
+                double longitude = (double)lng.Value;
+
+
+                JValue lat = (JValue)jsonResp["result"]["geometry"]["location"]["lat"];
+                double latidtude = (double)lat.Value;
+
                 Console.Write(resp.ToString());
             }
 

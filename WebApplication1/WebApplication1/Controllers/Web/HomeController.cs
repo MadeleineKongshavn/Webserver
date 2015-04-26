@@ -109,7 +109,9 @@ namespace WebApplication1.Controllers
             builder.Append(ok);
             builder.Append("\n");*/
 
-            new BandController().updateBandLocation(id, "area", "something different");
+            String refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
+
+            new BandController().updateBandLocation(id, "area", refer);
 
 
             ViewBag.Message = "Here's hoping!";// + m.Count;
