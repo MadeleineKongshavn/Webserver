@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Caching;
+using System.Net;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
 
@@ -11,6 +12,15 @@ namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
+
+        private String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+        private String DETAILED_INFO = "/details/json?reference=";
+        private String DETAILED_SETIING = "&sensor=true&key=";
+        private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
+
+        //        /details/json?reference=CiQYAAAA0Q_JA...kT3ufVLDDvTQsOwZ_tc&sensor=true&key=AddYourOwnKeyHere
+
+     
 /*        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
         {
             var db = new DbBand();
@@ -111,7 +121,31 @@ namespace WebApplication1.Managers
         public async Task<bool> updateBandLocation(int bandid,string area,long x,long y)
         {
             var db = new DbBand();
+          //  long[] coordinates = GetCoordinates();
             return await db.UpdateBandLocation(bandid,area,x,y);
+        }
+
+        public void GetCoordinates(String placesRef){
+
+            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(@"https://maps.googleapis.com/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=7500&types=library&sensor=false&key=AIzaSyD3jfeMZK1SWfRFDgMfxn_zrGRSjE7S8Vg") as HttpWebRequest;
+            webRequest.Timeout = 20000;
+            webRequest.Method = "GET";
+
+            webRequest.BeginGetResponse(new AsyncCallback(RequestCompleted), webRequest);
+            
+        }
+
+        private void RequestCompleted(IAsyncResult result)
+        {
+            var request = (HttpWebRequest)result.AsyncState;
+            var response = (HttpWebResponse)request.EndGetResponse(result);
+            using (var stream = response.GetResponseStream())
+            {
+                var r = new System.IO.StreamReader(stream);
+                var resp = r.ReadToEnd();
+                Console.Write(resp.ToString());
+            }
+
         }
 
 

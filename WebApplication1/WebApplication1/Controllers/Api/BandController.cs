@@ -12,8 +12,14 @@ using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers.Api
 {
+
+
     public class BandController : ApiController
     {
+    
+
+
+
         [HttpGet]
         [Route("api/Band/GetRandomBands/{userId}")]
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
@@ -150,6 +156,21 @@ namespace WebApplication1.Controllers.Api
                 return await mng.updateBandLocation(bandid, area, x, y);
             }
         }
+
+        [HttpPost]
+        [Route("api/Band/updateBandLocation/{bandid},{area},{placesRef}")]
+        public bool updateBandLocation(int bandid, string area, string placesRef)
+        {
+            if (bandid == null || area == null || placesRef == null)
+                return false;
+                BandManager mng = ManagerFactory.GetBandManager();
+                mng.GetCoordinates(placesRef);
+
+
+                return true;
+
+        }
+
 
 
         [HttpPost]

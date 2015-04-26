@@ -68,7 +68,7 @@ namespace WebApplication1.Controllers
 
 
 
-            var k = await new DbFriends().CancelFriendTask(1,2);
+        //    var k = await new DbFriends().CancelFriendTask(1,2);
 
             
            // List <MemberClass> m = await new BandController().GetAllAdminBands(2);
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
             int id=22;
 
 
-            Boolean ok = await new BandController().updateBandName("butterscotch topnotch", id);
+      /*      Boolean ok = await new BandController().updateBandName("butterscotch topnotch", id);
             StringBuilder builder = new StringBuilder("BandNameUpdate: ");
             builder.Append(ok);
             builder.Append("\n");
@@ -107,10 +107,12 @@ namespace WebApplication1.Controllers
             ok = await new BandController().updateBandLinks(id, "her er www", "da må jo dette være fb", "og soundcloud har det bra");
             builder.Append("BandLinksUpdate: ");
             builder.Append(ok);
-            builder.Append("\n");
+            builder.Append("\n");*/
+
+            new BandController().updateBandLocation(id, "area", "something different");
 
 
-            ViewBag.Message = builder.ToString();// + m.Count;
+            ViewBag.Message = "Here's hoping!";// + m.Count;
             return View();
         }
 
