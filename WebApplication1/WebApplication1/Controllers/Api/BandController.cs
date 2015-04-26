@@ -65,7 +65,8 @@ namespace WebApplication1.Controllers.Api
         {
             using (var bmgr = ManagerFactory.GetBandManager())
             {
-                return await bmgr.FindBandBasedOnQuery(query);
+                return null;
+         //       return await bmgr.FindBandBasedOnQuery(query);
             }
         }
 
@@ -165,7 +166,7 @@ namespace WebApplication1.Controllers.Api
         [Route("api/Band/UpdateBandImage/{bandid},{imgArray}")]
         public bool UpdateBandImage(int bandid,byte[] imgArray)
         {
-            if (imgArray != null && imgArray.Length!=0)
+            if (imgArray != null && imgArray.Length>0)
                 return true;
             else
                 return false;
