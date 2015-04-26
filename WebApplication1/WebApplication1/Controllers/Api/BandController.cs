@@ -141,34 +141,13 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        [HttpPost]
-        [Route("api/Band/updateBandLocation/{bandid},{area},{x},{y}")]
-        public async Task<bool> updateBandLocation(int bandid,string area,long x, long y)
-        {
-            if (bandid == null || area == null)
-                return false;
-
-            using (var mng = ManagerFactory.GetBandManager())
-            {
-                long xCoo = (long)x;
-                long yCoo = (long)y;
-
-                return await mng.updateBandLocation(bandid, area, x, y);
-            }
-        }
-
+       
         [HttpPost]
         [Route("api/Band/updateBandLocation/{bandid},{area},{placesRef}")]
-        public bool updateBandLocation(int bandid, string area, string placesRef)
+        public Task<bool> updateBandLocation(int bandid, string area, string placesRef)
         {
-            if (bandid == null || area == null || placesRef == null)
-                return false;
                 BandManager mng = ManagerFactory.GetBandManager();
-                mng.GetCoordinates(placesRef);
-
-
-                return true;
-
+                return mng.updateBandLocation(bandid,area,placesRef);
         }
 
 

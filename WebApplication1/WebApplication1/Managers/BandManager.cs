@@ -19,9 +19,7 @@ namespace WebApplication1.Managers
         private String DETAILED_SETIING = "&sensor=true&key=";
         private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
-        //        /details/json?reference=CiQYAAAA0Q_JA...kT3ufVLDDvTQsOwZ_tc&sensor=true&key=AddYourOwnKeyHere
 
-     
 /*        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
         {
             var db = new DbBand();
@@ -119,15 +117,14 @@ namespace WebApplication1.Managers
             return await db.UpdateBandLinks(bandid,www,fb,soundcloud);
         }
 
-        public async Task<bool> updateBandLocation(int bandid,string area,long x,long y)
+        public async Task<bool> updateBandLocation(int bandid,string area,string apiRef)
         {
             var db = new DbBand();
-          //  long[] coordinates = GetCoordinates();
-            return await db.UpdateBandLocation(bandid,area,x,y);
+            long[] coordinates = GetCoordinates(apiRef);
+            return await db.UpdateBandLocation(bandid,area,coordinates[0],coordinates[1]);
         }
 
-
-        public void GetCoordinates(String placesRef){
+        private long[] GetCoordinates(String placesRef){
 
             StringBuilder query = new StringBuilder(PLACES_API_QUERY);
             query.Append(placesRef);
@@ -137,19 +134,18 @@ namespace WebApplication1.Managers
             System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(query.ToString()) as HttpWebRequest;            
             webRequest.Timeout = 20000;
             webRequest.Method = "GET";
-
-            HttpWebResponse myWebResponse =(HttpWebResponse) webRequest.GetResponse();
-            Console.Write("jupp");
-
-            RequestCompleted(myWebResponse);
-           // webRequest.BeginGetResponse(new AsyncCallback(RequestCompleted), webRequest);
+            HttpWebResponse response =(HttpWebResponse) webRequest.GetResponse();
             
+            double[] coord=RequestCompleted(response);
+            long lng = (long)coord[0]; long lat = (long)coord[1];
+            return new long[] { lng, lat };
         }
 
-        private void RequestCompleted(HttpWebResponse res)
+        private double[] RequestCompleted(HttpWebResponse res)
         {
-           // var request = (HttpWebRequest)result.AsyncState;
+            double[] coord = new double[2];
             var response = (HttpWebResponse)res;
+         
             using (var stream = response.GetResponseStream())
             {
                 var r = new System.IO.StreamReader(stream);
@@ -157,16 +153,17 @@ namespace WebApplication1.Managers
                 JObject jsonResp = JObject.Parse(resp.ToString());
                 JValue lng = (JValue)jsonResp["result"]["geometry"]["location"]["lng"];
                 double longitude = (double)lng.Value;
-
+                coord[0] = longitude;
 
                 JValue lat = (JValue)jsonResp["result"]["geometry"]["location"]["lat"];
                 double latidtude = (double)lat.Value;
+                coord[1] = latidtude;
 
                 Console.Write(resp.ToString());
             }
 
+            return coord;
         }
-
 
         public async Task<bool> UpdateBand(BandClass b)
         {
