@@ -26,13 +26,13 @@ namespace WebApplication1.Models.Db
                    if(v != null) v.ForEach(i => db.FriendsDb.Remove(i));
 
                    var n = await (from f in db.NotificationsDb
-                                   where f.UserId == fuid && f.Type == 1 && f.FriendRequestNotifications.UserId == fuid ||
-                                         f.Type == 1 && f.FriendRequestNotifications.UserId == uid && f.UserId == uid
+                                   where f.UserId == fuid && f.Type == 1 && f.FriendRequestNotifications.UserId == uid ||
+                                         f.Type == 1 && f.FriendRequestNotifications.UserId == fuid && f.UserId == uid
                                    select f).ToListAsync();
 
                     n.ForEach(i => db.FriendRequestNotificationsDb.Remove(i.FriendRequestNotifications));
                     n.ForEach(i => db.NotificationsDb.Remove(i));
-                    db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
                     return true;
                 }
                 catch (Exception e)
