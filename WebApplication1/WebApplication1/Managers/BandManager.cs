@@ -120,12 +120,11 @@ namespace WebApplication1.Managers
         public async Task<bool> updateBandLocation(int bandid,string area,string apiRef)
         {
             var db = new DbBand();
-            long[] coordinates = GetCoordinates(apiRef);
+            double[] coordinates = GetCoordinates(apiRef);
             return await db.UpdateBandLocation(bandid,area,coordinates[0],coordinates[1]);
         }
 
-        private long[] GetCoordinates(String placesRef){
-
+        private double[] GetCoordinates(String placesRef){
             StringBuilder query = new StringBuilder(PLACES_API_QUERY);
             query.Append(placesRef);
             query.Append(DETAILED_SETIING);
@@ -135,10 +134,7 @@ namespace WebApplication1.Managers
             webRequest.Timeout = 20000;
             webRequest.Method = "GET";
             HttpWebResponse response =(HttpWebResponse) webRequest.GetResponse();
-            
-            double[] coord=RequestCompleted(response);
-            long lng = (long)coord[0]; long lat = (long)coord[1];
-            return new long[] { lng, lat };
+            return RequestCompleted(response);    
         }
 
         private double[] RequestCompleted(HttpWebResponse res)

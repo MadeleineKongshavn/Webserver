@@ -318,7 +318,7 @@ namespace WebApplication1.Models
             }
         }
 
-        public async Task<bool> UpdateBandLocation(int bandid, string area, long x, long y)
+        public async Task<bool> UpdateBandLocation(int bandid, string area, double x, double y)
         {
             if (bandid == null || area == null)
                 return false;
