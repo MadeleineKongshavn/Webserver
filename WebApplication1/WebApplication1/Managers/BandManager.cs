@@ -127,7 +127,11 @@ namespace WebApplication1.Managers
 
         public void GetCoordinates(String placesRef){
 
-            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(@"https://maps.googleapis.com/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=7500&types=library&sensor=false&key=AIzaSyD3jfeMZK1SWfRFDgMfxn_zrGRSjE7S8Vg") as HttpWebRequest;
+            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(@"https://maps.googleapis.com/maps/api/place/details/json?reference=CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA&sensor=false&key=AIzaSyD3jfeMZK1SWfRFDgMfxn_zrGRSjE7S8Vg") as HttpWebRequest;
+
+            //"CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA"
+            ///details/json?reference=CiQYAAAA0Q_JA...kT3ufVLDDvTQsOwZ_tc&sensor=true&key=AddYourOwnKeyHere
+            
             webRequest.Timeout = 20000;
             webRequest.Method = "GET";
 
