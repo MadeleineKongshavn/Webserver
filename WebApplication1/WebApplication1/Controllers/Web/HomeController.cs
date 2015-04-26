@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -89,9 +90,27 @@ namespace WebApplication1.Controllers
 
            //Boolean ok =  await new ConcertController(). GetAttendingConcerTask(2, 1);
         //   Boolean ok = await new ConcertController().SetAttendingConcertTask(2, 1, false);
-            //Boolean ok = await new BandController().UpdateBand(band);   
+            
+            int id=22;
 
-            ViewBag.Message = " your count name " + k + "er informasjonen";// + m.Count;
+
+            Boolean ok = await new BandController().updateBandName("butterscotch topnotch", id);
+            StringBuilder builder = new StringBuilder("BandNameUpdate: ");
+            builder.Append(ok);
+            builder.Append("\n");
+
+            ok=await new BandController().updateBandLocation(id,"Setton",(long)44.8888,(long)77.918274);
+            builder.Append("BandLocationUpdate: ");
+            builder.Append(ok);
+            builder.Append("\n");
+
+            ok = await new BandController().updateBandLinks(id, "her er www", "da må jo dette være fb", "og soundcloud har det bra");
+            builder.Append("BandLinksUpdate: ");
+            builder.Append(ok);
+            builder.Append("\n");
+
+
+            ViewBag.Message = builder.ToString();// + m.Count;
             return View();
         }
 

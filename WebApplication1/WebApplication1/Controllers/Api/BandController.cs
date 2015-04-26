@@ -137,7 +137,7 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/Band/updateBandLocation/{bandid},{area},{x},{y}")]
-        public async Task<bool> updateBandName(int bandid,string area,long x, long y)
+        public async Task<bool> updateBandLocation(int bandid,string area,long x, long y)
         {
             if (bandid == null || area == null)
                 return false;
@@ -154,7 +154,7 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/Band/updateBandLinks/{bandid},{www},{fb},{soundcloud}")]
-        public async Task<bool> updateBandLocation(int bandid, string www,string fb, string soundcloud)
+        public async Task<bool> updateBandLinks(int bandid, string www,string fb, string soundcloud)
         {
             using (var mng = ManagerFactory.GetBandManager())
             {
