@@ -19,11 +19,12 @@ namespace WebApplication1.Managers
         private String DETAILED_SETIING = "&sensor=true&key=";
         private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
-        public async Task<List<BandClass>> FindBandBasedOnQuery(String query)
+
+/*        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
         {
             var db = new DbBand();
-            return await db.FindBandBasedOnQuery(query);
-        }
+            return await db.FindBandBasedOnQuery(query, uid);
+        }*/
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             var db = new DbBand();
