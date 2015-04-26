@@ -60,15 +60,15 @@ namespace WebApplication1.Controllers.Api
             }
         } 
   
-        /*      [HttpGet]
-        [Route("api/Band/FindBandBasedOnQuery/{query},{uid}")]
-        public async Task<List<BandClass>> FindBandBasedOnQuery(String query, int uid)
+        [HttpGet]
+        [Route("api/Band/FindBandBasedOnQuery/{query}")]
+        public async Task<List<BandClass>> FindBandBasedOnQuery(String query)
         {
             using (var bmgr = ManagerFactory.GetBandManager())
             {
-                return await bmgr.FindBandBasedOnQuery(query, uid);
+                return await bmgr.FindBandBasedOnQuery(query);
             }
-        }*/
+        }
 
         [HttpGet]
         [Route("api/Band/FindAllBandsToUser/{id}")]
