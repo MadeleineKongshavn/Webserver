@@ -126,11 +126,44 @@ namespace WebApplication1.Controllers.Api
         [Route("api/Band/updateBandName/{name},{bandId}")]
         public async Task<bool> updateBandName(String name, int bandId)
         {
+            if (bandId == null || name == null)
+                return false;
+
             using (var mng = ManagerFactory.GetBandManager())
             {
                 return await mng.updateBandName(name, bandId);
             }
         }
+
+        [HttpPost]
+        [Route("api/Band/updateBandLocation/{bandid},{area},{x},{y}")]
+        public async Task<bool> updateBandName(int bandid,string area,long x, long y)
+        {
+            if (bandid == null || area == null)
+                return false;
+
+            using (var mng = ManagerFactory.GetBandManager())
+            {
+                long xCoo = (long)x;
+                long yCoo = (long)y;
+
+                return await mng.updateBandLocation(bandid, area, x, y);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("api/Band/updateBandLinks/{bandid},{www},{fb},{soundcloud}")]
+        public async Task<bool> updateBandLocation(int bandid, string www,string fb, string soundcloud)
+        {
+            using (var mng = ManagerFactory.GetBandManager())
+            {
+                return await mng.updateBandLinks(bandid, www, fb, soundcloud);
+            }
+        }
+
+
+
 
         [HttpPost]
         [Route("api/Band/UpdateBand/{jsonBand}")]

@@ -94,12 +94,26 @@ namespace WebApplication1.Managers
             return bandClass;
         }
 
+        //fikse rekkefølge!
         public async Task<bool> updateBandName(String name, int bandId)
         {
             var db=new DbBand();
-            return await db.UpdateBandName(name,bandId);
+            return await db.UpdateBandName(bandId,name);
 
         }
+
+        public async Task<bool> updateBandLinks(int bandid, string www, string fb, string soundcloud)
+        {
+            var db = new DbBand();
+            return await db.UpdateBandLinks(bandid,www,fb,soundcloud);
+        }
+
+        public async Task<bool> updateBandLocation(int bandid,string area,long x,long y)
+        {
+            var db = new DbBand();
+            return await db.UpdateBandLocation(bandid,area,x,y);
+        }
+
 
         public async Task<bool> UpdateBand(BandClass b)
         {

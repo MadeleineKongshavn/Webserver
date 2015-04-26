@@ -269,14 +269,14 @@ namespace WebApplication1.Models
             
         }
         
-        public async Task<bool> UpdateBandName(String name, int bandId)
+        public async Task<bool> UpdateBandName(int bandid,string name)
         {
             try 
             {
                 using (var db = new ApplicationDbContext())
                 {
                     var band= (from getBand in db.BandDb
-                              where getBand.BandId==bandId
+                              where getBand.BandId==bandid
                               select getBand).FirstOrDefault();
 
                     band.BandName = name;
@@ -290,7 +290,90 @@ namespace WebApplication1.Models
 
             return true;
         }
-        
+
+        public async Task<bool> UpdateBandLinks(int bandid, string www, string fb,string soundcloud)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from b in db.BandDb
+                                where b.BandId == bandid
+                                select b).FirstOrDefault();
+                    if(www!=null)
+                    band.UrlRandom = www;
+                    if(fb!=null)
+                    band.UrlFacebook = fb;
+                    if(soundcloud!=null)
+                    band.UrlSoundCloud = soundcloud;
+                    band.Timestamp = DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+
+            }
+        }
+
+        public async Task<bool> UpdateBandLocation(int bandid, string area, long x, long y)
+        {
+            if (bandid == null || area == null)
+                return false;
+            try
+            {
+                using(var db=new ApplicationDbContext()) {
+
+                    var band=(from b in db.BandDb
+                               where b.BandId==bandid
+                               select b).FirstOrDefault();
+                    band.Area=area;
+                    band.Xcoordinates=x;
+                    band.Ycoordinates=y;
+                    band.Timestamp=DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+                }
+
+            }catch(Exception){
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateBandImage(int bandid,string bitmapUrl,string bitmapSmallUrl)
+        {
+            if (bitmapUrl == null || bitmapSmallUrl == null)
+                return false;
+
+            try
+            {
+                using(var db=new ApplicationDbContext())
+                {
+                    var band=(from b in db.BandDb
+                              where b.BandId==bandid
+                              select b).FirstOrDefault();
+
+                    band.BitmapUrl = bitmapUrl;
+                    band.BitmapSmalUrl = bitmapSmallUrl;
+                    band.Timestamp = DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateBandGenres(String[] genres)
+        {
+            return false;
+        }
+
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
             try
