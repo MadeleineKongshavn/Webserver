@@ -143,8 +143,9 @@ namespace WebApplication1.Controllers.Api
        
         [HttpPost]
         [Route("api/Band/updateBandLocation/{bandid},{area},{placesRef}")]
-        public Task<bool> updateBandLocation(int bandid, string area, string placesRef)
+        public Task<bool> updateBandLocation(int bandid, String area, char[] refArray)
         {
+            String placesRef = new string(refArray);
                 BandManager mng = ManagerFactory.GetBandManager();
                 return mng.updateBandLocation(bandid,area,placesRef);
         }
