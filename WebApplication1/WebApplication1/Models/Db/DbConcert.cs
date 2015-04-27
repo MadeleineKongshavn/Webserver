@@ -12,7 +12,7 @@ namespace WebApplication1.Models
 {
     public class DbConcert
     {
-        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query, int uid)
+        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -20,6 +20,9 @@ namespace WebApplication1.Models
                     where c.Title.Contains(query)
                     select new ConcertClass()
                     {
+                        Area = c.Area,
+                        Bandname = c.Band.BandName,
+                        ConcertId = c.ConcertId,
                         Title = c.Title,
                         SmallBitmapUrl = c.BitmapSmalUrl,
                     }).ToListAsync();

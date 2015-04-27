@@ -65,8 +65,7 @@ namespace WebApplication1.Controllers.Api
         {
             using (var bmgr = ManagerFactory.GetBandManager())
             {
-                return null;
-         //       return await bmgr.FindBandBasedOnQuery(query);
+                return await bmgr.FindBandBasedOnQuery(query);
             }
         }
 
