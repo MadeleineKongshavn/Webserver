@@ -300,11 +300,11 @@ namespace WebApplication1.Models
                     var band = (from b in db.BandDb
                                 where b.BandId == bandid
                                 select b).FirstOrDefault();
-                    if(www!=null)
+                    if(!(www.Equals("---")))
                     band.UrlRandom = www;
-                    if(fb!=null)
+                    if(!(fb.Equals("---")))
                     band.UrlFacebook = fb;
-                    if(soundcloud!=null)
+                    if(!(soundcloud.Equals("---")))
                     band.UrlSoundCloud = soundcloud;
                     band.Timestamp = DateTime.Now;
                     db.SaveChanges();
