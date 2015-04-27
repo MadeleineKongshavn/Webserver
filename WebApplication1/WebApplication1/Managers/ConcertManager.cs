@@ -11,10 +11,10 @@ namespace WebApplication1.Managers
 {
     public class ConcertManager : BaseManager
     {
-        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query, int uid)
+        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
         {
             var db = new DbConcert();
-            return await db.FindConcertBasedOnQuery(query, uid);
+            return await db.FindConcertBasedOnQuery(query);
         }
         public async Task<Boolean> GetAttendingConcerTask(int cid, int uid)
         {

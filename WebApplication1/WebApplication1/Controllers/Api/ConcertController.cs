@@ -14,12 +14,12 @@ namespace WebApplication1.Controllers.Api
     public class ConcertController : ApiController
     {
         [HttpGet]
-        [Route("api/Band/FindConcertBasedOnQuery/{query},{uid}")]
-        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query, int uid)
+        [Route("api/Concert/FindConcertBasedOnQuery/{query}")]
+        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
         {
             using (var bmgr = ManagerFactory.GetConcertManager())
             {
-                return await bmgr.FindConcertBasedOnQuery(query, uid);
+                return await bmgr.FindConcertBasedOnQuery(query);
             }
         }
         [HttpGet]

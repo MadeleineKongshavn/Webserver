@@ -478,21 +478,30 @@ namespace WebApplication1.Models
         {
             using (var db = new ApplicationDbContext())
             {
-                query = query.Trim();
-                List<Band> allBands = (from b in db.BandDb where b.BandName.Contains(query) select b).ToList();
-
-                allBands.OrderBy(b => b.BandName).ToList();
-                List<BandClass> bands = new List<BandClass>();
-                foreach (var b in allBands)
+                try
                 {
-                    BandClass newB = new BandClass();
-                    newB.Area = b.Area;
-                    newB.BandName = b.BandName;
-                    newB.SmallBitmapUrl = b.BitmapSmalUrl;
-                    newB.BandId = b.BandId;
-                    bands.Add(newB);
-                 }
-                 return bands;
+
+                    query = query.Trim();
+                    List<Band> allBands = (from b in db.BandDb where b.BandName.Contains(query) select b).ToList();
+
+                    allBands.OrderBy(b => b.BandName).ToList();
+                    List<BandClass> bands = new List<BandClass>();
+                    foreach (var b in allBands)
+                    {
+                        BandClass newB = new BandClass();
+                        newB.Area = b.Area;
+                        newB.BandName = b.BandName;
+                        newB.SmallBitmapUrl = b.BitmapSmalUrl;
+                        newB.BandId = b.BandId;
+                        bands.Add(newB);
+                    }
+                    return bands;
+                }
+                catch (Exception)
+                {
+                    return new List<BandClass>();
+                }
+
              }
         }
 
