@@ -13,6 +13,26 @@ namespace WebApplication1.Controllers.Api
 {
     public class UserController : ApiController
     {
+        [HttpGet]
+        [Route("api/User/NormalLogin/{pass},{email}")]
+        public async Task<int> NormalLogin(String pass, String email)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.NormalLogin(pass, email);
+            }            
+        }
+
+        [HttpGet]
+        [Route("api/User/NormalRegister/{name},{email},{pass},{xCord}")]
+        public async Task<int> NormalRegister(String name, String email, String pass, double xCord)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return 5;
+                //return await mngr.NormalRegister(name, email, pass, yCord, xCord);
+            }
+        }
         [HttpPost]
         [Route("api/User/AddFaceUser/{uid},{profilename},{xCord},{yCord}")]
         public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)

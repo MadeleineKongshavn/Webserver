@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,6 +17,100 @@ namespace WebApplication1.Models
 {
     public class DbUser
     {
+        public async Task<int> NormalRegister(String name, String email, String pass, double yCord, double xCord)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    byte[] password = Encoding.UTF8.GetBytes(pass);
+                    byte[] salt = GetNewSalt();
+                    User u = new User()
+                    {
+                        Timestamp = DateTime.Now,
+                        Radius = 500,
+                        Public = true,
+                        SeeNotifications = true,
+                        ProfileName = name,
+                        Ycoordinates = yCord,
+                        Xcoordinates = xCord,
+                        Password = new Password()
+                        {
+                            Email = email,
+                            PasswordSet = GenerateSaltedHash(password, salt),
+                            Salt = salt,
+                        }
+                    };
+                    db.UserDb.Add(u);
+                    await db.SaveChangesAsync();
+                    return u.UserId;
+                }
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+            
+        }
+        public async Task<int> NormalLogin(String pass, String name)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var f = (from b in db.UserDb where b.Password.Email.Equals(name, StringComparison.InvariantCultureIgnoreCase) select b).FirstOrDefault();
+                    Byte[] password = GenerateSaltedHash(Encoding.UTF8.GetBytes(pass), f.Password.Salt);
+                    if (CompareByteArrays(f.Password.PasswordSet, password)) return f.UserId; else return -1;
+                }
+
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+        public byte[] GetNewSalt()
+        {
+            byte[] salt = new byte[32];
+            System.Security.Cryptography.RNGCryptoServiceProvider.Create().GetBytes(salt);
+            return salt;
+        }
+        static byte[] GenerateSaltedHash(byte[] plainText, byte[] salt)
+        {
+            HashAlgorithm algorithm = new SHA256Managed();
+
+            byte[] plainTextWithSaltBytes =
+              new byte[plainText.Length + salt.Length];
+
+            for (int i = 0; i < plainText.Length; i++)
+            {
+                plainTextWithSaltBytes[i] = plainText[i];
+            }
+            for (int i = 0; i < salt.Length; i++)
+            {
+                plainTextWithSaltBytes[plainText.Length + i] = salt[i];
+            }
+
+            return algorithm.ComputeHash(plainTextWithSaltBytes);
+        }
+
+        public static bool CompareByteArrays(byte[] array1, byte[] array2)
+        {
+            if (array1.Length != array2.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (array1[i] != array2[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         public async Task<Boolean> CheckNewNotifications(int id)
         {
             try

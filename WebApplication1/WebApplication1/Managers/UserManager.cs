@@ -12,6 +12,16 @@ namespace WebApplication1.Managers
 {
     public class UserManager : BaseManager
     {
+        public async Task<int> NormalRegister(String name, String email, String pass, double yCord, double xCord)
+        {
+            var db = new DbUser();
+            return await db.NormalRegister(name, email, pass, yCord, xCord);
+        }
+        public async Task<int> NormalLogin(String pass, String email)
+        {
+            var db = new DbUser();
+            return await db.NormalLogin(pass, email);
+        }
         public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
         {
             var db = new DbUser();
