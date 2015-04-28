@@ -43,12 +43,15 @@ namespace WebApplication1.Controllers
             builder.Append(ok);
             builder.Append("\n");*/
 
-            String refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
-            char[] input = refer.ToCharArray();
-            new BandController().updateBandLocation(id,"HHuttiHeita",input);
+            //String refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
+            //char[] input = refer.ToCharArray();
+            //new BandController().updateBandLocation(id,"HHuttiHeita",input);
 
-            List<BandClass> l =  await new BandController().FindBandBasedOnQuery("h");
-            ViewBag.Message = "Here's hoping! " + l.Count;// + m.Count;
+            //List<BandClass> l =  await new BandController().FindBandBasedOnQuery("h");
+
+            bool ok = await new GenreController().AddGenre("reggae");
+            
+            ViewBag.Message = "Here's hoping! " + ok;// + m.Count;
             return View();
         }
 
