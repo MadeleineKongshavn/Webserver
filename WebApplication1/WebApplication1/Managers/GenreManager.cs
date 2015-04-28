@@ -9,9 +9,9 @@ namespace WebApplication1.Managers
 {
     public class GenreManager
     {
-        public async Task<GenreClass> GetBandsById(int id)
+        public async Task<GenreClass> GetGenreById(int id)
         {
-            DbGenre db=new DbGenre();
+            DbGenre db = new DbGenre();
             return await db.getGenreById(id);
         }
 
