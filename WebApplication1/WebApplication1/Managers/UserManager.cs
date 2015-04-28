@@ -76,7 +76,7 @@ namespace WebApplication1.Managers
             var cacheKey = String.Format("User_Get_{0}", userId);
             RemoveCacheKeysByPrefix(cacheKey);
         }
-
+        
         public List<NotificationsClass> GetNotificationByUserId(int userId)
         {
             var db = new DbUser();
@@ -88,5 +88,12 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             db.UserHasSeenAllNotifications(userId);
         }
+
+        public async Task<bool> UpdateUserGenres(int userid,string[] genres)
+        {
+            var db = new DbUser();
+            return await db.UpdateUserGenres(userid, genres);
+        }
+       
     }
 }

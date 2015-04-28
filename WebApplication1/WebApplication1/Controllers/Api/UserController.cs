@@ -98,5 +98,15 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.CheckNewNotifications(id);
             }            
         }
+        [HttpPost]
+        [Route("api/User/UpdateUserGenres/{userid},{genres}")]
+        public async Task<bool> UpdateUserGenres(int userid,string[] genres)
+        {
+            using (var mng = ManagerFactory.GetUserManager())
+            {
+                return await mng.UpdateUserGenres(userid, genres);
+            }
+        }
+
     }
 }

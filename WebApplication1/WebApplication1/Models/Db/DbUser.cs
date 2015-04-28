@@ -355,8 +355,53 @@ namespace WebApplication1.Models
             }
         }
 
+        public async Task<bool> UpdateUserGenres(int userid, String[] genres)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var oldGenres = (from ug in db.UserGenreDb
+                                     where ug.UserId == userid
+                                     select ug);
+                    foreach (var obj in oldGenres)
+                    {
+                        db.UserGenreDb.Remove(obj);
+                    }
+
+
+                    var allGenres = (from g in db.GenreDb
+                                     select g);
+
+                    var newGenres = allGenres.Where(x => genres.Contains(x.GenreName));
+
+                    foreach (Genre obj in newGenres)
+                    {
+                        UserGenre ug = new UserGenre { GenreId = obj.GenreId, UserId = userid };
+                        db.UserGenreDb.Add(ug);
+                    }
+
+                    db.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+        }
+
+
+
     }
 }
+
+
+
+
 /*  select new NotificationsClass()
            {
                FriendId = n.FriendRequestNotifications.UserId,
