@@ -50,17 +50,24 @@ namespace WebApplication1.Controllers
             //List<BandClass> l =  await new BandController().FindBandBasedOnQuery("h");
 
             GenreController gc = new GenreController();
-            gc.AddGenre("metal");
+
+            GenreClass g1 = await gc.GetGenreById(1);
+            GenreClass g2 = await gc.GetGenreByName("dancehall");
+            
+            /*gc.AddGenre("metal");
             gc.AddGenre("dancehall");
             gc.AddGenre("jazz");
-            gc.AddGenre("singer/songwriter");
+            gc.AddGenre("singer/songwriter");*/
 
             List<GenreClass> genres = await gc.GetAllGenres();
             String s="";
             foreach(GenreClass g in genres)
                 s+=g.GenreName + ", ";
 
-            ViewBag.Message = "Here's hoping! " + s;// + m.Count;
+            bool ok1 = g1 != null ? true : false; 
+            bool ok2= g2 !=null? true: false;
+
+            ViewBag.Message = "Here's hoping! " + ok1 +ok2;// + m.Count;
             return View();
         }
 
