@@ -22,10 +22,10 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.NormalLogin(pass, email);
         }
-        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
+        public async Task<int> AddFaceUser(int uid, String profilename,String path, long xCord, long yCord)
         {
             var db = new DbUser();
-            return await db.AddFaceUser(uid, profilename, xCord, yCord);
+            return await db.AddFaceUser(uid, profilename, path, xCord, yCord);
         }
         public async Task<Boolean> CheckNewNotifications(int id)
         {

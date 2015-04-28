@@ -159,10 +159,13 @@ namespace WebApplication1.Models
             }
         }
 
-        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
+        public async Task<int> AddFaceUser(int uid, String profilename, String path, long xCord, long yCord)
         {
             using (var db = new ApplicationDbContext())
             {
+
+                var d = await (from v in db.UserDb where v.Api.ApiId == uid select v).FirstOrDefaultAsync();
+                if (d != null) return d.UserId;   
 
                 var u1 = new User()
                 {
@@ -172,6 +175,7 @@ namespace WebApplication1.Models
                     Radius = 500,
                     Xcoordinates = xCord,
                     Ycoordinates = yCord,
+                    Url = path,
                     Timestamp = DateTime.Now,
                 };
                 db.UserDb.Add(u1);
@@ -179,10 +183,9 @@ namespace WebApplication1.Models
                 {
                     ApiId = uid,
                 };
-                db.SaveChanges();
-                return true;
+                await db.SaveChangesAsync();
+                return u1.UserId;
             }
-            
         }
         // endrer basisk funksjonene til en bruker
         public async Task<Boolean> ChangeUser(UserClass u1) 

@@ -14,6 +14,37 @@ namespace WebApplication1.Controllers.Api
     public class UserController : ApiController
     {
         [HttpGet]
+        [Route("api/User/CheckUserName/{name}")]
+        public async Task<int> CheckUserName(String name)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return -1;
+                //return await mngr.CheckUserName(name);
+            }    
+        }
+        [HttpGet]
+        [Route("api/User/CheckEmail/{email}")]
+        public async Task<int> CheckEmail(String email)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return -1;
+                //return await mngr.CheckEmail(email);
+            }
+        }
+        [HttpPost]
+        [Route("api/User/AddFaceUser/{uid},{profilename},{path},{xCord},{yCord}")]
+        public async Task<int> AddFaceUser(int uid, String profilename, String path, long xCord, long yCord)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.AddFaceUser(uid, profilename, path, xCord, yCord);
+            }
+        }
+
+
+        [HttpGet]
         [Route("api/User/NormalLogin/{pass},{email}")]
         public async Task<int> NormalLogin(String pass, String email)
         {
@@ -24,24 +55,15 @@ namespace WebApplication1.Controllers.Api
         }
 
         [HttpGet]
-        [Route("api/User/NormalRegister/{name},{email},{pass},{xCord}")]
-        public async Task<int> NormalRegister(String name, String email, String pass, double xCord)
+        [Route("api/User/NormalRegister/{name},{email},{pass},{xCord},{yCord}")]
+        public async Task<int> NormalRegister(String name, String email, String pass, double xCord, double yCord)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return 5;
-                //return await mngr.NormalRegister(name, email, pass, yCord, xCord);
+                return await mngr.NormalRegister(name, email, pass, yCord, xCord);
             }
         }
-        [HttpPost]
-        [Route("api/User/AddFaceUser/{uid},{profilename},{xCord},{yCord}")]
-        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.AddFaceUser(uid, profilename, xCord, yCord);
-            }  
-        }
+
         [HttpPost]
         [Route("api/User/ChangeUser/{u},{pic}")]
         public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
