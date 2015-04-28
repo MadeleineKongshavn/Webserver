@@ -221,54 +221,46 @@ namespace WebApplication1.Models
             }
         }
         // endrer på basisk funskjonene til et band
-        
-        public async Task<bool> ChangeBand(BandClass b)
+
+        public async Task<bool> UpdateBandGenres(int bandid, String[] genres)
         {
             try
             {
-                using (var db = new ApplicationDbContext())
+                using(var db=new ApplicationDbContext())
                 {
-                    var b1 = (from ban in db.BandDb
-                              where b.BandId == ban.BandId
-                              select ban).FirstOrDefault();
-
-                    // lagre pic i bitmapurl og bitmapsmallurl
-
-                    b1.UrlRandom = b.UrlRandom;
-                    b1.UrlSoundCloud = b.UrlSoundCloud;
-                    b1.UrlFacebook = b.UrlFacebook;
-                    b1.Xcoordinates = b.Xcoordinates;
-                    b1.Ycoordinates = b.Ycoordinates;
-                    b1.Area = b.Area;
-                    b1.BandName = b.BandName;
-                    b1.BitmapSmalUrl = b.BitmapUrl;
-                    b1.BitmapUrl = b.BitmapUrl;
-                    b1.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
-                    b1.SongName = b.SongName;
-                    b1.Song = null; //hvis sangen skal være en byte array
-                    b1.Timestamp = DateTime.Now;
-
-               /*     List<Member> listMembers = new List<Member>();
-                    foreach (var id in b.Member)
+                    var oldGenres = (from bg in db.BandGenreDb
+                                     where bg.GenreId == bandid
+                                     select bg);
+                    foreach (var obj in oldGenres)
                     {
-                        listMembers.Add(new Member()
-                        {
-                            BandId = b.BandId,
-                            UserId = id,
-                        });
+                        db.BandGenreDb.Remove(obj);
                     }
-                    b1.Member = listMembers;*/
+
+                    var allGenres=(from g in db.GenreDb
+                                   select g);
+
+                    var newGenres = allGenres.Where(x => genres.Contains(x.GenreName));
+                  
+                    foreach(Genre obj in newGenres)
+                    {
+                        BandGenre bg = new BandGenre { GenreId=obj.GenreId, BandId=bandid};
+                        db.BandGenreDb.Add(bg);
+                    }
+                  
                     db.SaveChanges();
-                    return true;
                 }
+
+                return true;
             }
             catch (Exception)
             {
+
                 return false;
-            }  
-            
-        }
+            }
         
+        }
+
+
         public async Task<bool> UpdateBandName(int bandid,string name)
         {
             try 
@@ -369,11 +361,7 @@ namespace WebApplication1.Models
             }
         }
 
-        public async Task<bool> UpdateBandGenres(String[] genres)
-        {
-            return false;
-        }
-
+        
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
             try

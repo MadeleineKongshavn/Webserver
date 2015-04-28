@@ -49,25 +49,37 @@ namespace WebApplication1.Controllers
 
             //List<BandClass> l =  await new BandController().FindBandBasedOnQuery("h");
 
+
+            /*            
             GenreController gc = new GenreController();
 
             GenreClass g1 = await gc.GetGenreById(1);
-            GenreClass g2 = await gc.GetGenreByName("dancehall");
-            
-            /*gc.AddGenre("metal");
+            GenreClass g2 = await gc.GetGenreByName("dancehall"); 
+            gc.AddGenre("metal");
             gc.AddGenre("dancehall");
             gc.AddGenre("jazz");
-            gc.AddGenre("singer/songwriter");*/
+            gc.AddGenre("singer/songwriter");
 
-            List<GenreClass> genres = await gc.GetAllGenres();
-            String s="";
-            foreach(GenreClass g in genres)
-                s+=g.GenreName + ", ";
+             List<GenreClass> genres = await gc.GetAllGenres();
+               String s="";
+               foreach(GenreClass g in genres)
+                   s+=g.GenreName + ", ";
 
-            bool ok1 = g1 != null ? true : false; 
-            bool ok2= g2 !=null? true: false;
+               bool ok1 = g1 != null ? true : false; 
+               bool ok2= g2 !=null? true: false;
+               StringBuilder b = new StringBuilder();
+               b.Append("ok1:");
+               b.Append(g1.GenreName);
+               string s1 = b.ToString();
 
-            ViewBag.Message = "Here's hoping! " + ok1 +ok2;// + m.Count;
+               b.Clear();
+               b.Append("ok2:");
+               b.Append(g2.GenreName);
+               string s2=b.ToString();*/
+               string[] gen={"jazz","singer/songwriter"};
+               bool ok =await new BandController().UpdateBandGenres(id, gen);
+
+            ViewBag.Message = "Here's hoping! "+ok;// + m.Count;
             return View();
         }
 

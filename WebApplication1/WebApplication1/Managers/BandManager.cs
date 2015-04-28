@@ -71,7 +71,7 @@ namespace WebApplication1.Managers
             return await UploadImage(pic);
         }
         
-        public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
+   /*     public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
         {
             var db = new DbBand();
             var cacheKey = String.Format("Band_GetBandToUser_{0}", b.BandId);
@@ -80,7 +80,7 @@ namespace WebApplication1.Managers
             b.BitmapUrl = imgUrl;
             b.SmallBitmapUrl = imgUrl;
             return await db.ChangeBand(b);
-        }
+        }*/
       
         public async Task<BandClass> GetBandById(int bandId)
         {
@@ -160,6 +160,14 @@ namespace WebApplication1.Managers
 
             return coord;
         }
+
+        public async Task<bool> updateBandGenres(int bandid, string[] newGenres)
+        {
+            var db = new DbBand();
+            return await db.UpdateBandGenres(bandid, newGenres);
+
+        }
+
 
         public async Task<bool> UpdateBand(BandClass b)
         {
