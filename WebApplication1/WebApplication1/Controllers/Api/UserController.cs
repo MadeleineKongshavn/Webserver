@@ -14,22 +14,23 @@ namespace WebApplication1.Controllers.Api
     public class UserController : ApiController
     {
         [HttpGet]
-        [Route("api/User/NormalLogin/{user},{email}")]
-        public async Task<int> NormalLogin(String user, String email)
+        [Route("api/User/NormalLogin/{pass},{email}")]
+        public async Task<int> NormalLogin(String pass, String email)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return await mngr.NormalLogin(user, email);
+                return await mngr.NormalLogin(pass, email);
             }            
         }
 
         [HttpGet]
-        [Route("api/User/NormalRegister/{name},{email},{pass},{yCord},{xCord}")]
-        public async Task<Boolean> NormalRegister(String name, String email, String pass, double yCord, double xCord)
+        [Route("api/User/NormalRegister/{name},{email},{pass},{xCord}")]
+        public async Task<int> NormalRegister(String name, String email, String pass, double xCord)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return await mngr.NormalRegister(name, email, pass, yCord, xCord);
+                return 5;
+                //return await mngr.NormalRegister(name, email, pass, yCord, xCord);
             }
         }
         [HttpPost]
