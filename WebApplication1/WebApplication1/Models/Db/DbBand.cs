@@ -229,12 +229,13 @@ namespace WebApplication1.Models
                 using(var db=new ApplicationDbContext())
                 {
                     var oldGenres = (from bg in db.BandGenreDb
-                                     where bg.GenreId == bandid
+                                     where bg.BandId == bandid
                                      select bg);
                     foreach (var obj in oldGenres)
                     {
                         db.BandGenreDb.Remove(obj);
                     }
+
 
                     var allGenres=(from g in db.GenreDb
                                    select g);

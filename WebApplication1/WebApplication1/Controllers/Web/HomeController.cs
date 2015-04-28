@@ -76,7 +76,7 @@ namespace WebApplication1.Controllers
                b.Append("ok2:");
                b.Append(g2.GenreName);
                string s2=b.ToString();*/
-               string[] gen={"jazz","singer/songwriter"};
+            string[] gen = { "metal", "singer/songwriter"};
                bool ok =await new BandController().UpdateBandGenres(id, gen);
 
             ViewBag.Message = "Here's hoping! "+ok;// + m.Count;
