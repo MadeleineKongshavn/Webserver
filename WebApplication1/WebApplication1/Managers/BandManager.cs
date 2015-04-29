@@ -95,7 +95,7 @@ namespace WebApplication1.Managers
             return bandClass;
         }
 
-        //fikse rekkefølge!
+
         public async Task<bool> updateBandName(String name, int bandId)
         {
             var db=new DbBand();

@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
         {
 
             int userid = 1;
-            int bandid = 9;
+            int bandid = 11;
             BandClass b;
             double x=0;
             double y=0;
@@ -41,13 +41,14 @@ namespace WebApplication1.Controllers
         //    bc.AddBand("blodshed go to bed", userid);
 
             
-            List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
-            StringBuilder builder = new StringBuilder();
-            foreach (MemberClass m in adminList)
-                builder.Append(m.BandName);
+   //         List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
+   //         StringBuilder builder = new StringBuilder();
+   //         foreach (MemberClass m in adminList)
+   //             builder.Append(m.BandName);
 
+            bc.UpdateBandGenres(bandid, "dancehall");
 
-            ViewBag.Message = "Here's hoping! "+builder.ToString();// + m.Count;
+            ViewBag.Message = "Here's hoping! ";// + m.Count;
 
             return View();
         }

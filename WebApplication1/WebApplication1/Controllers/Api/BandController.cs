@@ -164,11 +164,14 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/Band/UpdateBandGenres/{bandid},{genres}")]
-        public async Task<bool> UpdateBandGenres(int bandid, string[] genres)
+        public async Task<bool> UpdateBandGenres(int bandid, String genres)
         {
+
+            String[] gen=genres.Split(',');
+          
            using(var mng = ManagerFactory.GetBandManager())
            {
-               return await mng.updateBandGenres(bandid, genres);
+               return await mng.updateBandGenres(bandid, gen);
            }
         }
 
