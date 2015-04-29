@@ -33,15 +33,15 @@ namespace WebApplication1.Controllers
             string[] genres = { "hip-hop","reggae","jazz","singer/songwriter","metal","dancehall","punk","queer","pop","country","folk","hardrock","blues","ska"};
 
 
-//            UserController uc=new UserController();
-     /*       BandController bc=new BandController();
+            UserController uc=new UserController();
+            userid=await uc.NormalRegister("Rannveig","rannveigalette@gmail.com ","password");
+            BandController bc=new BandController();
             GenreController gc = new GenreController();
-            bc.AddBand("jaffa cake revival",4);
-            bc.AddBand("blodshed go to bed", 4);*/
+            bc.AddBand("jaffa cake revival",userid);
+            bc.AddBand("blodshed go to bed", userid);
+            List<MemberClass> adminList = await new BandController().GetAllAdminBands(4);
 
-            new UserController().UpdateUserLocation(4, "Area", refer);
-
-            ViewBag.Message = "Here's hoping! ";// + m.Count;
+            ViewBag.Message = "Here's hoping! ";// +adminList.Count;
             return View();
         }
 

@@ -120,7 +120,17 @@ namespace WebApplication1.Models
                         members.Add(mem);
                     }
                     return members;*/
-                    return null;
+
+                    List<MemberClass> adminBands = (from b in db.BandDb
+                                                    where b.UserId == userId
+                                                    select new MemberClass
+                                                    {
+                                                        Id = b.BandId,
+                                                        BandName = b.BandName,
+                                                        Url = b.BitmapSmalUrl
+                                                    }).ToList();
+                  
+                    return adminBands;
                 }
             }
             catch (Exception)
