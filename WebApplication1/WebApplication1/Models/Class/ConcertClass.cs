@@ -20,8 +20,8 @@ namespace WebApplication1.Models.Class
 
         public int ConcertId { get; set; }
         public string Title { get; set; }
-        public int Xcoordinates { get; set; }
-        public int Ycoordinates { get; set; }
+        public double Xcoordinates { get; set; }
+        public double Ycoordinates { get; set; }
         public string Bandname { get; set; }//Flyttet inn i band class
         public DateTime Date { get; set; }
         public string Time { get; set; }

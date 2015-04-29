@@ -76,10 +76,15 @@ namespace WebApplication1.Controllers
                b.Append("ok2:");
                b.Append(g2.GenreName);
                string s2=b.ToString();*/
-            string[] gen = { "metal", "singer/songwriter"};
-               bool ok =await new UserController().UpdateUserGenres(1, gen);
+           // string[] gen = { "metal", "singer/songwriter"};
+            //   bool ok =await new UserController().UpdateUserGenres(1, gen);
 
-            ViewBag.Message = "Here's hoping! "+ok;// + m.Count;
+            double d = 3.2;
+            double c = 3.1;
+          var v = await new UserController().AddFaceUser(1003, "nordvik dalen", "https://graph.facebook.com/10152876470545980/picture");
+          //"https://graph.facebook.com//" + id + "/picture"; 
+
+            ViewBag.Message = "Here's hoping! " + v;// + m.Count;
             return View();
         }
 

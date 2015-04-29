@@ -86,7 +86,6 @@ namespace WebApplication1.Models
                         Timestamp = DateTime.Now,
                         Xcoordinates = 0,
                         Ycoordinates = 0,
-                        Followers = 0,
                         BandName = name,
                     };
                     db.BandDb.Add(b);
@@ -115,6 +114,7 @@ namespace WebApplication1.Models
             {
                 using (var db = new ApplicationDbContext())
                 {
+                    /*
                     List<MemberClass> members = new List<MemberClass>();
                     List<Member> m = await (from v in db.MemberDb where v.UserId == userId select v).ToListAsync();
                     foreach(Member b in m)
@@ -125,7 +125,8 @@ namespace WebApplication1.Models
                         mem.Url = b.Band.BitmapUrl;
                         members.Add(mem);
                     }
-                    return members;
+                    return members;*/
+                    return null;
                 }
             }
             catch (Exception)
@@ -187,12 +188,10 @@ namespace WebApplication1.Models
                         Ycoordinates = b.Ycoordinates,
                         Area = b.Area,
                         BandName = b.BandName,
-                        Followers = 0,
                         BitmapSmalUrl = b.BitmapUrl,
                         BitmapUrl = b.BitmapUrl,
                         Songurl = "hvis sangen skal lastes opp istedenfor, url her",
                         SongName = b.SongName,
-                        Song = null, //hvis sangen skal være en byte array
                         Timestamp = DateTime.Now,     
                         UrlRandom = b.UrlRandom,
 
@@ -591,8 +590,7 @@ namespace WebApplication1.Models
                         band.SongName = b.SongName;
                     if (true)
                         band.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
-                    if (true)
-                        band.Song = null; //hvis sangen skal være en byte array
+                    
                     band.Timestamp = DateTime.Now;
 
                     db.SaveChanges();

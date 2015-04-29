@@ -19,8 +19,7 @@ namespace WebApplication1.Controllers.Api
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return -1;
-                //return await mngr.CheckUserName(name);
+                return await mngr.CheckUserName(name);
             }    
         }
         [HttpGet]
@@ -29,17 +28,16 @@ namespace WebApplication1.Controllers.Api
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return -1;
-                //return await mngr.CheckEmail(email);
+                return await mngr.CheckEmail(email);
             }
         }
-        [HttpPost]
-        [Route("api/User/AddFaceUser/{uid},{profilename},{path},{xCord},{yCord}")]
-        public async Task<int> AddFaceUser(int uid, String profilename, String path, long xCord, long yCord)
+        [HttpGet]
+        [Route("api/User/AddFaceUser/{uid},{profilename},{path}")]
+        public async Task<int> AddFaceUser(long uid, String profilename, String path)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return await mngr.AddFaceUser(uid, profilename, path, xCord, yCord);
+                return await mngr.AddFaceUser(uid, profilename, path, 0.0, 0.0);
             }
         }
 
@@ -55,12 +53,12 @@ namespace WebApplication1.Controllers.Api
         }
 
         [HttpGet]
-        [Route("api/User/NormalRegister/{name},{email},{pass},{xCord},{yCord}")]
-        public async Task<int> NormalRegister(String name, String email, String pass, double xCord, double yCord)
+        [Route("api/User/NormalRegister/{name},{email},{pass}")]
+        public async Task<int> NormalRegister(String name, String email, String pass)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return await mngr.NormalRegister(name, email, pass, yCord, xCord);
+                return await mngr.NormalRegister(name, email, pass, 0, 0);
             }
         }
 
