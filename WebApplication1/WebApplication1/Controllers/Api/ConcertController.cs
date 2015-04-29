@@ -78,7 +78,7 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpPost]
         [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{pic}")]
-        public async Task<bool> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min,  Byte[] pic)
+        public async Task<int> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min,  Byte[] pic)
         {
             using (var cMgr = ManagerFactory.GetConcertManager())
             {
