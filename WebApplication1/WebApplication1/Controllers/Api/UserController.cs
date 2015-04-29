@@ -139,11 +139,12 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpPost]
         [Route("api/User/UpdateUserGenres/{userid},{genres}")]
-        public async Task<bool> UpdateUserGenres(int userid,string[] genres)
+        public async Task<bool> UpdateUserGenres(int userid,string genres)
         {
+            string[] gen = genres.Split(',');
             using (var mng = ManagerFactory.GetUserManager())
             {
-                return await mng.UpdateUserGenres(userid, genres);
+                return await mng.UpdateUserGenres(userid, gen);
             }
         }
 

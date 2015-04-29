@@ -35,18 +35,7 @@ namespace WebApplication1.Controllers
             UserController uc=new UserController();
             BandController bc=new BandController();
             GenreController gc = new GenreController();
-          
-
-        //    bc.AddBand("jaffa cake revival",userid);
-        //    bc.AddBand("blodshed go to bed", userid);
-
-            
-   //         List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
-   //         StringBuilder builder = new StringBuilder();
-   //         foreach (MemberClass m in adminList)
-   //             builder.Append(m.BandName);
-
-            bc.UpdateBandGenres(bandid, "dancehall");
+  
 
             ViewBag.Message = "Here's hoping! ";// + m.Count;
 

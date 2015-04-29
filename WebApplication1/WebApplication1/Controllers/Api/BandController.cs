@@ -164,10 +164,10 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/Band/UpdateBandGenres/{bandid},{genres}")]
-        public async Task<bool> UpdateBandGenres(int bandid, String genres)
+        public async Task<bool> UpdateBandGenres(int bandid, string genres)
         {
 
-            String[] gen=genres.Split(',');
+            string[] gen=genres.Split(',');
           
            using(var mng = ManagerFactory.GetBandManager())
            {
