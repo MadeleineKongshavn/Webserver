@@ -39,7 +39,7 @@ namespace WebApplication1.Controllers
             bc.AddBand("jaffa cake revival",4);
             bc.AddBand("blodshed go to bed", 4);*/
 
-            new UserController().UpdateUserLocation(4, "Area", refer);
+            new UserController().CheckEmail("dfghjk");
 
             ViewBag.Message = "Here's hoping! ";// + m.Count;
             return View();

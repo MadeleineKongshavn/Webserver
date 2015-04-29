@@ -24,7 +24,6 @@ namespace WebApplication1.Models
                     where c.Title.Contains(query)
                     select new ConcertClass()
                     {
-                        Area = c.Area,
                         Bandname = c.Band.BandName,
                         ConcertId = c.ConcertId,
                         Title = c.Title,
@@ -164,7 +163,6 @@ namespace WebApplication1.Models
                         Title = c.Title,
                         Xcoordinates = c.Xcoordinates,
                         Ycoordinates = c.Ycoordinates,
-                        Area = c.Area,
                         BandId = c.BandId,
                         BitmapUrl = c.BitmapUrl,
                         BitmapSmalUrl = c.SmallBitmapUrl,
@@ -197,7 +195,6 @@ namespace WebApplication1.Models
                     c1.Title = c.Title;
                     c1.Xcoordinates = c.Xcoordinates;
                     c1.Ycoordinates = c.Ycoordinates;
-                    c1.Area = c.Area;
                     c1.BandId = c.BandId;
                     c1.BitmapUrl = "stor url her :)";
                     c1.BitmapSmalUrl = "small url her :)";
@@ -359,9 +356,8 @@ namespace WebApplication1.Models
                     var concert = (from c in db.ConcertDb
                                 where c.ConcertId == concertid
                                 select c).FirstOrDefault();
-                    concert.Area = area;
-               //     concert.Xcoordinates = x;
-               //     concert.Ycoordinates = y;
+                   concert.Xcoordinates = x;
+                   concert.Ycoordinates = y;
                     db.SaveChanges();
                     return true;
                 }

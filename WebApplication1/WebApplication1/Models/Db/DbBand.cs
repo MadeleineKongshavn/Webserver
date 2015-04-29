@@ -83,14 +83,19 @@ namespace WebApplication1.Models
                 {
                     Band b = new Band()
                     {
-                        UserId = userId,
-                        Timestamp = DateTime.Now,
+                        Xcoordinates = 0,
+                        Ycoordinates = 0,
                         BandName = name,
-                        Xcoordinates=0.0,
-                        Ycoordinates=0.0,
                     };
                     db.BandDb.Add(b);
-
+              /*      List<Member> members = new List<Member>();
+                    Member mem = new Member()
+                    {
+                        BandId = b.BandId,
+                        UserId = userId,
+                    };
+                    members.Add(mem);
+                    b.Member = members;*/
                     db.SaveChanges();
                     return true;
                 }
@@ -186,12 +191,23 @@ namespace WebApplication1.Models
                         BitmapUrl = b.BitmapUrl,
                         Songurl = "hvis sangen skal lastes opp istedenfor, url her",
                         SongName = b.SongName,
-                        Timestamp = DateTime.Now,     
                         UrlRandom = b.UrlRandom,
 
                     };
                     db.BandDb.Add(band);
                     int bandId = band.BandId;
+
+            /*        List<Member> listMembers = new List<Member>();
+                    foreach (var id in b.Member)
+                    {
+                        listMembers.Add(new Member()
+                        {
+                            BandId = bandId,
+                            UserId = id,
+                        });
+                    }
+                    band.Member = listMembers;
+                    db.SaveChanges();*/
                     return true;
                 }
 
@@ -280,7 +296,6 @@ namespace WebApplication1.Models
                     band.UrlFacebook = fb;
                     if(!(soundcloud.Equals("---")))
                     band.UrlSoundCloud = soundcloud;
-                    band.Timestamp = DateTime.Now;
                     db.SaveChanges();
                     return true;
                 }
@@ -306,7 +321,6 @@ namespace WebApplication1.Models
                     band.Area=area;
                     band.Xcoordinates=x;
                     band.Ycoordinates=y;
-                    band.Timestamp=DateTime.Now;
                     db.SaveChanges();
                     return true;
                 }
@@ -331,7 +345,6 @@ namespace WebApplication1.Models
 
                     band.BitmapUrl = bitmapUrl;
                     band.BitmapSmalUrl = bitmapSmallUrl;
-                    band.Timestamp = DateTime.Now;
                     db.SaveChanges();
                     return true;
 
@@ -572,9 +585,7 @@ namespace WebApplication1.Models
                         band.SongName = b.SongName;
                     if (true)
                         band.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
-                    
-                    band.Timestamp = DateTime.Now;
-
+                   
                     db.SaveChanges();
                     return true;
                 }

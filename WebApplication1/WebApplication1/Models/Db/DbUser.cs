@@ -62,7 +62,6 @@ namespace WebApplication1.Models
                     byte[] salt = GetNewSalt();
                     User u = new User()
                     {
-                        Timestamp = DateTime.Now,
                         Radius = 500,
                         ProfileName = name,
                         Ycoordinates = 0,
@@ -174,9 +173,8 @@ namespace WebApplication1.Models
                     {
                         ProfileName = u.Name,
                         Radius = u.Radius,
-                        Xcoordinates = u.Xcoordinates,
-                        Ycoordinates = u.Ycoordinates,
-                        Timestamp = DateTime.Now,
+                       Xcoordinates = u.Xcoordinates,
+                       Ycoordinates = u.Ycoordinates,
                         Url = u.Url,
                     };
                     db.UserDb.Add(u1);
@@ -202,10 +200,9 @@ namespace WebApplication1.Models
                 {
                     ProfileName = profilename,
                     Radius = 500,
-                    Xcoordinates = xCord,
-                    Ycoordinates = yCord,
+                    Xcoordinates = 0,
+                    Ycoordinates = 0,
                     Url = "https://graph.facebook.com/" + path + "/picture",
-                    Timestamp = DateTime.Now,
                 };
                 db.UserDb.Add(u1);
                 u1.Api = new Api()
@@ -232,9 +229,8 @@ namespace WebApplication1.Models
                     u2.Url = u1.Url;
                     u2.Radius = u1.Radius;
                     u2.ProfileName = u1.Name;
-                    u2.Xcoordinates = u1.Xcoordinates;
-                    u2.Ycoordinates = u1.Ycoordinates;
-                    u2.Timestamp = DateTime.Now;
+                    u2.Xcoordinates = 0;
+                    u2.Ycoordinates = 0;
                     db.SaveChanges();
                     return true;
                 }            
@@ -436,8 +432,8 @@ namespace WebApplication1.Models
                     var user = (from u in db.UserDb
                                 where u.UserId == userid
                                 select u).FirstOrDefault();
-                    user.Xcoordinates = x;
-                    user.Ycoordinates = y;
+                  user.Xcoordinates = x;
+                   user.Ycoordinates = y;
                     db.SaveChanges();
                     return true;
                 }

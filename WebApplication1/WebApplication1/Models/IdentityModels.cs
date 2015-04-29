@@ -19,7 +19,6 @@ namespace WebApplication1.Models
         public long ApiId { get; set; }
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
-
         public virtual User User { get; set; }
     }
     public class Password
@@ -36,13 +35,12 @@ namespace WebApplication1.Models
     {
         [Key]
         public int UserId { get; set; }
+        public String Area { get; set; }
         public String ProfileName { get; set; }
         public int Radius { get; set; }
-        public Double Xcoordinates { get; set; }
-        public Double Ycoordinates { get; set; }
+        public double Xcoordinates { get; set; }
+        public double Ycoordinates { get; set; }
         public String Url { get; set; }
-        public DateTime Timestamp { get; set; }
-
 
         public virtual List<Notifications> Notifications { get; set; }
         public virtual Api Api { get; set; }
@@ -73,11 +71,10 @@ namespace WebApplication1.Models
         [Key]
         public int BandId { get; set; }
         public int UserId { get; set; }
-        public DateTime Timestamp { get; set; }
 
         public String Area { get; set; }
-        public Double Xcoordinates { get; set; }
-        public Double Ycoordinates { get; set; }
+        public double Xcoordinates { get; set; }
+        public double Ycoordinates { get; set; }
         public String BandName { get; set; }
         public String BitmapUrl { get; set; }
         public String BitmapSmalUrl { get; set; }
@@ -102,7 +99,6 @@ namespace WebApplication1.Models
         public int ConcertId { get; set; }
         public string Title { get; set; }
         public DateTime Date { get; set; }
-        public String Area { get; set; }
         public double Xcoordinates { get; set; }
         public double Ycoordinates { get; set; }
         public int BandId { get; set; }
