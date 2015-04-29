@@ -152,7 +152,7 @@ namespace WebApplication1.Models
             }
         }
         // legger til en konsert, pic er bilde som skal inn
-        public async Task<bool> AddConcert(ConcertClass c)
+        public async Task<int> AddConcert(ConcertClass c)
         {
             try
             {
@@ -171,12 +171,12 @@ namespace WebApplication1.Models
                     };
                     db.ConcertDb.Add(c1);
                     await db.SaveChangesAsync();
-                    return true;
+                    return c.ConcertId;
                 }
             }
             catch (Exception e)
             {
-                return false;
+                return -1;
             }
         }
         // endrer på en konsert med den gitte ideen inni ConcertClass

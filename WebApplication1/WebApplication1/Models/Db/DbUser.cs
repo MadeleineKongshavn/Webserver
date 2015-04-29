@@ -393,7 +393,13 @@ namespace WebApplication1.Models
                 var result = await (from u in db.UserDb
                                     where u.UserId == id
                                     select new UserClass()
-                                    {//More info..
+                                    {
+                                        UserId = u.UserId,
+                                        Ycoordinates = u.Ycoordinates,
+                                        Xcoordinates = u.Xcoordinates,
+                                        Area = u.Area,
+                                        Url = u.Url,
+                                        Radius = u.Radius,
                                         Name = u.ProfileName
                                     }).FirstOrDefaultAsync();
                 return result;
