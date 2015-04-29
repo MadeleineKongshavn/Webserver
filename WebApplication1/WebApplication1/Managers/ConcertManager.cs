@@ -51,7 +51,7 @@ namespace WebApplication1.Managers
             return true;
         }
 
-        public async Task<bool> AddConcertRequest(int fromUsr, int toUsr, int ConcertId)
+        public async Task<int> AddConcertRequest(int fromUsr, int toUsr, int ConcertId)
         {
             var db = new DbConcert();
             return await db.AddConcertRequest(fromUsr, toUsr, ConcertId);
