@@ -85,6 +85,8 @@ namespace WebApplication1.Controllers.Api
                 ConcertClass c = new ConcertClass();
                 c.Title = title;
                 c.BandId = bandId;
+                c.Xcoordinates = 0;
+                c.Ycoordinates = 0;
                 c.Date = new DateTime(year, month, day, hour, min, 0);
                 return await cMgr.AddConcert(c, pic);
             }

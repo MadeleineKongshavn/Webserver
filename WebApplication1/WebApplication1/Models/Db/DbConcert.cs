@@ -161,8 +161,8 @@ namespace WebApplication1.Models
                     var c1 = new Concert()
                     {
                         Title = c.Title,
-                        Xcoordinates = 0,
-                        Ycoordinates = 0,
+                        Xcoordinates = c.Xcoordinates,
+                        Ycoordinates = c.Ycoordinates,
                         BandId = c.BandId,
                         BitmapUrl = c.BitmapUrl,
                         BitmapSmalUrl = c.SmallBitmapUrl,
