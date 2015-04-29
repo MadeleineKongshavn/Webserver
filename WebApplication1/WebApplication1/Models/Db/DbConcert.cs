@@ -11,8 +11,7 @@ using WebApplication1.Models.Class;
 namespace WebApplication1.Models
 {
     /**
-     * x og y coordinater i databasen er int, må endres
-     * 
+     * x og y coordinater i databasen er int, må endre;
      */
 
     public class DbConcert
@@ -162,11 +161,6 @@ namespace WebApplication1.Models
                 {
                     var c1 = new Concert()
                     {
-                        Timestamp = DateTime.Now, // skal fjernes
-                        LinkToBand = "link", // fjernes
-                        SeeAttends = false, // fjernes
-                       
-                        Followers = 0,
                         Title = c.Title,
                         Xcoordinates = c.Xcoordinates,
                         Ycoordinates = c.Ycoordinates,
@@ -201,13 +195,10 @@ namespace WebApplication1.Models
                     // lagre pic i bitmapurl og bitmapsmallurl
 
                     c1.Title = c.Title;
-                    c1.Timestamp = DateTime.Now;
                     c1.Xcoordinates = c.Xcoordinates;
                     c1.Ycoordinates = c.Ycoordinates;
                     c1.Area = c.Area;
-                    c1.SeeAttends = c.SeeAttends;
                     c1.BandId = c.BandId;
-                    c1.LinkToBand = c.LinkToBand;
                     c1.BitmapUrl = "stor url her :)";
                     c1.BitmapSmalUrl = "small url her :)";
                     c1.VenueName = c.VenueName;
@@ -371,7 +362,6 @@ namespace WebApplication1.Models
                     concert.Area = area;
                //     concert.Xcoordinates = x;
                //     concert.Ycoordinates = y;
-                    concert.Timestamp = DateTime.Now;
                     db.SaveChanges();
                     return true;
                 }

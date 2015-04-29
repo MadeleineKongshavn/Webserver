@@ -17,6 +17,41 @@ namespace WebApplication1.Models
 {
     public class DbUser
     {
+        public async Task<int> CheckEmail(String email)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var val = await (from v in db.PasswordDb where v.Email.Equals(email) select v).FirstOrDefaultAsync();
+                    if (val != null) return 1;
+                    else return -1;
+                }
+
+            }
+            catch (Exception e)
+            {
+                return -2;
+            }
+        }
+
+        public async Task<int> CheckUserName(String name)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var val = await (from v in db.UserDb where v.ProfileName.Equals(name) select v).FirstOrDefaultAsync();
+                    if (val != null) return 1;
+                    else return -1;
+                }
+
+            }
+            catch (Exception e)
+            {
+                return -2;
+            }
+        }
         public async Task<int> NormalRegister(String name, String email, String pass, double yCord, double xCord)
         {
             try
@@ -29,11 +64,9 @@ namespace WebApplication1.Models
                     {
                         Timestamp = DateTime.Now,
                         Radius = 500,
-                        Public = true,
-                        SeeNotifications = true,
                         ProfileName = name,
-                        Ycoordinates = yCord,
-                        Xcoordinates = xCord,
+                        Ycoordinates = 0,
+                        Xcoordinates = 0,
                         Password = new Password()
                         {
                             Email = email,
@@ -140,8 +173,6 @@ namespace WebApplication1.Models
                     var u1 = new User()
                     {
                         ProfileName = u.Name,
-                        SeeNotifications = u.SeeNotifications,
-                        Public = u.Public,
                         Radius = u.Radius,
                         Xcoordinates = u.Xcoordinates,
                         Ycoordinates = u.Ycoordinates,
@@ -159,19 +190,21 @@ namespace WebApplication1.Models
             }
         }
 
-        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
+        public async Task<int> AddFaceUser(long uid, String profilename, String path, double xCord, double yCord)
         {
             using (var db = new ApplicationDbContext())
             {
 
+                var d = await (from v in db.UserDb where v.Api.ApiId == uid select v).FirstOrDefaultAsync();
+                if (d != null) return d.UserId;   
+
                 var u1 = new User()
                 {
                     ProfileName = profilename,
-                    SeeNotifications = true,
-                    Public = true,
                     Radius = 500,
                     Xcoordinates = xCord,
                     Ycoordinates = yCord,
+                    Url = "https://graph.facebook.com/" + path + "/picture",
                     Timestamp = DateTime.Now,
                 };
                 db.UserDb.Add(u1);
@@ -179,10 +212,9 @@ namespace WebApplication1.Models
                 {
                     ApiId = uid,
                 };
-                db.SaveChanges();
-                return true;
+                await db.SaveChangesAsync();
+                return u1.UserId;
             }
-            
         }
         // endrer basisk funksjonene til en bruker
         public async Task<Boolean> ChangeUser(UserClass u1) 
@@ -198,8 +230,6 @@ namespace WebApplication1.Models
                     // lagre nytt bilde her?
 
                     u2.Url = u1.Url;
-                    u2.Public = u1.Public;
-                    u2.SeeNotifications = u1.SeeNotifications;
                     u2.Radius = u1.Radius;
                     u2.ProfileName = u1.Name;
                     u2.Xcoordinates = u1.Xcoordinates;

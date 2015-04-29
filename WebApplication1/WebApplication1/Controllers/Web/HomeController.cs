@@ -22,7 +22,7 @@ namespace WebApplication1.Controllers
 
         public async Task<ActionResult> About()
         {
-
+            
             int userid,bandid;
             BandClass b;
             double x=0;
@@ -33,19 +33,11 @@ namespace WebApplication1.Controllers
             string[] genres = { "hip-hop","reggae","jazz","singer/songwriter","metal","dancehall","punk","queer","pop","country","folk","hardrock","blues","ska"};
 
 
-            UserController uc=new UserController();
+//            UserController uc=new UserController();
             BandController bc=new BandController();
             GenreController gc = new GenreController();
-            userid=await uc.NormalRegister("Rannveig","rannveigalette@gmail.com","password",x);
-            bc.AddBand("jaffa cake revival",userid);
-            bc.AddBand("blodshed go to bed", userid);
-            foreach (string s in genres)
-            {
-                gc.AddGenre(s);
-            }
-
-
-
+            bc.AddBand("jaffa cake revival",4);
+            bc.AddBand("blodshed go to bed", 4);
 
             ViewBag.Message = "Here's hoping! ";// + m.Count;
             return View();

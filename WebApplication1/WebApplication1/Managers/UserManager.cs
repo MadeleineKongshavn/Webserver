@@ -21,6 +21,18 @@ namespace WebApplication1.Managers
 
 
 
+        public async Task<int> CheckEmail(String email)
+        {
+            var db = new DbUser();
+            return await db.CheckEmail(email);
+
+        }
+        public async Task<int> CheckUserName(String name)
+        {
+            var db = new DbUser();
+            return await db.CheckUserName(name);
+        }
+
         public async Task<int> NormalRegister(String name, String email, String pass, double yCord, double xCord)
         {
             var db = new DbUser();
@@ -31,10 +43,10 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.NormalLogin(pass, email);
         }
-        public async Task<Boolean> AddFaceUser(int uid, String profilename, long xCord, long yCord)
+        public async Task<int> AddFaceUser(long uid, String profilename,String path, double xCord, double yCord)
         {
             var db = new DbUser();
-            return await db.AddFaceUser(uid, profilename, xCord, yCord);
+            return await db.AddFaceUser(uid, profilename, path, xCord, yCord);
         }
         public async Task<Boolean> CheckNewNotifications(int id)
         {
