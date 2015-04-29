@@ -106,14 +106,20 @@ namespace WebApplication1.Managers
         public async Task<bool> updateBandLinks(int bandid, string www, string fb, string soundcloud)
         {
             var db = new DbBand();
-            return await db.UpdateBandLinks(bandid,www,fb,soundcloud);
+            bool ok= await db.UpdateBandLinks(bandid,www,fb,soundcloud);
+            var cacheKey = String.Format("Band_Get_{0}", bandid);
+            RemoveCacheKeysByPrefix(cacheKey);
+            return ok;
         }
 
         public async Task<bool> updateBandLocation(int bandid,string area,string apiRef)
         {
             var db = new DbBand();
             double[] coordinates = GetCoordinates(apiRef);
-            return await db.UpdateBandLocation(bandid,area,coordinates[0],coordinates[1]);
+            bool ok= await db.UpdateBandLocation(bandid,area,coordinates[0],coordinates[1]);
+            var cacheKey = String.Format("Band_Get_{0}", bandid);
+            RemoveCacheKeysByPrefix(cacheKey);
+            return ok;
         }
 
         private double[] GetCoordinates(String placesRef){
@@ -156,8 +162,11 @@ namespace WebApplication1.Managers
         public async Task<bool> updateBandGenres(int bandid, string[] newGenres)
         {
             var db = new DbBand();
-            return await db.UpdateBandGenres(bandid, newGenres);
+            bool ok= await db.UpdateBandGenres(bandid, newGenres);
+            var cacheKey = String.Format("Band_Get_{0}", bandid);
+            RemoveCacheKeysByPrefix(cacheKey);
 
+            return ok;
         }
 
 

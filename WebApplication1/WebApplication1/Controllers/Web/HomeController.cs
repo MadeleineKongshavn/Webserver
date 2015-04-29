@@ -36,9 +36,6 @@ namespace WebApplication1.Controllers
             BandController bc=new BandController();
             GenreController gc = new GenreController();
           
-            String[] gen={"indie","pop"};
-            bc.updateBandLocation(bandid,"Sydney" ,refer);
-            bc.UpdateBandGenres(bandid, gen);
 
         //    bc.AddBand("jaffa cake revival",userid);
         //    bc.AddBand("blodshed go to bed", userid);
