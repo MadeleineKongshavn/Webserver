@@ -13,13 +13,15 @@ namespace WebApplication1.Controllers.Api
 {
     public class UserController : ApiController
     {
-        [HttpGet]
-        [Route("api/User/ChangePic/{pic},{uid}")]
-        public async Task<bool> ChangePic(int uid, byte[] pic)
+        [HttpPost]
+        [Route("api/User/ChangePic/{pic}")]
+        public async Task<String> ChangePic(byte[] pic)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                return await mngr.ChangePic(uid, pic);
+                if (pic == null) return "null";
+                return null;
+                /// return await mngr.ChangePic(1, pic);
             }
         }
         [HttpGet]

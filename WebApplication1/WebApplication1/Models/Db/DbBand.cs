@@ -37,6 +37,25 @@ namespace WebApplication1.Models
                 return null;
             }
         }*/
+
+        public async Task<bool> UpdateBandImage(int bandid, String url)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var g = await (from d in db.BandDb where d.BandId == bandid select d).FirstOrDefaultAsync();
+                    g.BitmapUrl = url;
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }            
+        }
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             try
