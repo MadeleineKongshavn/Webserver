@@ -266,7 +266,9 @@
     <Content Include="images\Profile\profile_1010.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\Semitone - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\Semitone - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Semitone - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\Semitone - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

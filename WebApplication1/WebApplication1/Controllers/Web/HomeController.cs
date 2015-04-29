@@ -24,6 +24,7 @@ namespace WebApplication1.Controllers
         {
 
             int userid = 1;
+            int bandid = 9;
             BandClass b;
             double x=0;
             double y=0;
@@ -34,14 +35,16 @@ namespace WebApplication1.Controllers
             UserController uc=new UserController();
             BandController bc=new BandController();
             GenreController gc = new GenreController();
-            foreach (string g in genres) gc.AddGenre(g);
-
+          
+            String[] gen={"indie","pop"};
+            bc.updateBandLocation(bandid,"Sydney" ,refer);
+            bc.UpdateBandGenres(bandid, gen);
 
         //    bc.AddBand("jaffa cake revival",userid);
         //    bc.AddBand("blodshed go to bed", userid);
 
             
-            List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
+          //  List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
 
             ViewBag.Message = "Here's hoping! ";// + m.Count;
 
