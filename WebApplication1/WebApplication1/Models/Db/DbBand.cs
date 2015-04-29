@@ -83,19 +83,12 @@ namespace WebApplication1.Models
                 {
                     Band b = new Band()
                     {
+                        UserId=userId,
                         Xcoordinates = 0,
                         Ycoordinates = 0,
                         BandName = name,
                     };
                     db.BandDb.Add(b);
-              /*      List<Member> members = new List<Member>();
-                    Member mem = new Member()
-                    {
-                        BandId = b.BandId,
-                        UserId = userId,
-                    };
-                    members.Add(mem);
-                    b.Member = members;*/
                     db.SaveChanges();
                     return true;
                 }

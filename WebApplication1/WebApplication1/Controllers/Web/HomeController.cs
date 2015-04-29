@@ -22,29 +22,26 @@ namespace WebApplication1.Controllers
 
         public async Task<ActionResult> About()
         {
-            
-            int userid,bandid;
+
+            int userid = 1;
             BandClass b;
             double x=0;
             double y=0;
             string bandname="jaffa cake revival";
             string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
             char[] input = refer.ToCharArray();
-            string[] genres = { "hip-hop","reggae","jazz","singer/songwriter","metal","dancehall","punk","queer","pop","country","folk","hardrock","blues","ska"};
-
 
             UserController uc=new UserController();
-            userid=await uc.NormalRegister("Rannveig","rannveigalette@gmail.com ","password");
             BandController bc=new BandController();
             GenreController gc = new GenreController();
-            bc.AddBand("jaffa cake revival",userid);
-            bc.AddBand("blodshed go to bed", userid);
-            List<MemberClass> adminList = await new BandController().GetAllAdminBands(4);
+            foreach (string g in genres) gc.AddGenre(g);
 
-/*<<<<<<< HEAD
-            ViewBag.Message = "Here's hoping! ";// +adminList.Count;
-=======*/
-            new UserController().CheckEmail("dfghjk");
+
+        //    bc.AddBand("jaffa cake revival",userid);
+        //    bc.AddBand("blodshed go to bed", userid);
+
+            
+            List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
 
             ViewBag.Message = "Here's hoping! ";// + m.Count;
 
