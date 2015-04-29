@@ -23,63 +23,31 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> About()
         {
 
-
-            
-            int id=22;
-
-
-      /*      Boolean ok = await new BandController().updateBandName("butterscotch topnotch", id);
-            StringBuilder builder = new StringBuilder("BandNameUpdate: ");
-            builder.Append(ok);
-            builder.Append("\n");
-
-            ok=await new BandController().updateBandLocation(id,"Setton",(long)44.8888,(long)77.918274);
-            builder.Append("BandLocationUpdate: ");
-            builder.Append(ok);
-            builder.Append("\n");
-
-            ok = await new BandController().updateBandLinks(id, "her er www", "da må jo dette være fb", "og soundcloud har det bra");
-            builder.Append("BandLinksUpdate: ");
-            builder.Append(ok);
-            builder.Append("\n");*/
-
-            //String refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
-            //char[] input = refer.ToCharArray();
-            //new BandController().updateBandLocation(id,"HHuttiHeita",input);
-
-            //List<BandClass> l =  await new BandController().FindBandBasedOnQuery("h");
+            int userid,bandid;
+            BandClass b;
+            double x=0;
+            double y=0;
+            string bandname="jaffa cake revival";
+            string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
+            char[] input = refer.ToCharArray();
+            string[] genres = { "hip-hop","reggae","jazz","singer/songwriter","metal","dancehall","punk","queer","pop","country","folk","hardrock","blues","ska"};
 
 
-            /*            
+            UserController uc=new UserController();
+            BandController bc=new BandController();
             GenreController gc = new GenreController();
+            userid=await uc.NormalRegister("Rannveig","rannveigalette@gmail.com","password",x);
+            bc.AddBand("jaffa cake revival",userid);
+            bc.AddBand("blodshed go to bed", userid);
+            foreach (string s in genres)
+            {
+                gc.AddGenre(s);
+            }
 
-            GenreClass g1 = await gc.GetGenreById(1);
-            GenreClass g2 = await gc.GetGenreByName("dancehall"); 
-            gc.AddGenre("metal");
-            gc.AddGenre("dancehall");
-            gc.AddGenre("jazz");
-            gc.AddGenre("singer/songwriter");
 
-             List<GenreClass> genres = await gc.GetAllGenres();
-               String s="";
-               foreach(GenreClass g in genres)
-                   s+=g.GenreName + ", ";
 
-               bool ok1 = g1 != null ? true : false; 
-               bool ok2= g2 !=null? true: false;
-               StringBuilder b = new StringBuilder();
-               b.Append("ok1:");
-               b.Append(g1.GenreName);
-               string s1 = b.ToString();
 
-               b.Clear();
-               b.Append("ok2:");
-               b.Append(g2.GenreName);
-               string s2=b.ToString();*/
-            string[] gen = { "metal", "singer/songwriter"};
-               bool ok =await new UserController().UpdateUserGenres(1, gen);
-
-            ViewBag.Message = "Here's hoping! "+ok;// + m.Count;
+            ViewBag.Message = "Here's hoping! ";// + m.Count;
             return View();
         }
 

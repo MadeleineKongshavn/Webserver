@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Caching;
@@ -11,6 +13,10 @@ namespace WebApplication1.Managers
 {
     public class ConcertManager : BaseManager
     {
+        private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?reference=";
+        private String DETAILED_SETIING = "&sensor=true&key=";
+        private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
+
         public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
         {
             var db = new DbConcert();
@@ -131,5 +137,51 @@ namespace WebApplication1.Managers
             return objectDto;
 
         }
+
+        public async Task<bool> updateConcertLocation(int concertid, string area, string apiRef)
+        {
+            var db = new DbConcert();
+            double[] coordinates = GetCoordinates(apiRef);
+            return await db.UpdateConcertLocation(concertid, area, coordinates[0], coordinates[1]);
+        }
+
+        private double[] GetCoordinates(String placesRef)
+        {
+            StringBuilder query = new StringBuilder(PLACES_API_QUERY);
+            query.Append(placesRef);
+            query.Append(DETAILED_SETIING);
+            query.Append(SERVER_API_KEY);
+            Console.Write(query.ToString());
+            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(query.ToString()) as HttpWebRequest;
+            webRequest.Timeout = 20000;
+            webRequest.Method = "GET";
+            HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+            return RequestCompleted(response);
+        }
+
+        private double[] RequestCompleted(HttpWebResponse res)
+        {
+            double[] coord = new double[2];
+            var response = (HttpWebResponse)res;
+
+            using (var stream = response.GetResponseStream())
+            {
+                var r = new System.IO.StreamReader(stream);
+                var resp = r.ReadToEnd();
+                JObject jsonResp = JObject.Parse(resp.ToString());
+                JValue lng = (JValue)jsonResp["result"]["geometry"]["location"]["lng"];
+                double longitude = (double)lng.Value;
+                coord[0] = longitude;
+
+                JValue lat = (JValue)jsonResp["result"]["geometry"]["location"]["lat"];
+                double latidtude = (double)lat.Value;
+                coord[1] = latidtude;
+
+                Console.Write(resp.ToString());
+            }
+
+            return coord;
+        }
+
     }
 }

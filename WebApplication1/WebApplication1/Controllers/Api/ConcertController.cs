@@ -120,6 +120,14 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
+        [Route("api/Concert/UpdateConcertLocation/{concertid},{area},{ref}")]
+        public async Task<bool> GetConcertInfoWithFriends(int concertidea,string area,string refr)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                return await cMgr.updateConcertLocation(concertidea, area, refr);
+            }
+        }
 
 
     }

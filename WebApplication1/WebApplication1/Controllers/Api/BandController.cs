@@ -118,7 +118,7 @@ namespace WebApplication1.Controllers.Api
         
         [HttpPost]
         [Route("api/Band/AddBand/{name},{userId}")]
-        public async Task<bool> AddBand(String name, int userId)
+        public async Task<bool> AddBand(string name, int userId)
         {
             using (var bmngr = ManagerFactory.GetBandManager())
             {

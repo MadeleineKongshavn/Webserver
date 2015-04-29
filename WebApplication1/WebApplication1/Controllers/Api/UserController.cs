@@ -108,5 +108,15 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
+        [HttpPost]
+        [Route("api/User/UpdateUserLocation/{userid},{area},{apiref}")]
+        public async Task<bool> UpdateUserLocation(int userid, string area, string aipRef)
+        {
+            using (var mng = ManagerFactory.GetUserManager())
+            {
+                return await mng.updateUserLocation(userid, area, aipRef);
+            }
+        }
+
     }
 }

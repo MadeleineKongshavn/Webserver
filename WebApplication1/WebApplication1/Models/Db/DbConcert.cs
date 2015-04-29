@@ -10,6 +10,11 @@ using Microsoft.Ajax.Utilities;
 using WebApplication1.Models.Class;
 namespace WebApplication1.Models
 {
+    /**
+     * x og y coordinater i databasen er int, må endres
+     * 
+     */
+
     public class DbConcert
     {
         public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
@@ -350,5 +355,34 @@ namespace WebApplication1.Models
                 return false;
             }
         }
+
+        public async Task<bool> UpdateConcertLocation(int concertid, string area, double x, double y)
+        {
+            if (concertid == 0 || area == null)
+                return false;
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    var concert = (from c in db.ConcertDb
+                                where c.ConcertId == concertid
+                                select c).FirstOrDefault();
+                    concert.Area = area;
+               //     concert.Xcoordinates = x;
+               //     concert.Ycoordinates = y;
+                    concert.Timestamp = DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
     }
 }

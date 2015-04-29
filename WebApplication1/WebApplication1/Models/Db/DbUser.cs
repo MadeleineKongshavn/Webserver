@@ -394,6 +394,31 @@ namespace WebApplication1.Models
 
         }
 
+        public async Task<bool> UpdateUserLocation(int userid, string area, double x, double y)
+        {
+            if (userid == null || area == null)
+                return false;
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    var user = (from u in db.UserDb
+                                where u.UserId == userid
+                                select u).FirstOrDefault();
+                    user.Xcoordinates = x;
+                    user.Ycoordinates = y;
+                    user.Timestamp = DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
 
     }
