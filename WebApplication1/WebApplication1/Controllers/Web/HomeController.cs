@@ -34,10 +34,12 @@ namespace WebApplication1.Controllers
 
 
 //            UserController uc=new UserController();
-            BandController bc=new BandController();
+     /*       BandController bc=new BandController();
             GenreController gc = new GenreController();
             bc.AddBand("jaffa cake revival",4);
-            bc.AddBand("blodshed go to bed", 4);
+            bc.AddBand("blodshed go to bed", 4);*/
+
+            new UserController().UpdateUserLocation(4, "Area", refer);
 
             ViewBag.Message = "Here's hoping! ";// + m.Count;
             return View();

@@ -438,7 +438,6 @@ namespace WebApplication1.Models
                                 select u).FirstOrDefault();
                     user.Xcoordinates = x;
                     user.Ycoordinates = y;
-                    user.Timestamp = DateTime.Now;
                     db.SaveChanges();
                     return true;
                 }

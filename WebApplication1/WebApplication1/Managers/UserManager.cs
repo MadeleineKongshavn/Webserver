@@ -118,9 +118,9 @@ namespace WebApplication1.Managers
 
         public async Task<bool> updateUserLocation(int userid, string area, string apiRef)
         {
-            var db = new DbBand();
+            var db = new DbUser();
             double[] coordinates = GetCoordinates(apiRef);
-            return await db.UpdateBandLocation(userid, area, coordinates[0], coordinates[1]);
+            return await db.UpdateUserLocation(userid, area, coordinates[0], coordinates[1]);
         }
 
         private double[] GetCoordinates(String placesRef)
