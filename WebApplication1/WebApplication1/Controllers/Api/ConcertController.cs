@@ -77,8 +77,8 @@ namespace WebApplication1.Controllers.Api
             }
         }
         [HttpPost]
-        [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{pic}")]
-        public async Task<int> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min,  Byte[] pic)
+        [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{pic},{venue},{ref}")]
+        public async Task<Boolean> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, Byte[] pic, String venue, String locRef)
         {
             using (var cMgr = ManagerFactory.GetConcertManager())
             {
@@ -88,7 +88,9 @@ namespace WebApplication1.Controllers.Api
                 c.Xcoordinates = 0;
                 c.Ycoordinates = 0;
                 c.Date = new DateTime(year, month, day, hour, min, 0);
-                return await cMgr.AddConcert(c, pic);
+                c.VenueName = venue;
+                
+                return await cMgr.AddConcert(c, pic, locRef);
             }
         }
         [HttpGet]
@@ -118,14 +120,14 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        [Route("api/Concert/UpdateConcertLocation/{concertid},{venue},{ref}")]
+       /* [Route("api/Concert/UpdateConcertLocation/{concertid},{venue},{ref}")]
         public async Task<bool> UpdateConcertLocation(int concertidea,string venue,string refr)
         {
             using (var cMgr = ManagerFactory.GetConcertManager())
             {
                 return await cMgr.updateConcertLocation(concertidea, venue, refr);
             }
-        }
+        }*/
 
 
     }

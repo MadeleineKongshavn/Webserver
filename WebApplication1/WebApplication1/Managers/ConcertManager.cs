@@ -70,7 +70,7 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
             return await db.ChangeConcert(c, pic);
         }
-        public async Task<int> AddConcert(ConcertClass c, Byte[] pic)
+        public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic, String locRef)
         {
             var db = new DbConcert();
             var imgUrl = await UploadImage(pic);
@@ -79,6 +79,11 @@ namespace WebApplication1.Managers
                 c.BitmapUrl = imgUrl;
                 c.SmallBitmapUrl = imgUrl;
             }
+           
+            double[] coor = updateConcertLocation(c.ConcertId, c.VenueName, locRef);
+            c.Xcoordinates = coor[0];
+            c.Ycoordinates = coor[1];
+
             return await db.AddConcert(c);
         }
         public async Task<ConcertClass> GetConcertById(int id)
@@ -138,11 +143,11 @@ namespace WebApplication1.Managers
 
         }
 
-        public async Task<bool> updateConcertLocation(int concertid, string area, string apiRef)
+        public double[] updateConcertLocation(int concertid, string area, string apiRef)
         {
             var db = new DbConcert();
             double[] coordinates = GetCoordinates(apiRef);
-            return await db.UpdateConcertLocation(concertid, area, coordinates[0], coordinates[1]);
+            return coordinates; //await db.UpdateConcertLocation(concertid, area, coordinates[0], coordinates[1]);
         }
 
         private double[] GetCoordinates(String placesRef)
