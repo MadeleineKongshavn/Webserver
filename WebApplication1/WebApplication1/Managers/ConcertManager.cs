@@ -51,7 +51,7 @@ namespace WebApplication1.Managers
             return true;
         }
 
-        public async Task<int> AddConcertRequest(int fromUsr, int toUsr, int ConcertId)
+        public async Task<bool> AddConcertRequest(int fromUsr, int toUsr, int ConcertId)
         {
             var db = new DbConcert();
             return await db.AddConcertRequest(fromUsr, toUsr, ConcertId);
@@ -70,7 +70,7 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
             return await db.ChangeConcert(c, pic);
         }
-        public async Task<bool> AddConcert(ConcertClass c, Byte[] pic)
+        public async Task<int> AddConcert(ConcertClass c, Byte[] pic)
         {
             var db = new DbConcert();
             var imgUrl = await UploadImage(pic);
