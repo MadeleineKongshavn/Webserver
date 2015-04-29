@@ -14,6 +14,33 @@ namespace WebApplication1.Controllers.Api
     public class UserController : ApiController
     {
         [HttpGet]
+        [Route("api/User/ChangePic/{pic},{uid}")]
+        public async Task<bool> ChangePic(int uid, byte[] pic)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.ChangePic(uid, pic);
+            }
+        }
+        [HttpGet]
+        [Route("api/User/ChangeRadius/{radius},{userId}")]
+        public async Task<bool> ChangeRadius(int radius, int userId)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.ChangeRadius(radius, userId);
+            }
+        }
+        [HttpGet]
+        [Route("api/User/GetUserById/{id}")]
+        public async Task<UserClass> GetUserById(int id)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.GetUserById(id);
+            }
+        }
+        [HttpGet]
         [Route("api/User/CheckUserName/{name}")]
         public async Task<int> CheckUserName(String name)
         {
@@ -100,15 +127,7 @@ namespace WebApplication1.Controllers.Api
                 mngr.ReadAllNotifications(userId);
             }
         }
-        [HttpGet]
-        [Route("api/User/GetUserById/{id}")]
-        public async Task<UserClass> GetUserById(int id)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.GetUserById(id);
-            }
-        }
+
         [HttpGet]
         [Route("api/User/CheckNewNotifications/{id}")]
         public async Task<Boolean> CheckNewNotifications(int id)

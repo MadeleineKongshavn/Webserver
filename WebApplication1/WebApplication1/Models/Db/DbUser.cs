@@ -17,6 +17,42 @@ namespace WebApplication1.Models
 {
     public class DbUser
     {
+
+        public async Task<bool> ChangeRadius(int radius, int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var v = await (from u in db.UserDb where u.UserId == userId select u).FirstOrDefaultAsync();
+                    v.Radius = radius;
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> ChangePic(int uid, String img)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var v = await (from u in db.UserDb where u.UserId == uid select u).FirstOrDefaultAsync();
+                    v.Url = img;
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public async Task<int> CheckEmail(String email)
         {
             try

@@ -19,8 +19,21 @@ namespace WebApplication1.Managers
         private String DETAILED_SETIING = "&sensor=true&key=";
         private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
-
-
+        public async Task<bool> ChangeRadius(int radius, int userId)
+        {
+            var cacheKey = String.Format("User_Get_{0}", userId);
+            RemoveCacheKeysByPrefix(cacheKey);
+            var db = new DbUser();
+            return await db.ChangeRadius(radius, userId);
+        }
+        public async Task<bool> ChangePic(int uid, byte[] pic)
+        {
+            var cacheKey = String.Format("User_Get_{0}", uid);
+            RemoveCacheKeysByPrefix(cacheKey);
+            var imgUrl = await UploadImage(pic);
+            var db = new DbUser();
+            return await db.ChangePic(uid, imgUrl);       
+        }
         public async Task<int> CheckEmail(String email)
         {
             var db = new DbUser();
