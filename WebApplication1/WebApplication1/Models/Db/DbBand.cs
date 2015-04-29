@@ -106,29 +106,19 @@ namespace WebApplication1.Models
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    /*
-                    List<MemberClass> members = new List<MemberClass>();
-                    List<Member> m = await (from v in db.MemberDb where v.UserId == userId select v).ToListAsync();
-                    foreach(Member b in m)
-                    {
-                        MemberClass mem = new MemberClass();
-                        mem.BandName = b.Band.BandName;
-                        mem.Id = b.BandId;
-                        mem.Url = b.Band.BitmapUrl;
-                        members.Add(mem);
-                    }
-                    return members;*/
 
-                    List<MemberClass> adminBands = (from b in db.BandDb
+                    var adminBands = (from b in db.BandDb
                                                     where b.UserId == userId
-                                                    select new MemberClass
-                                                    {
-                                                        Id = b.BandId,
-                                                        BandName = b.BandName,
-                                                        Url = b.BitmapSmalUrl
-                                                    }).ToList();
+                                                    select b).ToList();
+                    var adminList = new List<MemberClass>(); 
+
+                    foreach (Band b in adminBands)
+                    {
+                        adminList.Add(new MemberClass { Id=b.BandId, BandName=b.BandName});
+                    }
+
                   
-                    return adminBands;
+                    return adminList;
                 }
             }
             catch (Exception)
@@ -153,7 +143,7 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-        // legger et band på en bruker
+
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {
             try
@@ -175,52 +165,6 @@ namespace WebApplication1.Models
             }
             
         }
-        // legger til basisk funksjonene til et band
-        public async Task<bool> AddBand(BandClass b)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    Band band = new Band()
-                    {
-                        UrlSoundCloud = b.UrlSoundCloud,
-                        UrlFacebook = b.UrlFacebook,
-                        Xcoordinates = b.Xcoordinates,
-                        Ycoordinates = b.Ycoordinates,
-                        Area = b.Area,
-                        BandName = b.BandName,
-                        BitmapSmalUrl = b.BitmapUrl,
-                        BitmapUrl = b.BitmapUrl,
-                        Songurl = "hvis sangen skal lastes opp istedenfor, url her",
-                        SongName = b.SongName,
-                        UrlRandom = b.UrlRandom,
-
-                    };
-                    db.BandDb.Add(band);
-                    int bandId = band.BandId;
-
-            /*        List<Member> listMembers = new List<Member>();
-                    foreach (var id in b.Member)
-                    {
-                        listMembers.Add(new Member()
-                        {
-                            BandId = bandId,
-                            UserId = id,
-                        });
-                    }
-                    band.Member = listMembers;
-                    db.SaveChanges();*/
-                    return true;
-                }
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        // endrer på basisk funskjonene til et band
 
         public async Task<bool> UpdateBandGenres(int bandid, String[] genres)
         {
@@ -260,7 +204,6 @@ namespace WebApplication1.Models
             }
         
         }
-
 
         public async Task<bool> UpdateBandName(int bandid,string name)
         {
@@ -358,7 +301,6 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
         
         private Byte[] ConvertBitmapToByte(Bitmap bitmap)
         {
@@ -556,49 +498,5 @@ namespace WebApplication1.Models
             }
         }
 
-        public async Task<bool> UpdateBand(BandClass b)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var band = (from ban in db.BandDb
-                                where b.BandId == ban.BandId
-                                select ban).FirstOrDefault();
-
-                    if (b.UrlRandom != null)
-                        band.UrlRandom = b.UrlRandom;
-                    if (b.UrlSoundCloud != null)
-                        band.UrlSoundCloud = b.UrlSoundCloud;
-                    if (b.UrlFacebook != null)
-                        band.UrlFacebook = b.UrlFacebook;
-                    if (b.Xcoordinates != null)
-                        band.Xcoordinates = b.Xcoordinates;
-                    if (b.Ycoordinates != null)
-                        band.Ycoordinates = b.Ycoordinates;
-                    if (b.Area != null)
-                        band.Area = b.Area;
-                    if (b.BandName != null)
-                        band.BandName = b.BandName;
-                    if (b.BitmapUrl != null)
-                        band.BitmapSmalUrl = b.BitmapUrl;
-                    if (b.SmallBitmapUrl != null)
-                        band.BitmapUrl = b.BitmapUrl;
-                    if (b.SongName != null)
-                        band.SongName = b.SongName;
-                    if (true)
-                        band.Songurl = "hvis sangen skal lastes opp istedenfor, url her";
-                   
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-        }
-    
     }
 }

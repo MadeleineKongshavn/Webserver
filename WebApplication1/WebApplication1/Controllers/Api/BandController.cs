@@ -38,16 +38,7 @@ namespace WebApplication1.Controllers.Api
             }
         }
         
-        
-        [HttpPost]
-        [Route("api/Band/AddBand/{b},{pic}")]
-        public async Task<bool> AddBand(BandClass b, Byte[] pic)
-        {
-            using (var bmgr = ManagerFactory.GetBandManager())
-            {
-                return await bmgr.AddBand(b, pic);
-            }
-        }
+  
        
  /*       [HttpPost]
         [Route("api/Band/ChangeBand/{b},{pic}")]
@@ -180,20 +171,6 @@ namespace WebApplication1.Controllers.Api
                return await mng.updateBandGenres(bandid, genres);
            }
         }
-
-
-
-
-
-        [HttpPost]
-        [Route("api/Band/UpdateBand/{jsonBand}")]
-        public async Task<bool> UpdateBand(String jsonBand)
-        {
-            BandManager mng=ManagerFactory.GetBandManager();
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            BandClass b = (BandClass)serializer.Deserialize<BandClass>(jsonBand);
-            return await mng.UpdateBand(b);
-        } 
 
     }
 }

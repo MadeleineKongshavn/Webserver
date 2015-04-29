@@ -44,9 +44,13 @@ namespace WebApplication1.Controllers
         //    bc.AddBand("blodshed go to bed", userid);
 
             
-          //  List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
+            List<MemberClass> adminList = await new BandController().GetAllAdminBands(userid);
+            StringBuilder builder = new StringBuilder();
+            foreach (MemberClass m in adminList)
+                builder.Append(m.BandName);
 
-            ViewBag.Message = "Here's hoping! ";// + m.Count;
+
+            ViewBag.Message = "Here's hoping! "+builder.ToString();// + m.Count;
 
             return View();
         }

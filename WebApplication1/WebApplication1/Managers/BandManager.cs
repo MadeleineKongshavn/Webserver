@@ -57,14 +57,6 @@ namespace WebApplication1.Managers
             return await db.AddBandToUser(userId, bandId);
         }
         
-        public async Task<bool> AddBand(BandClass b, Byte[] pic)
-        {
-            var db = new DbBand();
-            var imgUrl = await UploadImage(pic);
-            b.BitmapUrl = imgUrl;
-            b.SmallBitmapUrl = imgUrl;
-            return await db.AddBand(b);
-        }
 
         public async Task<String> Upload(Byte[] pic)
         {
@@ -169,11 +161,6 @@ namespace WebApplication1.Managers
         }
 
 
-        public async Task<bool> UpdateBand(BandClass b)
-        {
-            var db = new DbBand();
-            return await db.UpdateBand(b);
-        }
 
         public async Task<List<BandClass>> FindAllBandsToUser(int userId)
         {
