@@ -16,6 +16,7 @@ namespace WebApplication1.Models
 
     public class DbConcert
     {
+
         public async Task<int> NumberGoingToConcert(int concertId, int userId)
         {
             try
@@ -73,6 +74,7 @@ namespace WebApplication1.Models
                             SmallBitmapUrl = c.BitmapSmalUrl,
                         }).ToListAsync();
                     return con;
+
                 }
             }
             catch (Exception e)
