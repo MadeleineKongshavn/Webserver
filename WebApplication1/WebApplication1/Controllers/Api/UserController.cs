@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using System.Web.Http;
+using Newtonsoft.Json.Linq;
 using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
@@ -15,12 +17,13 @@ namespace WebApplication1.Controllers.Api
     {
         [HttpPost]
         [Route("api/User/ChangePic/{pic}")]
-        public async Task<String> ChangePic(byte[] pic)
+        public async Task<String> ChangePic(ImageClass i)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                if (pic == null) return "null";
-                return null;
+
+                int inte = i.name.Length;
+                return "ghjk";
                 /// return await mngr.ChangePic(1, pic);
             }
         }

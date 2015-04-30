@@ -17,7 +17,6 @@ namespace WebApplication1.Models.Class
         {
 
         }
-
         public int ConcertId { get; set; }
         public string Title { get; set; }
         public double Xcoordinates { get; set; }
@@ -34,14 +33,11 @@ namespace WebApplication1.Models.Class
             set { BandClass = value.ConvertToBandClass(); }
         }
 
-        public int FriendsAttending { get; set; }
         public Boolean Attending { get; set; }
         public String SmallBitmapUrl { get; set; }
         public String BitmapUrl { get; set; }
         public int Followers { get; set; }
-        public Boolean SeeAttends { get; set; }
         public int BandId { get; set; }
-        public string LinkToBand { get; set; }
         public String VenueName { get; set; }
         public String Area { get; set; }
 

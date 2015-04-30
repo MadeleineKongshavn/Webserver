@@ -16,21 +16,73 @@ namespace WebApplication1.Models
 
     public class DbConcert
     {
+        public async Task<int> NumberGoingToConcert(int concertId, int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var c = await (from friend in db.FriendsDb
+                                   where friend.UserId == userId
+                                   join con in db.ConcertFollowersDb on friend.Friend equals con.UserId select friend).ToListAsync();
+                    return c.Count;
+                }
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+        }
+        public async Task<List<FriendsClass>> FindFriendsGoingToConcert(int concertId, int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var c = await (from friend in db.FriendsDb
+                        where friend.UserId == userId
+                        join con in db.ConcertFollowersDb on friend.Friend equals con.UserId
+                        select new FriendsClass()
+                        {
+                            FriendsId = friend.Friend,
+                            Friendsname =
+                                (from d in db.UserDb where d.UserId == friend.Friend select d.ProfileName)
+                                    .FirstOrDefault(),
+                            url = (from d in db.UserDb where d.UserId == friend.Friend select d.Url).FirstOrDefault(),
+                        }).ToListAsync();
+                    return c;
+                }
+            }catch (Exception e)
+            {
+                return null;
+            }
+        }
         public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
         {
-            using (var db = new ApplicationDbContext())
+            try
             {
-                var con = await (from c in db.ConcertDb
-                    where c.Title.Contains(query)
-                    select new ConcertClass()
-                    {
-                        Bandname = c.Band.BandName,
-                        ConcertId = c.ConcertId,
-                        Title = c.Title,
-                        SmallBitmapUrl = c.BitmapSmalUrl,
-                    }).ToListAsync();
-                return con;
+                using (var db = new ApplicationDbContext())
+                {
+                    var con = await (from c in db.ConcertDb
+                        where c.Title.Contains(query)
+                        select new ConcertClass()
+                        {
+                            Bandname = c.Band.BandName,
+                            ConcertId = c.ConcertId,
+                            Title = c.Title,
+                            SmallBitmapUrl = c.BitmapSmalUrl,
+                        }).ToListAsync();
+                    return con;
+                }
             }
+            catch (Exception e)
+            {
+               ConcertClass c = new ConcertClass(){Title = e.Message + " " + e.ToString()};
+                var v = new List<ConcertClass>();
+                v.Add(c);
+                return v;
+            }
+ 
         }
         public async Task<int> AcceptConcertRequest(Boolean ok, int id)
         {
@@ -245,6 +297,7 @@ namespace WebApplication1.Models
                                          where v.ConcertId == id
                                          select new ConcertClass()
                                          {
+                                             VenueName = v.VenueName,
                                              ConcertId = v.ConcertId,
                                              Title = v.Title,
                                              Xcoordinates = v.Xcoordinates,

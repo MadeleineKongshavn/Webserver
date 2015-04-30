@@ -35,9 +35,10 @@ namespace WebApplication1.Controllers
             UserController uc=new UserController();
             BandController bc=new BandController();
             GenreController gc = new GenreController();
-  
 
-            ViewBag.Message = "Here's hoping! ";// + m.Count;
+
+             var v = await new ConcertController().FindConcertBasedOnQuery("t");
+            ViewBag.Message = "Here's hoping! " + v.Count;// + m.Count;
 
             return View();
         }
