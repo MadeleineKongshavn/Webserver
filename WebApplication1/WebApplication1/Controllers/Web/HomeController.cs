@@ -22,7 +22,7 @@ namespace WebApplication1.Controllers
 
         public async Task<ActionResult> About()
         {
-
+     /*
             int userid = 1;
             int bandid = 11;
             BandClass b;
@@ -32,13 +32,15 @@ namespace WebApplication1.Controllers
             string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
             char[] input = refer.ToCharArray();
 
-            UserController uc=new UserController();
-            BandController bc=new BandController();
+            UserController uc=new UserController();*/
+            DbBand bc = new DbBand();
             GenreController gc = new GenreController();
 
 
-             var v = await new ConcertController().FindConcertBasedOnQuery("t");
-            ViewBag.Message = "Here's hoping! " + v.Count;// + m.Count;
+            // var v = await new ConcertController().FindConcertBasedOnQuery("t");
+
+           /// var i = await bc.GetBandsCoordinates(59.911449, 10.750401);
+            ViewBag.Message = "Here's hoping! ";
 
             return View();
         }

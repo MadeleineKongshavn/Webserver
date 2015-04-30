@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -38,6 +39,70 @@ namespace WebApplication1.Models
             }
         }*/
 
+/*
+             double theta = lon1 - lon2;
+            double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
+            dist = Math.Acos(dist);
+            dist = rad2deg(dist);
+            dist = dist * 60 * 1.1515;
+            if (unit == 'K') 
+            {
+                dist = dist * 1.609344;
+            } else if (unit == 'N') 
+            {
+                dist = dist * 0.8684; 
+            }
+            return (dist);
+        }
+        private double deg2rad(double deg) 
+        {
+            return (deg * Math.PI / 180.0);
+        }
+        private double rad2deg(double rad) 
+        {
+            return (rad / Math.PI * 180.0);
+        }
+ *                 /*             d=1000 km from M=(lat, lon)=(1.3963, -0.6981)
+                    
+SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat) + cos(1.3963) * cos(Lat) 
+    * cos(Lon - (-0.6981))) * 6371 <= 1000;*/
+
+
+        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var user = (from u in db.UserDb where u.UserId == userId select u).FirstOrDefault();
+                    Double lat = user.Xcoordinates;
+                    Double lang = user.Ycoordinates;
+                    int rad = user.Radius;
+
+                     var ob = await (from c in db.BandDb
+                                    where SqlFunctions.Acos(SqlFunctions.Sin(lat) * SqlFunctions.Sin(c.Xcoordinates) +
+                                         SqlFunctions.Cos(lat) * SqlFunctions.Cos(c.Xcoordinates) * SqlFunctions.Cos(c.Ycoordinates - (lang))) *
+                                         6371 <= rad
+                         select new BandsImagesClass()
+                         {
+                             OpositeXCoordinates = lat,
+                             OpositeYCoordinates = lang,
+                             BandId = c.BandId,
+                             Title = c.BandName,
+                             SmallBitmapUrl = c.BitmapSmalUrl,
+                             XCoordinates = c.Xcoordinates,
+                             YCoordinates = c.Ycoordinates,
+                         }).ToListAsync();
+
+                     DbBand.Shuffle(ob);
+                     var o = ob.Take(15);
+                     return o.ToList();
+                }
+            }catch (Exception e)
+            {
+                return null;
+            }
+        }
         public async Task<bool> UpdateBandImage(int bandid, String url)
         {
             try
@@ -56,7 +121,7 @@ namespace WebApplication1.Models
                 return false;
             }            
         }
-        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
+/*        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             try
             {
@@ -79,7 +144,7 @@ namespace WebApplication1.Models
             {
                 return null;
             }
-        }
+        }*/
         public static void Shuffle<T>(IList<T> list)
         {
             int n = list.Count;

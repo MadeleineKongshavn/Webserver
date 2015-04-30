@@ -28,7 +28,6 @@ namespace WebApplication1.Managers
             return await db.UpdateBandImage(bandid, imgUrl);
         }
 
-
         public async Task<List<BandClass>> FindBandBasedOnQuery(String query)
         {
             var db = new DbBand();
