@@ -302,7 +302,7 @@ namespace WebApplication1.Models
                                              Title = v.Title,
                                              Xcoordinates = v.Xcoordinates,
                                              Ycoordinates = v.Ycoordinates,
-                                             Band = v.Band,
+                                             Bandname = v.Band.BandName,
                                              Date = v.Date,
                                          }
                         ).FirstOrDefaultAsync();
@@ -421,6 +421,7 @@ namespace WebApplication1.Models
                 return false;
             }
         }
+
 
 
     }
