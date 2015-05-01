@@ -17,7 +17,12 @@ namespace WebApplication1.Managers
         private String DETAILED_SETIING = "&sensor=true&key=";
         private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
-        public async Task<int> NumberGoingToConcert(int concertId, int userId)
+        public async Task<bool> AddRemoveConcertToUser(int concertId, int userId, bool ok)
+        {
+            var db = new DbConcert();
+            return await db.AddRemoveConcertToUser(concertId, userId, ok);
+        }
+        public async Task<ConcertInfoClass> NumberGoingToConcert(int concertId, int userId)
         {
             var db = new DbConcert();
             return await db.NumberGoingToConcert(concertId, userId);

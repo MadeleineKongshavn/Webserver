@@ -16,8 +16,41 @@ namespace WebApplication1.Models
 
     public class DbConcert
     {
+        public async Task<bool> AddRemoveConcertToUser(int concertId, int userId, bool ok)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    if (ok)
+                    {
+                        db.ConcertFollowersDb.Add(new ConcertFollowers()
+                        {
+                            UserId = userId,
+                            ConcertId = concertId,
+                        });
+                    }
+                    else
+                    {
+                        var con =
+                            await
+                                (from u in db.ConcertFollowersDb
+                                    where u.UserId == userId && u.ConcertId == concertId
+                                    select u).FirstOrDefaultAsync();
+                        db.ConcertFollowersDb.Remove(con);
+                    }
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            
+        }
 
-        public async Task<int> NumberGoingToConcert(int concertId, int userId)
+        public async Task<ConcertInfoClass> NumberGoingToConcert(int concertId, int userId)
         {
             try
             {
@@ -26,12 +59,16 @@ namespace WebApplication1.Models
                     var c = await (from friend in db.FriendsDb
                                    where friend.UserId == userId
                                    join con in db.ConcertFollowersDb on friend.Friend equals con.UserId select friend).ToListAsync();
-                    return c.Count;
+                    return new ConcertInfoClass()
+                    {
+                        ConcertId = concertId,
+                        FriendsAttending = c.Count,
+                    };
                 }
             }
             catch (Exception e)
             {
-                return -1;
+                return null;
             }
         }
         public async Task<List<FriendsClass>> FindFriendsGoingToConcert(int concertId, int userId)
