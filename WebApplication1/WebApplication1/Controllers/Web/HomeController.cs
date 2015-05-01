@@ -37,10 +37,18 @@ namespace WebApplication1.Controllers
             GenreController gc = new GenreController();
 
 
+            Double v = bc.distance(59.941761, 10.760368, 59.941761, 10.757493);
+
+
             // var v = await new ConcertController().FindConcertBasedOnQuery("t");
 
            /// var i = await bc.GetBandsCoordinates(59.911449, 10.750401);
-            ViewBag.Message = "Here's hoping! ";
+           /// 
+           /// 
+            /// 59,923302   10,752547           59,941761   10,760368
+
+           List<BandsImagesClass> list = await bc.GetRandomBands(3);
+           ViewBag.Message = "Here's hoping! " + list.Count + " " + ((int)v);
 
             return View();
         }
@@ -51,5 +59,7 @@ namespace WebApplication1.Controllers
 
             return View();
         }
+
+     
     }
 }

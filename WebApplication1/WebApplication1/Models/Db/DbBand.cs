@@ -17,56 +17,24 @@ namespace WebApplication1.Models
     public class DbBand
     {
 
-       /* private String CompressExistingByteArrayBitmap(Byte[] bytAarray, int number)
+        public Double distance(double lat1, double lon1, double lat2, double lon2)
         {
-            try
-            {
-                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-                System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            int RADIUS_EARTH = 6371;
+            
+            double dLat = getRad(lat2 - lat1);
+            double dLong = getRad(lon2 - lon1);
 
-                var myEncoderParameters = new EncoderParameters(1);
-                var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2)       + Math.Cos(getRad(lat1)) * 
+                Math.Cos(getRad(lat2)) * Math.Sin(dLong / 2) * Math.Sin(dLong / 2);
 
-                myEncoderParameters.Param[0] = myEncoderParameter;
-                var mse = new MemoryStream(bytAarray);
-                var bmp = new Bitmap(mse);
 
-                bmp.Save(@"c:\Band " + number + ".jpg", jpgEncoder, myEncoderParameters);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }*/
-
-/*
-             double theta = lon1 - lon2;
-            double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
-            dist = Math.Acos(dist);
-            dist = rad2deg(dist);
-            dist = dist * 60 * 1.1515;
-            if (unit == 'K') 
-            {
-                dist = dist * 1.609344;
-            } else if (unit == 'N') 
-            {
-                dist = dist * 0.8684; 
-            }
-            return (dist);
+           double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+           return ((RADIUS_EARTH * c) * 1000);
         }
-        private double deg2rad(double deg) 
-        {
-            return (deg * Math.PI / 180.0);
-        }
-        private double rad2deg(double rad) 
-        {
-            return (rad / Math.PI * 180.0);
-        }
- *                 /*             d=1000 km from M=(lat, lon)=(1.3963, -0.6981)
-                    
-SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat) + cos(1.3963) * cos(Lat) 
-    * cos(Lon - (-0.6981))) * 6371 <= 1000;*/
-
+    private static double getRad(double x)
+    {
+        return x * Math.PI / 180;
+    }
 
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
@@ -79,11 +47,7 @@ SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat) + cos(1.3963) * cos(Lat)
                     Double lang = user.Ycoordinates;
                     int rad = user.Radius;
 
-                     var ob = await (from c in db.BandDb
-                                    where SqlFunctions.Acos(SqlFunctions.Sin(lat) * SqlFunctions.Sin(c.Xcoordinates) +
-                                         SqlFunctions.Cos(lat) * SqlFunctions.Cos(c.Xcoordinates) * SqlFunctions.Cos(c.Ycoordinates - (lang))) *
-                                         6371 <= rad
-                         select new BandsImagesClass()
+                    var val = await (from c in db.BandDb select new BandsImagesClass()
                          {
                              OpositeXCoordinates = lat,
                              OpositeYCoordinates = lang,
@@ -93,10 +57,13 @@ SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat) + cos(1.3963) * cos(Lat)
                              XCoordinates = c.Xcoordinates,
                              YCoordinates = c.Ycoordinates,
                          }).ToListAsync();
-
-                     DbBand.Shuffle(ob);
-                     var o = ob.Take(15);
-                     return o.ToList();
+                    List<BandsImagesClass> images = new List<BandsImagesClass>();
+                    foreach (var v in val)
+                    {
+                        Double vals = distance(lat, lang, v.XCoordinates, v.YCoordinates);
+                        if(rad >= ((int) vals)) images.Add(v);
+                    }
+                    return images;
                 }
             }catch (Exception e)
             {
@@ -584,3 +551,43 @@ SELECT * FROM Places WHERE acos(sin(1.3963) * sin(Lat) + cos(1.3963) * cos(Lat)
 
     }
 }
+/*
+  var ob = await (from c in db.BandDb
+                                    where SqlFunctions.Acos(SqlFunctions.Sin(lat) * SqlFunctions.Sin(c.Xcoordinates) +
+                                         SqlFunctions.Cos(lat) * SqlFunctions.Cos(c.Xcoordinates) * SqlFunctions.Cos(c.Ycoordinates - (lang))) *
+                                         6371 <= rad
+                         select new BandsImagesClass()
+                         {
+                             OpositeXCoordinates = lat,
+                             OpositeYCoordinates = lang,
+                             BandId = c.BandId,
+                             Title = c.BandName,
+                             SmallBitmapUrl = c.BitmapSmalUrl,
+                             XCoordinates = c.Xcoordinates,
+                             YCoordinates = c.Ycoordinates,
+                         }).ToListAsync();
+
+                     DbBand.Shuffle(ob);
+                     var o = ob.Take(15);
+                     return o.ToList();*/
+/* private String CompressExistingByteArrayBitmap(Byte[] bytAarray, int number)
+ {
+     try
+     {
+         ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+         System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+         var myEncoderParameters = new EncoderParameters(1);
+         var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
+
+         myEncoderParameters.Param[0] = myEncoderParameter;
+         var mse = new MemoryStream(bytAarray);
+         var bmp = new Bitmap(mse);
+
+         bmp.Save(@"c:\Band " + number + ".jpg", jpgEncoder, myEncoderParameters);
+     }
+     catch (Exception)
+     {
+         return null;
+     }
+ }*/
