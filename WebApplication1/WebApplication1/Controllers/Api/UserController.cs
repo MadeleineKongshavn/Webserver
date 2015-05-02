@@ -16,14 +16,14 @@ namespace WebApplication1.Controllers.Api
     public class UserController : ApiController
     {
         [HttpPost]
-        [Route("api/User/ChangePic/{pic}")]
-        public async Task<String> ChangePic(ImageClass i)
+        [Route("api/User/ChangePic/")]
+        public async Task<String> ChangePic(ImageClass pic)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
 
-                int inte = i.name.Length;
-                return "ghjk";
+//                int inte = pic.name.Length;
+                return "kom til server";
                 /// return await mngr.ChangePic(1, pic);
             }
         }
