@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
@@ -16,16 +18,32 @@ namespace WebApplication1.Controllers.Api
     public class UserController : ApiController
     {
         [HttpPost]
-        [Route("api/User/ChangePic/")]
-        public async Task<String> ChangePic(ImageClass pic)
+        [Route("api/User/ChangePic/{userid}")]
+        public async Task<bool> ChangePic(int userid)
         {
-            using (var mngr = ManagerFactory.GetUserManager())
+            var httpRequest = HttpContext.Current.Request;
+            if (httpRequest.Files.Count > 0)
             {
-
-//                int inte = pic.name.Length;
-                return "kom til server";
-                /// return await mngr.ChangePic(1, pic);
+                HttpPostedFile filee = httpRequest.Files[0];
+                Console.WriteLine(filee.ContentLength);
+                using (var mngr = ManagerFactory.GetUserManager())
+                {
+                    var image = Image.FromStream(filee.InputStream);
+                    //                int inte = pic.name.Length;
+                    //return "kom til server";
+                    return await mngr.ChangePic(userid, image);
+                }
             }
+            return false;
+
+
+            //            using (var mngr = ManagerFactory.GetUserManager())
+            //            {
+
+            ////                int inte = pic.name.Length;
+            //                return "kom til server";
+            //                /// return await mngr.ChangePic(1, pic);
+            //            }
         }
         [HttpGet]
         [Route("api/User/ChangeRadius/{radius},{userId}")]
@@ -52,7 +70,7 @@ namespace WebApplication1.Controllers.Api
             using (var mngr = ManagerFactory.GetUserManager())
             {
                 return await mngr.CheckUserName(name);
-            }    
+            }
         }
         [HttpGet]
         [Route("api/User/CheckEmail/{email}")]
@@ -81,7 +99,7 @@ namespace WebApplication1.Controllers.Api
             using (var mngr = ManagerFactory.GetUserManager())
             {
                 return await mngr.NormalLogin(pass, email);
-            }            
+            }
         }
 
         [HttpGet]
@@ -96,7 +114,7 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/User/ChangeUser/{u},{pic}")]
-        public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
+        public async Task<Boolean> ChangeUser(UserClass u, Image pic)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
@@ -105,7 +123,7 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpPost]
         [Route("api/User/AddUser/{u},{pic}")]
-        public async Task<Boolean> AddUser(UserClass u, Byte[] pic) // Ny metode
+        public async Task<Boolean> AddUser(UserClass u, Image pic) // Ny metode
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
@@ -118,7 +136,7 @@ namespace WebApplication1.Controllers.Api
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                List<NotificationsClass> not =  mngr.GetNotificationByUserId(id);
+                List<NotificationsClass> not = mngr.GetNotificationByUserId(id);
                 ReadNotifications(id);
                 return not;
             }
@@ -140,11 +158,11 @@ namespace WebApplication1.Controllers.Api
             using (var mngr = ManagerFactory.GetUserManager())
             {
                 return await mngr.CheckNewNotifications(id);
-            }            
+            }
         }
         [HttpPost]
         [Route("api/User/UpdateUserGenres/{userid},{genres}")]
-        public async Task<bool> UpdateUserGenres(int userid,string genres)
+        public async Task<bool> UpdateUserGenres(int userid, string genres)
         {
             string[] gen = genres.Split(',');
             using (var mng = ManagerFactory.GetUserManager())

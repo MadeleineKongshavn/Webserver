@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Drawing;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.EnterpriseServices;
@@ -26,11 +27,11 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.ChangeRadius(radius, userId);
         }
-        public async Task<bool> ChangePic(int uid, byte[] pic)
+        public async Task<bool> ChangePic(int uid, Image image)
         {
             var cacheKey = String.Format("User_Get_{0}", uid);
             RemoveCacheKeysByPrefix(cacheKey);
-            var imgUrl = await UploadImage(pic);
+            var imgUrl = await UploadImage(image);
             var db = new DbUser();
             return await db.ChangePic(uid, imgUrl);       
         }
@@ -66,7 +67,7 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.CheckNewNotifications(id);
         }
-        public async Task<Boolean> AddUser(UserClass u, Byte[] pic) 
+        public async Task<Boolean> AddUser(UserClass u, Image pic) 
         {
             var db = new DbUser();
             var imgUrl = await UploadImage(pic);
@@ -74,7 +75,7 @@ namespace WebApplication1.Managers
             return await db.AddUser(u);
         }
 
-        public async Task<Boolean> ChangeUser(UserClass u, Byte[] pic)
+        public async Task<Boolean> ChangeUser(UserClass u, Image pic)
         {
             UpdateUser(u.UserId);
             var db = new DbUser();

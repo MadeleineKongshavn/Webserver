@@ -208,8 +208,11 @@
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Class\BandClass.cs" />
     <Compile Include="Models\Class\BandsImagesClass.cs" />
+    <Compile Include="Models\Class\ConcertInfoClass.cs" />
+    <Compile Include="Models\Class\DistanceAlgorithm.cs" />
     <Compile Include="Models\Class\GenreClass.cs" />
     <Compile Include="Models\Class\ConcertClass.cs" />
+    <Compile Include="Models\Class\ImageClass.cs" />
     <Compile Include="Models\Class\MemberClass.cs" />
     <Compile Include="Models\Class\NotificationsClass.cs" />
     <Compile Include="Models\Class\UserClass.cs" />
@@ -266,8 +269,10 @@
     <Content Include="images\Profile\profile_1010.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\Semitone - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Semitone - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\Semitone - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Semitone - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Semitone - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\Semitone - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
