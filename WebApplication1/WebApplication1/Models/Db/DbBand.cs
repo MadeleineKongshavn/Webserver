@@ -497,6 +497,7 @@ namespace WebApplication1.Models
                                   //join c in db.BandDb on v.BandId equals c.BandId
                                   select new BandClass()
                                   {
+                                      Area = v.Band.Area,
                                       BandId = v.Band.BandId,
                                       BandName = v.Band.BandName,
                                       BandGenre = v.Band.BandGenre,
