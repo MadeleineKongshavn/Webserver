@@ -500,7 +500,7 @@ namespace WebApplication1.Models
                                       Area = v.Band.Area,
                                       BandId = v.Band.BandId,
                                       BandName = v.Band.BandName,
-                                      BandGenre = v.Band.BandGenre,
+                                      Member = v.User.ProfileName,
                                       SmallBitmapUrl = v.Band.BitmapSmalUrl,  
                                       Xcoordinates = v.Band.Xcoordinates,
                                       Ycoordinates = v.Band.Ycoordinates

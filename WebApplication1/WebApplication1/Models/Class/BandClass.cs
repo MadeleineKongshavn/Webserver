@@ -15,18 +15,33 @@ namespace WebApplication1.Models
         public Double Ycoordinates { get; set; }
         public String BandName { get; set; }
         public string[] Genre { get; set; }
+        public String Genres { get; set; }
+
+        public String Member { get; set; }
 
         public List<BandGenre> BandGenre
         {
             set
             {
-                List<string> temp = new List<string>();
-                foreach (var v in value)
+                Genres = "";
+                int t = value.Count;
+                if (t == 0) Genres = "No genre specified";
+                else if (t == 1) Genres = value.First().Genre.GenreName;
+                else
                 {
-                    temp.Add(v.Genre.GenreName);
+                    List<string> temp = new List<string>();
+                    foreach (var v in value)
+                    {
+                        Genres = Genre + v.Genre.GenreName + ", ";
+                        //temp.Add(v.Genre.GenreName);
+                    }
+                    
                 }
-                
-                Genre = temp.ToArray();
+                if (Genres.Equals("")) Genres = "No genre specified";
+
+             
+
+                //Genre = temp.ToArray();
 
             }
         }
