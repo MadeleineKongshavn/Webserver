@@ -125,6 +125,9 @@ namespace WebApplication1.Managers
         {
             var db = new DbBand();
             double[] coordinates = GetCoordinates(apiRef);
+            if (coordinates == null)
+                return false;
+            else
             return await db.UpdateBandLocation(bandid, area, coordinates[0], coordinates[1]);
         }
 
@@ -144,6 +147,9 @@ namespace WebApplication1.Managers
 
         private double[] RequestCompleted(HttpWebResponse res)
         {
+            if (res.ContentLength == null)
+                return null;
+
             double[] coord = new double[2];
             var response = (HttpWebResponse)res;
 
