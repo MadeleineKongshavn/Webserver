@@ -133,7 +133,7 @@ namespace WebApplication1.Controllers.Api
         }
 
        
-        [HttpGet]
+        [HttpPost]
         [Route("api/Band/updateBandLocation/{bandid},{area},{placesRef}")]
         public async Task<bool> updateBandLocation(int bandid,string area, string placesRef)
         {
