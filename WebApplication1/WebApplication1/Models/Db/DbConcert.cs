@@ -243,20 +243,28 @@ namespace WebApplication1.Models
             }
         }
         // legger til en konsert, pic er bilde som skal inn
-        public async Task<Boolean> AddConcert(ConcertClass c)
+        public async Task<Boolean> AddConcert(ConcertClass c, Boolean getBitmapUrl)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
+                    var BandBitmapUrl = "";
+                    var SmallBandBitmapUrl = "";
+                    if(getBitmapUrl)
+                    {
+                        BandBitmapUrl = (from b in db.BandDb where b.BandId == c.BandId select b.BitmapUrl).FirstOrDefault();
+                        SmallBandBitmapUrl = (from b in db.BandDb where b.BandId == c.BandId select b.BitmapSmalUrl).FirstOrDefault();
+                    }
+                    
                     var c1 = new Concert()
                     {
                         Title = c.Title,
                         Xcoordinates = c.Xcoordinates,
                         Ycoordinates = c.Ycoordinates,
                         BandId = c.BandId,
-                        BitmapUrl = c.BitmapUrl,
-                        BitmapSmalUrl = c.SmallBitmapUrl,
+                        BitmapUrl = BandBitmapUrl,
+                        BitmapSmalUrl = SmallBandBitmapUrl,
                         VenueName = c.VenueName,
                         Date = Convert.ToDateTime(c.Date),
                     };

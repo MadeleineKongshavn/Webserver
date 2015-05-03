@@ -85,22 +85,22 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
             return await db.ChangeConcert(c, pic);
         }
-        public async Task<Boolean> AddConcert(ConcertClass c, Byte[] pic, String locRef)
+        public async Task<Boolean> AddConcert(ConcertClass c, String locRef, Boolean getBitmapUrl)
         {
             var db = new DbConcert();
-            var imgUrl = await UploadImage(pic);
+            /*var imgUrl = await UploadImage(pic);
             if (pic != null && pic.Length != 0)
             {
                 c.BitmapUrl = imgUrl;
                 c.SmallBitmapUrl = imgUrl;
-            }
-            string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
-            locRef = refer;
+            }*/
+            //string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
+            //locRef = refer;
             double[] coor = updateConcertLocation(c.ConcertId, c.VenueName, locRef);
             c.Xcoordinates = coor[0];
             c.Ycoordinates = coor[1];
 
-            return await db.AddConcert(c);
+            return await db.AddConcert(c, getBitmapUrl);
         }
         public async Task<ConcertClass> GetConcertById(int id)
         {

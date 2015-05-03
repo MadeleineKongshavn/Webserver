@@ -22,17 +22,17 @@ namespace WebApplication1.Controllers
 
         public async Task<ActionResult> About()
         {
-     /*
-            int userid = 1;
-            int bandid = 11;
-            BandClass b;
-            double x=0;
-            double y=0;
-            string bandname="jaffa cake revival";
-            string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
-            char[] input = refer.ToCharArray();
+            /*
+                   int userid = 1;
+                   int bandid = 11;
+                   BandClass b;
+                   double x=0;
+                   double y=0;
+                   string bandname="jaffa cake revival";
+                   string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
+                   char[] input = refer.ToCharArray();
 
-            UserController uc=new UserController();*/
+                   UserController uc=new UserController();*/
             DbBand bc = new DbBand();
             GenreController gc = new GenreController();
 
@@ -53,9 +53,13 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public async Task<ActionResult> Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ConcertController db = new ConcertController();
+            //AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, String venue, String locRef, Boolean getBitmapUrl)
+            string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
+            Boolean d = await db.AddConcert("Oslo tour",11,2014,05,05,22,30,"The Dirty Cow",refer,false);
+            ViewBag.Message = "sånn gikk det ja --> " + d;
 
             return View();
         }

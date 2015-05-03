@@ -105,8 +105,8 @@ namespace WebApplication1.Controllers.Api
             }
         }
         [HttpPost]
-        [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{pic},{venue},{ref}")]
-        public async Task<Boolean> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, Byte[] pic, String venue, String locRef)
+        [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{venue},{ref},{getBitmapUrl}")]
+        public async Task<Boolean> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, String venue, String locRef, Boolean getBitmapUrl)
         {
             using (var cMgr = ManagerFactory.GetConcertManager())
             {
@@ -118,7 +118,7 @@ namespace WebApplication1.Controllers.Api
                 c.Date = new DateTime(year, month, day, hour, min, 0);
                 c.VenueName = venue;
                 
-                return await cMgr.AddConcert(c, pic, locRef);
+                return await cMgr.AddConcert(c, locRef, getBitmapUrl);
             }
         }
         [HttpGet]
