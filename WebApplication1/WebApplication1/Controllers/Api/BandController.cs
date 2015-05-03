@@ -10,6 +10,8 @@ using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
 
+
+
 namespace WebApplication1.Controllers.Api
 {
 
@@ -131,12 +133,13 @@ namespace WebApplication1.Controllers.Api
         }
 
        
-        [HttpPost]
+        [HttpGet]
         [Route("api/Band/updateBandLocation/{bandid},{area},{placesRef}")]
-        public Task<bool> updateBandLocation(int bandid, String area, string placesRef)
+        public async Task<bool> updateBandLocation(int bandid,string area, string placesRef)
         {
                 BandManager mng = ManagerFactory.GetBandManager();
-                return mng.updateBandLocation(bandid,area,placesRef);
+                return await mng.updateBandLocation(bandid, area, placesRef);
+            
         }
 
 

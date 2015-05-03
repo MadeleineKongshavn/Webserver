@@ -15,9 +15,10 @@ namespace WebApplication1.Managers
     public class BandManager : BaseManager
     {
 
-        private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?reference=";
+        private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         private String DETAILED_SETIING = "&sensor=true&key=";
         private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
+        private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
         public async Task <bool> UpdateBandImage(int bandid, byte[] imgArray)
         {
@@ -120,34 +121,32 @@ namespace WebApplication1.Managers
             return ok;
         }
 
-        public async Task<bool> updateBandLocation(int bandid,string area,string apiRef)
+        public async Task<bool> updateBandLocation(int bandid, string area, string apiRef)
         {
             var db = new DbBand();
             double[] coordinates = GetCoordinates(apiRef);
-            bool ok= await db.UpdateBandLocation(bandid,area,coordinates[0],coordinates[1]);
-            var cacheKey = String.Format("Band_Get_{0}", bandid);
-            RemoveCacheKeysByPrefix(cacheKey);
-            return ok;
+            return await db.UpdateBandLocation(bandid, area, coordinates[0], coordinates[1]);
         }
 
-        private double[] GetCoordinates(String placesRef){
+        private double[] GetCoordinates(String placesRef)
+        {
             StringBuilder query = new StringBuilder(PLACES_API_QUERY);
             query.Append(placesRef);
             query.Append(DETAILED_SETIING);
             query.Append(SERVER_API_KEY);
             Console.Write(query.ToString());
-            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(query.ToString()) as HttpWebRequest;            
+            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(TEST_QUERY) as HttpWebRequest;
             webRequest.Timeout = 20000;
             webRequest.Method = "GET";
-            HttpWebResponse response =(HttpWebResponse) webRequest.GetResponse();
-            return RequestCompleted(response);    
+            HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+            return RequestCompleted(response);
         }
 
         private double[] RequestCompleted(HttpWebResponse res)
         {
             double[] coord = new double[2];
             var response = (HttpWebResponse)res;
-         
+
             using (var stream = response.GetResponseStream())
             {
                 var r = new System.IO.StreamReader(stream);
