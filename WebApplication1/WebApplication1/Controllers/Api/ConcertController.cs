@@ -87,12 +87,12 @@ namespace WebApplication1.Controllers.Api
             }
         }
         [HttpPost]
-        [Route("api/Concert/AddConcertToUser/{userId},{concertId}")]
-        public async Task<Boolean> AddConcertToUser(int userId, int concertId)
+        [Route("api/Concert/AddConcertToUser/{userId},{concertId},{ok}")]
+        public async Task<Boolean> AddConcertToUser(int userId, int concertId, bool ok)
         {
             using (var cMgr = ManagerFactory.GetConcertManager())
             {
-                return await cMgr.AddConcertToUser(userId, concertId);
+                return await cMgr.AddConcertToUser(userId, concertId, ok);
             }  
         }
         [HttpPost]

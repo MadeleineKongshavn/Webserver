@@ -71,12 +71,12 @@ namespace WebApplication1.Managers
             var db = new DbConcert();
             return await db.AddConcertRequest(fromUsr, toUsr, ConcertId);
         }
-        public async Task<Boolean> AddConcertToUser(int userId, int concertId)
+        public async Task<Boolean> AddConcertToUser(int userId, int concertId, bool ok)
         {
             var db = new DbConcert();
             var cacheKey = String.Format("Concert_User_Get_{0}", userId);
-            RemoveCacheKeysByPrefix(cacheKey); 
-            return await db.AddConcertToUser(userId, concertId);
+            RemoveCacheKeysByPrefix(cacheKey);
+            return await db.AddConcertToUser(userId, concertId, ok);
         }
         public async Task<Boolean> ChangeConcert(ConcertClass c, Byte[] pic)
         {

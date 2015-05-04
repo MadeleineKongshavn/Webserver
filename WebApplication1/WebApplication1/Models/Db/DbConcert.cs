@@ -59,11 +59,14 @@ namespace WebApplication1.Models
                     var c = await (from friend in db.FriendsDb
                                    where friend.UserId == userId
                                    join con in db.ConcertFollowersDb on friend.Friend equals con.UserId select friend).ToListAsync();
-                    return new ConcertInfoClass()
+                    ConcertInfoClass co =  new ConcertInfoClass()
                     {
                         ConcertId = concertId,
                         FriendsAttending = c.Count,
+                        Added = await ConcertAlreadyAdded(concertId, userId),
                     };
+                    return co;
+
                 }
             }
             catch (Exception e)
@@ -162,7 +165,7 @@ namespace WebApplication1.Models
                         ConcertId = concrtId,
                     };
 
-                    AddConcertToUser(Usrid, concrtId);
+                    AddConcertToUser(Usrid, concrtId, true);
 
                     db.SaveChanges();
                     return Usrid;
@@ -202,25 +205,39 @@ namespace WebApplication1.Models
                 return false;
             }            
         }
-        public async Task<Boolean> AddConcertToUser(int userId, int ConcertId)
+        public async Task<bool> AddConcertToUser(int userId, int ConcertId, bool ok)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    db.ConcertFollowersDb.Add(new ConcertFollowers()
+                    if (ok)
                     {
-                        UserId = userId,
-                        ConcertId = ConcertId,
-                    });
-                    db.SaveChanges();
+                        db.ConcertFollowersDb.Add(new ConcertFollowers()
+                        {
+                            UserId = userId,
+                            ConcertId = ConcertId,
+                        });
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        var v =
+                            await
+                                (from o in db.ConcertFollowersDb
+                                    where userId == o.UserId && ConcertId == o.ConcertId
+                                    select o).FirstOrDefaultAsync();
+                        db.ConcertFollowersDb.Remove(v);
+                        db.SaveChanges();
+                    }
                     return true;
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
+                // return e.Message + " " + e.ToString() + " feil";
             }
         }
         public async Task <Boolean> ConcertAlreadyAdded(int concertId, int UserId)
@@ -229,12 +246,8 @@ namespace WebApplication1.Models
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    var concert =
-                        (from v in db.ConcertFollowersDb where v.ConcertId == concertId && v.UserId == UserId select v)
-                            .FirstOrDefaultAsync();
-                    if (concert == null) return false;
-                    return true;
-
+                    var concert = await (from v in db.ConcertFollowersDb where v.ConcertId == concertId && v.UserId == UserId select v).FirstOrDefaultAsync();
+                    if (concert == null) return false; else  return true;
                 }
             }
             catch (Exception e)
