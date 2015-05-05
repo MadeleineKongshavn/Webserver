@@ -47,8 +47,10 @@ namespace WebApplication1.Controllers
            /// 
             /// 59,923302   10,752547           59,941761   10,760368
 
-           List<BandsImagesClass> list = await bc.GetRandomBands(3);
-           ViewBag.Message = "Here's hoping! " + list.Count + " " + ((int)v);
+         //  List<BandsImagesClass> list = await bc.GetRandomBands(3);
+            var o = await new DbConcert().AddConcertToUser(3, 5, false);
+
+           ViewBag.Message = "Here's hoping! " + o;
 
             return View();
         }

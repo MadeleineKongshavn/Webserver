@@ -35,7 +35,6 @@ namespace WebApplication1.Models
     {
         return x * Math.PI / 180;
     }
-
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             try
@@ -63,7 +62,8 @@ namespace WebApplication1.Models
                         Double vals = distance(lat, lang, v.XCoordinates, v.YCoordinates);
                         if(rad >= ((int) vals)) images.Add(v);
                     }
-                    return images;
+                    Shuffle<BandsImagesClass>(images);
+                    return images.Take(15).ToList();
                 }
             }catch (Exception e)
             {
@@ -112,7 +112,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }*/
-        public static void Shuffle<T>(IList<T> list)
+        public async Task<IList<T>>  Shuffle<T>(IList<T> list)
         {
             int n = list.Count;
             Random rnd = new Random();

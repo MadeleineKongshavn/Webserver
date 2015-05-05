@@ -87,15 +87,13 @@ namespace WebApplication1.Managers
         {
             BandClass bandClass;
             var cacheKey = String.Format("Band_Get_{0}", bandId);
-            if ((bandClass = (BandClass)Cache.Get(cacheKey)) != null)
-                return bandClass;
-
+            if ((bandClass = (BandClass)Cache.Get(cacheKey)) != null) return bandClass;
             try
             {
                 var db = new DbBand();
                 bandClass = await db.GetBandById(bandId);
                 if(bandClass != null)
-                    Cache.Insert(cacheKey, bandClass, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
+                Cache.Insert(cacheKey, bandClass, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
             }
             catch (Exception)
             {
@@ -108,8 +106,9 @@ namespace WebApplication1.Managers
         public async Task<bool> updateBandName(String name, int bandId)
         {
             var db=new DbBand();
+            var cacheKey = String.Format("Band_Get_{0}", bandId);
+            RemoveCacheKeysByPrefix(cacheKey);
             return await db.UpdateBandName(bandId,name);
-
         }
 
         public async Task<bool> updateBandLinks(int bandid, string www, string fb, string soundcloud)
