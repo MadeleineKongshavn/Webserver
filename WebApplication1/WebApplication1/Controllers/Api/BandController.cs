@@ -134,11 +134,15 @@ namespace WebApplication1.Controllers.Api
 
        
         [HttpPost]
-        [Route("api/Band/updateBandLocation/{bandid},{area},{placesRef}")]
-        public async Task<bool> updateBandLocation(int bandid,string area, string placesRef)
+        [Route("api/Band/updateLocation")]
+        public async Task<bool> updateLocation([FromBody]UpdateLocationArgs args)
         {
+            var location = args;
+            int bandid = location.id;
+            String area = location.area;
+            String placeId = location.placeId;
                 BandManager mng = ManagerFactory.GetBandManager();
-                return await mng.updateBandLocation(bandid, area, placesRef);
+                return await mng.updateBandLocation(bandid, area, placeId);
             
         }
 

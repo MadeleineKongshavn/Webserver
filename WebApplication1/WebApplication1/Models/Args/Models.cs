@@ -10,4 +10,11 @@ namespace WebApplication1.Models.Args
         public int id;
         public string[] newGenres;
     }
+
+    public class UpdateLocationArgs
+    {
+        public int id;
+        public String area;
+        public String placeId;
+    }
 }
