@@ -1,10 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="IIS Web Application Name" description="" value="Semitone" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Madde\\Documents\\GitHub\\WebApplication1\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp$" />
-    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Madde\\Documents\\GitHub\\WebApplication1\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\rannveig\.skjerve\\Source\\Repos\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\rannveig\.skjerve\\Source\\Repos\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="BlobStorage-Web.config Connection String" description="" value="DefaultEndpointsProtocol=https;AccountName=seminote;AccountKey=RHDJCFZhukAZSZdxZaUw92TPwabeIUEhtosEWGLz/nfu0ibVwrQoojMGalOCmynA9vx2ynMfxRjSYvL3/t5rdA==" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\rannveig\.skjerve\\Source\\Repos\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BlobStorage']/@connectionString" />
   </parameter>
   <parameter name="Semitone-Web.config Connection String" description="" value="Data Source=dyfcpgyjb0.database.windows.net;Initial Catalog=MusicApp;Persist Security Info=True;User ID=AdminUser@dyfcpgyjb0;Password=musicAppPassword33" tags="">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\Madde\\Documents\\GitHub\\WebApplication1\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Semitone']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\rannveig\.skjerve\\Source\\Repos\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Semitone']/@connectionString" />
+  </parameter>
+  <parameter name="WebApplication1.Models.ApplicationDbContext-Web.config Connection String" description="" value="Data Source=dyfcpgyjb0.database.windows.net;Initial Catalog=MusicApp;Persist Security Info=True;User ID=AdminUser@dyfcpgyjb0;Password=musicAppPassword33" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\rannveig\.skjerve\\Source\\Repos\\Webserver\\WebApplication1\\WebApplication1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WebApplication1.Models.ApplicationDbContext']/@connectionString" />
   </parameter>
 </parameters>
