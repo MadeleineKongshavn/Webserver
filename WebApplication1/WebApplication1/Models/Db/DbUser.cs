@@ -277,7 +277,7 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-        public List<NotificationsClass> GetAllNotifications(int userId)
+        public async Task <List<NotificationsClass>> GetAllNotifications(int userId)
         {
            // 1 friends, 2 inviter concert, 3 bekreftelse
            var newList = new List<NotificationsClass>();
@@ -286,8 +286,8 @@ namespace WebApplication1.Models
                 using (var db = new ApplicationDbContext())
                 {
 
-                    var not =  (from n in db.NotificationsDb
-                               where n.UserId == userId select n).OrderByDescending(d => d.SendtTime).ToList();
+                    var not = await (from n in db.NotificationsDb
+                               where n.UserId == userId select n).OrderByDescending(d => d.SendtTime).ToListAsync();
 
                     List<NotificationsClass> list = new List<NotificationsClass>();
 

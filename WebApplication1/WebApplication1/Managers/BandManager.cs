@@ -102,7 +102,7 @@ namespace WebApplication1.Managers
         }
 
 
-        public async Task<bool> updateBandName(String name, int bandId)
+        public async Task<bool> UpdateBandName(String name, int bandId)
         {
             var db=new DbBand();
             var cacheKey = String.Format("Band_Get_{0}", bandId);
@@ -112,7 +112,7 @@ namespace WebApplication1.Managers
 
         public async Task<bool> updateBandLinks(int bandid, string www, string fb, string soundcloud)
         {
-            var db = new DbBand();
+            var db = new DbBand();  
             bool ok= await db.UpdateBandLinks(bandid,www,fb,soundcloud);
             var cacheKey = String.Format("Band_Get_{0}", bandid);
             RemoveCacheKeysByPrefix(cacheKey);
