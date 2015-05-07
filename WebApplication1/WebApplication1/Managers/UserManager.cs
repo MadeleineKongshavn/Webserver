@@ -112,10 +112,10 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
         }
         
-        public List<NotificationsClass> GetNotificationByUserId(int userId)
+        public async Task<List<NotificationsClass>> GetNotificationByUserId(int userId)
         {
             var db = new DbUser();
-            return db.GetAllNotifications(userId);
+            return await db.GetAllNotifications(userId);
         }
 
         public void ReadAllNotifications(int userId)

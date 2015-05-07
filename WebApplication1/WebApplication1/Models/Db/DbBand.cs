@@ -62,8 +62,8 @@ namespace WebApplication1.Models
                         Double vals = distance(lat, lang, v.XCoordinates, v.YCoordinates);
                         if(rad >= ((int) vals)) images.Add(v);
                     }
-                    Shuffle<BandsImagesClass>(images);
-                    return images.Take(15).ToList();
+                    IList<BandsImagesClass> t = await Shuffle<BandsImagesClass>(images);
+                    return t.Take(15).ToList();
                 }
             }catch (Exception e)
             {
