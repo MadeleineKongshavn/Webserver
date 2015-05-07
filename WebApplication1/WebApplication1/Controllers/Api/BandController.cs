@@ -134,8 +134,8 @@ namespace WebApplication1.Controllers.Api
 
        
         [HttpPost]
-        [Route("api/Band/updateLocation")]
-        public async Task<bool> updateLocation([FromBody]UpdateLocationArgs args)
+        [Route("api/Band/UpdateLocation")]
+        public async Task<bool> UpdateLocation([FromBody]UpdateLocationArgs args)
         {
             var location = args;
             int bandid = location.id;
