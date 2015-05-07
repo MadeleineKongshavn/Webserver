@@ -206,6 +206,7 @@
     <Compile Include="Managers\GenreManager.cs" />
     <Compile Include="Managers\ManagerFactory.cs" />
     <Compile Include="Managers\UserManager.cs" />
+    <Compile Include="Models\Args\Models.cs" />
     <Compile Include="Models\Class\BandClass.cs" />
     <Compile Include="Models\Class\BandsImagesClass.cs" />
     <Compile Include="Models\Class\ConcertInfoClass.cs" />

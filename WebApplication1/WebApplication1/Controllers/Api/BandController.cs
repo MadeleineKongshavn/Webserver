@@ -8,20 +8,13 @@ using System.Web.Http;
 using System.Web.Script.Serialization;
 using WebApplication1.Managers;
 using WebApplication1.Models;
+using WebApplication1.Models.Args;
 using WebApplication1.Models.Class;
 
 
 
 namespace WebApplication1.Controllers.Api
 {
-    public class Asmness{
-     public String reason;
-    }
-
-    public class TestObject
-    {
-        public String answer;
-    }
 
     public class BandController : ApiController
     {
@@ -177,15 +170,17 @@ namespace WebApplication1.Controllers.Api
         }
 
         [HttpPost]
-        [Route("api/Band/UpdateBandGenres/{bandid},{genres}")]
-        public async Task<bool> UpdateBandGenres(int bandid, string genres)
+        [Route("api/Band/UpdateGenres")]
+        public async Task<bool> UpdateGenres([FromBody] UpdateGenreArgs args)
         {
 
-            string[] gen=genres.Split(',');
-          
+            var update = args;
+            int bandid = update.id;
+            string[] genres = update.newGenres;   
+       
            using(var mng = ManagerFactory.GetBandManager())
            {
-               return await mng.updateBandGenres(bandid, gen);
+               return await mng.updateBandGenres(bandid, genres);
            }
         }
 
