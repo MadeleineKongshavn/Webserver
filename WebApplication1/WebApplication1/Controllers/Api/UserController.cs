@@ -174,7 +174,7 @@ namespace WebApplication1.Controllers.Api
 
             using (var mng = ManagerFactory.GetUserManager())
             {
-                return await mng.UpdateUserGenres(userid, genres);
+                return await mng.UpdateUserGenres(update.id, update.newGenres);
             }
         }
 
