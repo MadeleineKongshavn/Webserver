@@ -132,11 +132,11 @@ namespace WebApplication1.Controllers.Api
         }
         [HttpGet]
         [Route("api/User/GetAllNotifications/{id}")]
-        public List<NotificationsClass> GetAllNotifications(int id)
+        public async Task<List<NotificationsClass>> GetAllNotifications(int id)
         {
             using (var mngr = ManagerFactory.GetUserManager())
             {
-                List<NotificationsClass> not = mngr.GetNotificationByUserId(id);
+                List<NotificationsClass> not = await mngr.GetNotificationByUserId(id);
                 ReadNotifications(id);
                 return not;
             }

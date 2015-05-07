@@ -128,7 +128,7 @@ namespace WebApplication1.Controllers.Api
 
             using (var mng = ManagerFactory.GetBandManager())
             {
-                return await mng.updateBandName(name, bandId);
+                return await mng.UpdateBandName(name, bandId);
             }
         }
 
@@ -182,7 +182,7 @@ namespace WebApplication1.Controllers.Api
            }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/Band/AddToUserList/{userid},{bandid}")]
         public async Task<bool> AddToUserList(int userid, int bandid)
         {
