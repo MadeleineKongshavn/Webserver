@@ -16,9 +16,9 @@ namespace WebApplication1.Managers
     public class UserManager : BaseManager
     {
 
-        private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?reference=";
-        private String DETAILED_SETIING = "&sensor=true&key=";
-        private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
+        private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+        private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
+        private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
         public async Task<bool> ChangeRadius(int radius, int userId)
         {
@@ -139,12 +139,12 @@ namespace WebApplication1.Managers
 
         private double[] GetCoordinates(String placesRef)
         {
-            StringBuilder query = new StringBuilder(PLACES_API_QUERY);
-            query.Append(placesRef);
-            query.Append(DETAILED_SETIING);
-            query.Append(SERVER_API_KEY);
+            StringBuilder builder = new StringBuilder(PLACES_API_QUERY);
+            builder.Append(placesRef);
+            builder.Append(SERVER_API_KEY);
+            String query = builder.ToString();
             Console.Write(query.ToString());
-            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(query.ToString()) as HttpWebRequest;
+            System.Net.HttpWebRequest webRequest = System.Net.WebRequest.Create(query) as HttpWebRequest;
             webRequest.Timeout = 20000;
             webRequest.Method = "GET";
             HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
@@ -153,6 +153,9 @@ namespace WebApplication1.Managers
 
         private double[] RequestCompleted(HttpWebResponse res)
         {
+            if (res.ContentLength == null)
+                return null;
+
             double[] coord = new double[2];
             var response = (HttpWebResponse)res;
 

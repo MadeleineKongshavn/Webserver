@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
+using WebApplication1.Models.Args;
 
 namespace WebApplication1.Controllers.Api
 {
@@ -160,26 +161,36 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.CheckNewNotifications(id);
             }
         }
+
+
         [HttpPost]
-        [Route("api/User/UpdateUserGenres/{userid},{genres}")]
-        public async Task<bool> UpdateUserGenres(int userid, string genres)
+        [Route("api/User/UpdateGenres")]
+        public async Task<bool> UpdateGenres([FromBody] UpdateGenreArgs args)
         {
-            string[] gen = genres.Split(',');
+
+            var update = args;
+            int userid = update.id;
+            string[] genres = update.newGenres;
+
             using (var mng = ManagerFactory.GetUserManager())
             {
-                return await mng.UpdateUserGenres(userid, gen);
+                return await mng.UpdateUserGenres(userid, genres);
             }
         }
 
         [HttpPost]
-        [Route("api/User/UpdateUserLocation/{userid},{area},{apiref}")]
-        public async Task<bool> UpdateUserLocation(int userid, string area, string aipRef)
+        [Route("api/User/UpdateLocation")]
+        public async Task<bool> UpdateLocation([FromBody]UpdateLocationArgs args)
         {
-            using (var mng = ManagerFactory.GetUserManager())
-            {
-                return await mng.updateUserLocation(userid, area, aipRef);
-            }
+            var location = args;
+      /*      int userid = location.id;
+            String area = location.area;
+            String placeId = location.placeId;*/
+            UserManager mng = ManagerFactory.GetUserManager();
+            return await mng.updateUserLocation(location.id, location.area, location.placeId);
+
         }
+
 
     }
 }
