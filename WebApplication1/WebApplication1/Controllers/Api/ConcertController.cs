@@ -11,6 +11,13 @@ using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers.Api
 {
+    public class ConcertArgsClass
+    {
+        public String title,venue,locRef; 
+        public int bandId, year, month, day,hour, min;
+        public Boolean getBitmapUrl;
+    }
+
     public class ConcertController : ApiController
     {
         [HttpGet]
@@ -104,7 +111,7 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.ChangeConcert(c, pic);
             }
         }
-        [HttpPost]
+ /*       [HttpPost]
         [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{venue},{ref},{getBitmapUrl}")]
         public async Task<Boolean> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, String venue, String locRef, Boolean getBitmapUrl)
         {
@@ -120,7 +127,25 @@ namespace WebApplication1.Controllers.Api
                 
                 return await cMgr.AddConcert(c, locRef, getBitmapUrl);
             }
+        }*/
+
+        [HttpPost]
+        [Route("api/Concert/AddConcert/")]
+        public async Task<Boolean> AddConcert(ConcertArgsClass args)
+        {
+            using (var cMgr = ManagerFactory.GetConcertManager())
+            {
+                var a = args;
+                ConcertClass c = new ConcertClass();
+                c.Title = a.title;
+                c.BandId = a.bandId;
+                c.Date = new DateTime(a.year, a.month, a.day, a.hour, a.min, 0);
+                c.VenueName = a.venue;
+                return await cMgr.AddConcert(c, a.locRef, a.getBitmapUrl);
+            }
         }
+
+
         [HttpGet]
         [Route("api/Concert/FindAllConcertToUser/{id}")]
         public async Task<List<ConcertClass>> FindAllConcertToUser(int id)

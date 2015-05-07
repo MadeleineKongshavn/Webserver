@@ -53,19 +53,6 @@ namespace WebApplication1.Controllers
            ViewBag.Message = "Here's hoping! " + o;
 
             return View();
-        }
-
-        public async Task<ActionResult> Contact()
-        {
-            ConcertController db = new ConcertController();
-            //AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, String venue, String locRef, Boolean getBitmapUrl)
-            string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
-            Boolean d = await db.AddConcert("Oslo tour",11,2014,05,05,22,30,"The Dirty Cow",refer,false);
-            ViewBag.Message = "sånn gikk det ja --> " + d;
-
-            return View();
-        }
-
-     
+        }     
     }
 }

@@ -14,6 +14,10 @@ using WebApplication1.Models.Class;
 
 namespace WebApplication1.Controllers.Api
 {
+    public class Asmness{
+     public String reason;
+    }
+
     public class TestObject
     {
         public String answer;
@@ -197,12 +201,14 @@ namespace WebApplication1.Controllers.Api
 
         [HttpPost]
         [Route("api/Band/PostTestObject/")]
-        public BandClass PostTestObject([FromBody]TestObject obj)
+        public BandClass PostTestObject([FromBody]BandClass obj)
         {
             var b = obj;
-            return new BandClass() { BandName = b.answer };
+            return new BandClass() { BandName = b.BandName };
 
         }
+
+  
 
     }
 }
