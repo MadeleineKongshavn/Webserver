@@ -17,9 +17,8 @@ namespace WebApplication1.Managers
 
         private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
-   //     private String SERVER_API_KEY = "AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
         private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";                      
-                                     //https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJOfBn8mFuQUYRmh4j019gkn4&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA
+  
         public async Task <bool> UpdateBandImage(int bandid, byte[] imgArray)
         {
             var cacheKey = String.Format("Band_GetBandToUser_{0}", bandid);
@@ -206,6 +205,12 @@ namespace WebApplication1.Managers
             }
             return bandList;
         }
+
+        public async Task<bool> AddToUserList(int userid,int bandid)
+        {
+            return await new DbBand().AddToUserList(userid, bandid);
+        }
+
 
     }
 }

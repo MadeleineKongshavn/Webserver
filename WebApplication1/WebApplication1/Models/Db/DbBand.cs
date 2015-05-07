@@ -124,6 +124,7 @@ namespace WebApplication1.Models
                 list[k] = list[n];
                 list[n] = value;
             }
+            return list;
         }
 
         public async Task<bool> AddBand(String name, int userId)
@@ -549,6 +550,26 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+
+
+        public async Task<bool> AddToUserList(int userid,int bandid) {
+
+            try
+            {
+                using(var db=new ApplicationDbContext()){
+                    db.BandFollowersDb.Add(
+                        new BandFollowers(){UserId=userid,BandId=bandid });
+                    await db.SaveChangesAsync();
+                }
+                
+            }catch(Exception){
+                return false;
+            }
+
+
+            return true;
+        } 
+
 
     }
 }
