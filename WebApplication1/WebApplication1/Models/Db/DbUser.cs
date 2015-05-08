@@ -462,6 +462,38 @@ namespace WebApplication1.Models
 
         }
 
+        public async Task<List<GenreClass>> GetUserGenres(int userid)
+        {
+            List<GenreClass> userGenres = null;
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    userGenres = (from ug in db.UserGenreDb
+                                  where ug.UserId == userid
+                                  select new GenreClass
+                                  {
+                                      GenreId=ug.GenreId
+                                  }).ToList();
+
+
+                }
+
+                return userGenres;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+        }
+
+
+
+
+
+
         public async Task<bool> UpdateUserLocation(int userid, string area, double x, double y)
         {
             if (userid == null || area == null)

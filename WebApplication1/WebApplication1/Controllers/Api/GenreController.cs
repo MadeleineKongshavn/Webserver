@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using WebApplication1.Models.Class;
 using WebApplication1.Managers;
+using WebApplication1.Models.Args;
 
 namespace WebApplication1.Controllers.Api
 {
@@ -17,7 +18,7 @@ namespace WebApplication1.Controllers.Api
             return await mng.AddGenre(name);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/Genre/GetGenreById/{id}")]
         public async Task<GenreClass> GetGenreById(int id)
         {
@@ -25,7 +26,7 @@ namespace WebApplication1.Controllers.Api
             return await mng.GetGenreById(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/Genre/GetGenreByName/{name}")]
         public async Task<GenreClass> GetGenreByName(string name)
         {
@@ -33,7 +34,7 @@ namespace WebApplication1.Controllers.Api
             return await mng.GetGenreByName(name);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/Genre/GetAllGenres")]
         public async Task<List<GenreClass>> GetAllGenres()
         {
@@ -41,6 +42,9 @@ namespace WebApplication1.Controllers.Api
             return await mng.GetGenres();
         }
 
+    
+}
 
-    }
+
+    
 }

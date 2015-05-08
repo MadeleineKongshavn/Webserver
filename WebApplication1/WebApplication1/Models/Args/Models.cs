@@ -7,14 +7,21 @@ namespace WebApplication1.Models.Args
 {
     public class UpdateGenreArgs
     {
-        public int id;
-        public string[] newGenres;
+        public int id{set;get;}
+        public string[] newGenres{set;get;}
     }
 
     public class UpdateLocationArgs
     {
-        public int id;
-        public String area;
-        public String placeId;
+        public int id {set;get;}
+        public String area{set;get;}
+        public String placeId{set;get;}
+    }
+
+    public class GetGenreArgs
+    {
+        public int genreid{set;get;}
+        public bool isChosen { set; get; }
+        public String genreName{set;get;}
     }
 }

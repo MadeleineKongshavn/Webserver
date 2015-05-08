@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Caching;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
+using WebApplication1.Models.Args;
 
 namespace WebApplication1.Managers
 {
@@ -128,6 +129,37 @@ namespace WebApplication1.Managers
         {
             var db = new DbUser();
             return await db.UpdateUserGenres(userid, genres);
+        }
+
+        public async Task<List<GetGenreArgs>> GetAllGenres(int userid)
+        {
+            List<GenreClass> allGenres = await new DbGenre().getGenres();
+            List<GenreClass> userGenres = await new DbUser().GetUserGenres(userid);
+            List<GetGenreArgs> args = new List<GetGenreArgs>();
+
+            if(userGenres!=null)
+            foreach(GenreClass genre in userGenres){
+                GenreClass toList = allGenres.Where(x => x.GenreId == genre.GenreId).FirstOrDefault();
+                allGenres.Remove(toList);
+
+                            args.Add(new GetGenreArgs()
+                {
+                    genreid=toList.GenreId,genreName=toList.GenreName,isChosen=true
+                });
+
+
+            }
+            if(allGenres.Count()!=0)
+                foreach (GenreClass genre in allGenres)
+                {
+                    args.Add(new GetGenreArgs()
+                    {  genreid = genre.GenreId, genreName = genre.GenreName,
+                        isChosen = false
+                    });
+
+                }
+
+            return args;
         }
 
         public async Task<bool> updateUserLocation(int userid, string area, string apiRef)

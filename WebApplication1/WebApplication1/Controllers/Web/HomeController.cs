@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using WebApplication1.Controllers.Api;
 using WebApplication1.Models;
+using WebApplication1.Models.Args;
 using WebApplication1.Models.Class;
 using WebApplication1.Models.Db;
 
@@ -48,9 +49,10 @@ namespace WebApplication1.Controllers
             /// 59,923302   10,752547           59,941761   10,760368
 
          //  List<BandsImagesClass> list = await bc.GetRandomBands(3);
-            var o = await new DbConcert().AddConcertToUser(3, 5, false);
+            UserController c = new UserController();
+            List<GetGenreArgs> l= await c.GetAllGenres(7);
 
-           ViewBag.Message = "Here's hoping! " + o;
+            ViewBag.Message = "Here's hoping! "; //+ o;
 
             return View();
         }     
