@@ -568,8 +568,35 @@ namespace WebApplication1.Models
 
 
             return true;
-        } 
+        }
 
+
+        public async Task<List<GenreClass>> GetBandGenres(int bandid)
+        {
+            List<GenreClass> bandGenres = null;
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    bandGenres = (from bg in db.BandGenreDb
+                                  where bg.BandId==bandid
+                                  select new GenreClass
+                                  {
+                                      GenreId = bg.GenreId
+                                  }).ToList();
+
+
+                }
+
+                return bandGenres;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+        }
 
     }
 }

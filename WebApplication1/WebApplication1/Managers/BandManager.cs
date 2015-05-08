@@ -8,6 +8,7 @@ using System.Web.Caching;
 using System.Net;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
+using WebApplication1.Models.Args;
 
 
 namespace WebApplication1.Managers
@@ -209,6 +210,42 @@ namespace WebApplication1.Managers
         public async Task<bool> AddToUserList(int userid,int bandid)
         {
             return await new DbBand().AddToUserList(userid, bandid);
+        }
+
+        public async Task<List<GetGenreArgs>> GetAllGenres(int userid)
+        {
+            List<GenreClass> allGenres = await new DbGenre().getGenres();
+            List<GenreClass> bandGenres = await new DbBand().GetBandGenres(userid);
+            List<GetGenreArgs> args = new List<GetGenreArgs>();
+
+            if (bandGenres != null)
+                foreach (GenreClass genre in bandGenres)
+                {
+                    GenreClass toList = allGenres.Where(x => x.GenreId == genre.GenreId).FirstOrDefault();
+                    allGenres.Remove(toList);
+
+                    args.Add(new GetGenreArgs()
+                    {
+                        genreid = toList.GenreId,
+                        genreName = toList.GenreName,
+                        isChosen = true
+                    });
+
+
+                }
+            if (allGenres.Count() != 0)
+                foreach (GenreClass genre in allGenres)
+                {
+                    args.Add(new GetGenreArgs()
+                    {
+                        genreid = genre.GenreId,
+                        genreName = genre.GenreName,
+                        isChosen = false
+                    });
+
+                }
+
+            return args;
         }
 
 

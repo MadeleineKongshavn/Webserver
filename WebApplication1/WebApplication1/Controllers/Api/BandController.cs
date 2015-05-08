@@ -207,6 +207,13 @@ namespace WebApplication1.Controllers.Api
 
         }
 
+        [HttpGet]
+        [Route("api/Band/GetAllGenres/{id}")]
+        public async Task<List<GetGenreArgs>> GetAllGenres(int id)
+        {
+            return await ManagerFactory.GetBandManager().GetAllGenres(id);
+        }
+
   
 
     }
