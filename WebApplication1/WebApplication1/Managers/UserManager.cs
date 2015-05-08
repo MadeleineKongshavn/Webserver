@@ -164,6 +164,9 @@ namespace WebApplication1.Managers
 
         public async Task<bool> updateUserLocation(int userid, string area, string apiRef)
         {
+            var cacheKey = String.Format("User_Get_{0}", userid);
+            RemoveCacheKeysByPrefix(cacheKey);
+            
             var db = new DbUser();
             double[] coordinates = GetCoordinates(apiRef);
             return await db.UpdateUserLocation(userid, area, coordinates[0], coordinates[1]);
