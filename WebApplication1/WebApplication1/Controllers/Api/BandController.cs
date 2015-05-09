@@ -62,6 +62,20 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.FindBandBasedOnQuery(query);
             }
         }
+        [HttpGet]
+        [Route("api/Band/FindBasedOnQuery/")]
+        public async Task<List<BandClass>> FindBandBasedOnQuery([FromBody]QueryArgs query)
+        {
+            var q = query;
+            using (var bmgr = ManagerFactory.GetBandManager())
+            {
+                return await bmgr.FindBandBasedOnQuery(query.queryString);
+            }
+        }
+
+
+
+
 
         [HttpGet]
         [Route("api/Band/FindAllBandsToUser/{id}")]

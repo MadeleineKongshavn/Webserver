@@ -24,4 +24,9 @@ namespace WebApplication1.Models.Args
         public bool isChosen { set; get; }
         public String genreName{set;get;}
     }
+
+    public class QueryArgs
+    {
+        public String queryString;
+    }
 }
