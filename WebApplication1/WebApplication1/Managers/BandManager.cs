@@ -209,9 +209,9 @@ namespace WebApplication1.Managers
             return bandList;
         }
 
-        public async Task<bool> AddToUserList(int userid,int bandid)
+        public async Task<bool> AddToUserList(int userid,int bandid, bool ok)
         {
-            return await new DbBand().AddToUserList(userid, bandid);
+            return await new DbBand().AddToUserList(userid, bandid, ok);
         }
 
         public async Task<List<GetGenreArgs>> GetAllGenres(int userid)
