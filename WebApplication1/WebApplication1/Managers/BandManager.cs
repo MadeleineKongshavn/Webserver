@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,14 @@ namespace WebApplication1.Managers
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
         private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";                      
   
-        public async Task <bool> UpdateBandImage(int bandid, byte[] imgArray)
+
+        public async Task<bool> ChangePic(int bid, Image image)
         {
-            var cacheKey = String.Format("Band_GetBandToUser_{0}", bandid);
+            var cacheKey = String.Format("Band_Get_{0}", bid);
             RemoveCacheKeysByPrefix(cacheKey);
-            var imgUrl = await UploadImage(imgArray);
+            var imgUrl = await UploadImage(image);
             var db = new DbBand();
-            return await db.UpdateBandImage(bandid, imgUrl);
+            return await db.ChangePic(bid, imgUrl, imgUrl);
         }
 
         public async Task<List<BandClass>> FindBandBasedOnQuery(String query)

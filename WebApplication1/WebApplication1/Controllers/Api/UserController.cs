@@ -30,21 +30,12 @@ namespace WebApplication1.Controllers.Api
                 using (var mngr = ManagerFactory.GetUserManager())
                 {
                     var image = Image.FromStream(filee.InputStream);
-                    //                int inte = pic.name.Length;
+                    //int inte = pic.name.Length;
                     //return "kom til server";
                     return await mngr.ChangePic(userid, image);
                 }
             }
             return false;
-
-
-            //            using (var mngr = ManagerFactory.GetUserManager())
-            //            {
-
-            ////                int inte = pic.name.Length;
-            //                return "kom til server";
-            //                /// return await mngr.ChangePic(1, pic);
-            //            }
         }
         [HttpGet]
         [Route("api/User/ChangeRadius/{radius},{userId}")]

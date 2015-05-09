@@ -16,22 +16,40 @@ namespace WebApplication1.Models
 {
     public class DbBand
     {
+        public async Task<bool> ChangePic(int bid, String img, String img2)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var v = await (from u in db.BandDb where u.BandId == bid select u).FirstOrDefaultAsync();
+                    v.BitmapSmalUrl = img2;
+                    v.BitmapUrl = img;
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
-        public Double distance(double lat1, double lon1, double lat2, double lon2)
+        public Double Distance(double lat1, double lon1, double lat2, double lon2)
         {
             int RADIUS_EARTH = 6371;
             
-            double dLat = getRad(lat2 - lat1);
-            double dLong = getRad(lon2 - lon1);
+            double dLat = GetRad(lat2 - lat1);
+            double dLong = GetRad(lon2 - lon1);
 
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2)       + Math.Cos(getRad(lat1)) * 
-                Math.Cos(getRad(lat2)) * Math.Sin(dLong / 2) * Math.Sin(dLong / 2);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2)       + Math.Cos(GetRad(lat1)) * 
+                Math.Cos(GetRad(lat2)) * Math.Sin(dLong / 2) * Math.Sin(dLong / 2);
 
 
            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
            return ((RADIUS_EARTH * c) * 1000);
         }
-    private static double getRad(double x)
+    private static double GetRad(double x)
     {
         return x * Math.PI / 180;
     }
@@ -59,7 +77,7 @@ namespace WebApplication1.Models
                     List<BandsImagesClass> images = new List<BandsImagesClass>();
                     foreach (var v in val)
                     {
-                        Double vals = distance(lat, lang, v.XCoordinates, v.YCoordinates);
+                        Double vals = Distance(lat, lang, v.XCoordinates, v.YCoordinates);
                         if(rad >= ((int) vals)) images.Add(v);
                     }
                     IList<BandsImagesClass> t = await Shuffle<BandsImagesClass>(images);

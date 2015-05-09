@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 using WebApplication1.Managers;
@@ -157,20 +159,22 @@ namespace WebApplication1.Controllers.Api
                 return await mng.updateBandLinks(bandid, www, fb, soundcloud);
             }
         }
-
         [HttpPost]
-        [Route("api/Band/UpdateBandImage/{bandid},{imgArray}")]
-        public async Task<bool> UpdateBandImage(int bandid, byte[] imgArray)
+        [Route("api/Band/UpdateBandImage/{bandid}")]
+        public async Task<bool> ChangePic(int userid)
         {
-            if (imgArray != null && imgArray.Length>0)
-                return true;
-            else
-                return false;/*
-            using(var mng = ManagerFactory.GetBandManager())
+            var httpRequest = HttpContext.Current.Request;
+            if (httpRequest.Files.Count > 0)
             {
-                return  await mng.UpdateBandImage(bandid, imgArray);
-            }*/
-
+                HttpPostedFile filee = httpRequest.Files[0];
+                Console.WriteLine(filee.ContentLength);
+                using (var mngr = ManagerFactory.GetBandManager())
+                {
+                    var image = Image.FromStream(filee.InputStream);
+                    return await mngr.ChangePic(userid, image);
+                }
+            }
+            return false;
         }
 
         [HttpPost]
