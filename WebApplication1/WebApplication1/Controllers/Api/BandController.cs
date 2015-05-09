@@ -193,11 +193,12 @@ namespace WebApplication1.Controllers.Api
         }
 
         [HttpPost]
-        [Route("api/Band/AddToUserList/{userid},{bandid}")]
-        public async Task<bool> AddToUserList(int userid, int bandid)
+        [Route("api/Band/AddToUserList/{userid},{bandid},{ok}")]
+        public async Task<bool> AddToUserList(int userid, int bandid, bool ok)
         {
-            using (var mng = ManagerFactory.GetBandManager()) {
-                return await mng.AddToUserList(userid,bandid);
+            using (var mng = ManagerFactory.GetBandManager())
+            {
+                return await mng.AddToUserList(userid, bandid, ok);
             }
         }
 

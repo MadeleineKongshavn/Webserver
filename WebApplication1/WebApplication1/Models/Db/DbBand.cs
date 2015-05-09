@@ -570,22 +570,41 @@ namespace WebApplication1.Models
         }
 
 
-        public async Task<bool> AddToUserList(int userid,int bandid) {
+        public async Task<bool> AddToUserList(int userid, int bandid, bool ok)
+        {
 
             try
             {
-                using(var db=new ApplicationDbContext()){
-                    db.BandFollowersDb.Add(
-                        new BandFollowers(){UserId=userid,BandId=bandid });
-                    await db.SaveChangesAsync();
+                using (var db = new ApplicationDbContext())
+                {
+                    if (ok)
+                    {
+                        db.BandFollowersDb.Add(new BandFollowers()
+                        {
+                            UserId = userid,
+                            BandId = bandid
+                        });
+                        await db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var v =
+                            await
+                                (from o in db.BandFollowersDb
+                                 where userid == o.UserId && bandid == o.BandId
+                                 select o).FirstOrDefaultAsync();
+                        db.BandFollowersDb.Remove(v);
+                        db.SaveChanges();
+                    }
+                    return true;
                 }
-                
-            }catch(Exception){
+
+            }
+            catch (Exception)
+            {
                 return false;
             }
 
-
-            return true;
         }
 
 
