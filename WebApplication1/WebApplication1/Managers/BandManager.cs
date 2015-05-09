@@ -19,8 +19,7 @@ namespace WebApplication1.Managers
 
         private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
-        private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";                      
-  
+        
 
         public async Task<bool> ChangePic(int bid, Image image)
         {
@@ -68,7 +67,6 @@ namespace WebApplication1.Managers
             return await db.AddBandToUser(userId, bandId);
         }
         
-
         public async Task<String> Upload(Byte[] pic)
         {
             return await UploadImage(pic);
@@ -103,7 +101,6 @@ namespace WebApplication1.Managers
             }
             return bandClass;
         }
-
 
         public async Task<bool> UpdateBandName(String name, int bandId)
         {
@@ -183,8 +180,6 @@ namespace WebApplication1.Managers
             return ok;
         }
 
-
-
         public async Task<List<BandClass>> FindAllBandsToUser(int userId)
         {
             List<BandClass> bandList;
@@ -249,7 +244,5 @@ namespace WebApplication1.Managers
 
             return args;
         }
-
-
     }
 }

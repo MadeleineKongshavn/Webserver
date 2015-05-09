@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
             GenreController gc = new GenreController();
 
 
-            Double v = bc.distance(59.941761, 10.760368, 59.941761, 10.757493);
+            Double v = bc.Distance(59.941761, 10.760368, 59.941761, 10.757493);
 
 
             // var v = await new ConcertController().FindConcertBasedOnQuery("t");
