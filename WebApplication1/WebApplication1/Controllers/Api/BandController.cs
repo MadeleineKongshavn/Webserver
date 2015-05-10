@@ -233,7 +233,12 @@ namespace WebApplication1.Controllers.Api
             return await ManagerFactory.GetBandManager().GetAllGenres(id);
         }
 
-  
+        [HttpGet]
+        [Route("api/Band/GetIfBandIsAdded/{userId},{bandId}")]
+        public async Task<bool> GetIfBandIsAdded(int userId, int bandId)
+        {
+            return await ManagerFactory.GetBandManager().GetIfBandIsAdded(userId,bandId);
+        }
 
     }
 }
