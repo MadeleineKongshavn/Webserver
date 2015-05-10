@@ -560,6 +560,8 @@ namespace WebApplication1.Models
                             UrlSoundCloud = b.UrlSoundCloud,
                             Area = b.Area,
                         }).FirstOrDefaultAsync();
+
+                    band.Genre = getGenreArray(id); 
                     return band;
                 }
             }
@@ -567,6 +569,24 @@ namespace WebApplication1.Models
             {
                 return null;
             }
+        }
+
+
+        public string[] getGenreArray(int bandid)
+        {
+            string[] genres = null;
+            using(var db=new ApplicationDbContext()){
+                var g=(from genre in db.GenreDb
+                            join band in db.BandGenreDb
+                            on genre.GenreId equals band.GenreId
+                            where band.BandId==bandid
+                            select genre.GenreName
+                               ).ToArray();
+                genres = g;
+          }
+
+
+            return genres;
         }
 
 

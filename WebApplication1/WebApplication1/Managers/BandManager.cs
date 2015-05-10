@@ -121,7 +121,10 @@ namespace WebApplication1.Managers
 
         public async Task<bool> updateBandLocation(int bandid, string area, string apiRef)
         {
+
             var db = new DbBand();
+            var cacheKey = String.Format("Band_Get_{0}", bandid);
+            RemoveCacheKeysByPrefix(cacheKey);
             double[] coordinates = GetCoordinates(apiRef);
             if (coordinates == null)
                 return false;
