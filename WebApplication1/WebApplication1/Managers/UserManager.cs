@@ -127,6 +127,8 @@ namespace WebApplication1.Managers
 
         public async Task<bool> UpdateUserGenres(int userid,string[] genres)
         {
+            var cacheKey = String.Format("User_Get_{0}", userid);
+            RemoveCacheKeysByPrefix(cacheKey);
             var db = new DbUser();
             return await db.UpdateUserGenres(userid, genres);
         }
