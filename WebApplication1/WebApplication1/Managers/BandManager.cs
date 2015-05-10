@@ -244,5 +244,11 @@ namespace WebApplication1.Managers
 
             return args;
         }
+
+        public async Task<bool> GetIfBandIsAdded(int userId, int bandId)
+        {
+            var db = new DbBand();
+            return await db.GetIfBandIsAdded(userId, bandId);
+        }
     }
 }

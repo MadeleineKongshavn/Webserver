@@ -635,6 +635,22 @@ namespace WebApplication1.Models
 
         }
 
+        public async Task<Boolean> GetIfBandIsAdded(int userId, int bandId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = await (from v in db.BandFollowersDb where v.BandId == bandId && v.UserId == userId select v).FirstOrDefaultAsync();
+                    if (band == null) return false; else return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
     }
 }
 /*
