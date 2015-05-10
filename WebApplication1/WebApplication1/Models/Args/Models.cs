@@ -14,19 +14,25 @@ namespace WebApplication1.Models.Args
     public class UpdateLocationArgs
     {
         public int id {set;get;}
-        public String area{set;get;}
-        public String placeId{set;get;}
+        public string area{set;get;}
+        public string placeId{set;get;}
     }
 
     public class GetGenreArgs
     {
         public int genreid{set;get;}
         public bool isChosen { set; get; }
-        public String genreName{set;get;}
+        public string genreName{set;get;}
     }
 
     public class QueryArgs
     {
-        public String queryString;
+        public string queryString { set; get; }
+    }
+
+    public class RegisterUserArgs{
+        public string userName { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
     }
 }

@@ -105,6 +105,18 @@ namespace WebApplication1.Controllers.Api
         }
 
         [HttpPost]
+        [Route("api/User/NormalRegister")]
+        public async Task<int> NormalRegister([FromBody]RegisterUserArgs args)
+        {
+            var newUser = args;
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.NormalRegister(newUser.userName,newUser.email, newUser.password, 0, 0);
+            }
+        }
+
+
+        [HttpPost]
         [Route("api/User/ChangeUser/{u},{pic}")]
         public async Task<Boolean> ChangeUser(UserClass u, Image pic)
         {
