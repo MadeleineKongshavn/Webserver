@@ -174,8 +174,8 @@ namespace WebApplication1.Controllers.Api
             }
         }
         [HttpPost]
-        [Route("api/Band/UpdateBandImage/{bandid}")]
-        public async Task<bool> ChangePic(int userid)
+        [Route("api/Band/ChangePic/{bandid}")]
+        public async Task<bool> ChangePic(int bandid)
         {
             var httpRequest = HttpContext.Current.Request;
             if (httpRequest.Files.Count > 0)
@@ -185,7 +185,7 @@ namespace WebApplication1.Controllers.Api
                 using (var mngr = ManagerFactory.GetBandManager())
                 {
                     var image = Image.FromStream(filee.InputStream);
-                    return await mngr.ChangePic(userid, image);
+                    return await mngr.ChangePic(bandid, image);
                 }
             }
             return false;
