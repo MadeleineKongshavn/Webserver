@@ -489,7 +489,6 @@ namespace WebApplication1.Models
 
                     var result = await (from v in db.BandFollowersDb
                                   where v.UserId == id
-                                  //join c in db.BandDb on v.BandId equals c.BandId
                                   select new BandClass()
                                   {
                                       Area = v.Band.Area,
