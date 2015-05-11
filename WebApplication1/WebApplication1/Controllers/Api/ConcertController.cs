@@ -120,23 +120,6 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.ChangeConcert(c, pic);
             }
         }
- /*       [HttpPost]
-        [Route("api/Concert/AddConcert/{title},{bandId},{year},{month},{day},{hour},{min},{venue},{ref},{getBitmapUrl}")]
-        public async Task<Boolean> AddConcert(String title,int bandId, int year, int month, int day, int hour, int min, String venue, String locRef, Boolean getBitmapUrl)
-        {
-            using (var cMgr = ManagerFactory.GetConcertManager())
-            {
-                ConcertClass c = new ConcertClass();
-                c.Title = title;
-                c.BandId = bandId;
-                c.Xcoordinates = 0;
-                c.Ycoordinates = 0;
-                c.Date = new DateTime(year, month, day, hour, min, 0);
-                c.VenueName = venue;
-                
-                return await cMgr.AddConcert(c, locRef, getBitmapUrl);
-            }
-        }*/
 
         [HttpPost]
         [Route("api/Concert/AddConcert/")]

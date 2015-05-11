@@ -71,17 +71,6 @@ namespace WebApplication1.Managers
         {
             return await UploadImage(pic);
         }
-        
-   /*     public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
-        {
-            var db = new DbBand();
-            var cacheKey = String.Format("Band_GetBandToUser_{0}", b.BandId);
-            RemoveCacheKeysByPrefix(cacheKey);
-            var imgUrl = await UploadImage(pic);
-            b.BitmapUrl = imgUrl;
-            b.SmallBitmapUrl = imgUrl;
-            return await db.ChangeBand(b);
-        }*/
       
         public async Task<BandClass> GetBandById(int bandId)
         {
@@ -188,16 +177,16 @@ namespace WebApplication1.Managers
             List<BandClass> bandList;
             //Ingen grunn å cache noe som er så brukerspesefikt
             //cacher :D
-            var cacheKey = String.Format("Band_GetBandToUser_{0}", userId);
-            if ((bandList = (List<BandClass>)Cache.Get(cacheKey)) != null)
-            return bandList;
+   //         var cacheKey = String.Format("Band_GetBandToUser_{0}", userId);
+   //         if ((bandList = (List<BandClass>)Cache.Get(cacheKey)) != null)
+   //         return bandList;
 
             try
             {
                 var db = new DbBand();
                 bandList = await db.FindAllBandsToUser(userId);
-                if (bandList != null)
-                    Cache.Insert(cacheKey, bandList, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
+     //           if (bandList != null)
+     //               Cache.Insert(cacheKey, bandList, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
 
             }
             catch (Exception)
@@ -209,7 +198,9 @@ namespace WebApplication1.Managers
 
         public async Task<bool> AddToUserList(int userid,int bandid, bool ok)
         {
-            return await new DbBand().AddToUserList(userid, bandid, ok);
+            var cacheKey = String.Format("Band_GetBandToUser_{0}", userid);
+            RemoveCacheKeysByPrefix(cacheKey);
+                    return await new DbBand().AddToUserList(userid, bandid, ok);
         }
 
         public async Task<List<GetGenreArgs>> GetAllGenres(int userid)
