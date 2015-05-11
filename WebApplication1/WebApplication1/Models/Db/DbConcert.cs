@@ -7,15 +7,84 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
+using WebApplication1.Models;
 using WebApplication1.Models.Class;
 namespace WebApplication1.Models
 {
-    /**
-     * x og y coordinater i databasen er int, må endre;
-     */
-
+  
     public class DbConcert
     {
+        private static double GetRad(double x)
+        {
+            return x * Math.PI / 180;
+        }
+        public Double Distance(double lat1, double lon1, double lat2, double lon2)
+        {
+            int RADIUS_EARTH = 6371;
+
+            double dLat = GetRad(lat2 - lat1);
+            double dLong = GetRad(lon2 - lon1);
+
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Cos(GetRad(lat1)) *
+                Math.Cos(GetRad(lat2)) * Math.Sin(dLong / 2) * Math.Sin(dLong / 2);
+
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return ((RADIUS_EARTH * c) * 1000);
+        }
+        public async Task<List<BandsImagesClass>> GetRandomConcert(int userId)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var user = (from u in db.UserDb where u.UserId == userId select u).FirstOrDefault();
+                    Double lat = user.Xcoordinates;
+                    Double lang = user.Ycoordinates;
+                    int rad = user.Radius;
+
+                    var val = await (from c in db.ConcertDb
+                                     select new BandsImagesClass()
+                                     {
+                                         OpositeXCoordinates = lat,
+                                         OpositeYCoordinates = lang,
+                                         BandId = c.BandId,
+                                         Title = c.Title,
+                                         UnderTitle = c.Band.BandName,
+                                         SmallBitmapUrl = c.BitmapSmalUrl,
+                                         XCoordinates = c.Xcoordinates,
+                                         YCoordinates = c.Ycoordinates,
+                                     }).ToListAsync();
+                    List<BandsImagesClass> images = new List<BandsImagesClass>();
+                    foreach (var v in val)
+                    {
+                        Double vals = Distance(lat, lang, v.XCoordinates, v.YCoordinates);
+                        if (rad >= ((int)vals)) images.Add(v);
+                    }
+                    IList<BandsImagesClass> t = await Shuffle<BandsImagesClass>(images);
+                    return t.Take(15).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            
+        }
+        public async Task<IList<T>> Shuffle<T>(IList<T> list)
+        {
+            int n = list.Count;
+            Random rnd = new Random();
+            while (n > 1)
+            {
+                int k = (rnd.Next(0, n) % n);
+                n--;
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+            return list;
+        }
         public async Task<bool> AddRemoveConcertToUser(int concertId, int userId, bool ok)
         {
             try

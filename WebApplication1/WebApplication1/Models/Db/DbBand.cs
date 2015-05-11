@@ -106,30 +106,6 @@ namespace WebApplication1.Models
                 return false;
             }            
         }
-/*        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    List<BandsImagesClass> ob = await (from b in db.BandDb
-                        select new BandsImagesClass()
-                        {
-                            BandId = b.BandId,
-                            Title = b.BandName,
-                            SmallBitmapUrl = b.BitmapSmalUrl,
-
-                        }).ToListAsync();
-                    DbBand.Shuffle(ob);
-                    var o = ob.Take(15);
-                    return o.ToList();
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }*/
         public async Task<IList<T>>  Shuffle<T>(IList<T> list)
         {
             int n = list.Count;

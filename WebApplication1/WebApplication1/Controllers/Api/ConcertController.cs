@@ -21,6 +21,15 @@ namespace WebApplication1.Controllers.Api
     public class ConcertController : ApiController
     {
         [HttpGet]
+        [Route("api/Concert/GetRandomConcert/{userId}")]
+        public async Task<List<BandsImagesClass>> GetRandomConcert(int userId)
+        {
+            using (var bmgr = ManagerFactory.GetConcertManager())
+            {
+                return await bmgr.GetRandomConcert(userId);
+            }
+        }
+        [HttpGet]
         [Route("api/Concert/AddRemoveConcertToUser/{concertId},{userId},{ok}")]
         public async Task<bool> AddRemoveConcertToUser(int concertId, int userId, bool ok)
         {

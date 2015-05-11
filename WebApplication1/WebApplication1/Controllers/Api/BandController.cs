@@ -42,7 +42,6 @@ namespace WebApplication1.Controllers.Api
         }
         
   
-       
  /*       [HttpPost]
         [Route("api/Band/ChangeBand/{b},{pic}")]
         public async Task<bool> ChangeBand(BandClass b, Byte[] pic)
