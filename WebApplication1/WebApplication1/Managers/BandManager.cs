@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +29,52 @@ namespace WebApplication1.Managers
             var cacheKey = String.Format("Band_Get_{0}", bid);
             RemoveCacheKeysByPrefix(cacheKey);
             var imgUrl = await UploadImage(image);
+            var ImageSmall = await CompressBitmap(image);
+            var imgSmallUrl = await UploadImage(ImageSmall);
             var db = new DbBand();
-            return await db.ChangePic(bid, imgUrl, imgUrl);
+            return await db.ChangePic(bid, imgUrl, imgSmallUrl);
         }
+        public async Task<Image> CompressBitmap(Image i)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
 
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+                    var myEncoderParameters = new EncoderParameters(1);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
+
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+                    Image returnImage;
+                    using (var ms = new MemoryStream())
+                    {
+                        i.Save(ms, jpgEncoder, myEncoderParameters);
+                        returnImage = Image.FromStream(ms);
+                    }
+                    return returnImage;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
         public async Task<List<BandClass>> FindBandBasedOnQuery(String query)
         {
             var db = new DbBand();
