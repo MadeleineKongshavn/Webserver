@@ -433,6 +433,8 @@ namespace WebApplication1.Models
                                              Ycoordinates = v.Ycoordinates,
                                              Bandname = v.Band.BandName,
                                              Date = v.Date,
+                                             BitmapUrl = v.BitmapUrl,
+                                             SmallBitmapUrl = v.BitmapSmalUrl
                                          }
                         ).FirstOrDefaultAsync();
                     return concert;
