@@ -40,21 +40,19 @@ namespace WebApplication1.Managers
             {
                 using (var db = new ApplicationDbContext())
                 {
-
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
                     var myEncoderParameters = new EncoderParameters(1);
-                    var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 10L);
 
                     myEncoderParameters.Param[0] = myEncoderParameter;
 
-                    Image returnImage;
-                    using (var ms = new MemoryStream())
-                    {
-                        i.Save(ms, jpgEncoder, myEncoderParameters);
-                        returnImage = Image.FromStream(ms);
-                    }
+                    MemoryStream ms = new MemoryStream();
+                    i.Save(ms, jpgEncoder, myEncoderParameters);
+                    Byte[] m = ms.ToArray();
+                    MemoryStream ms2 = new MemoryStream(m);
+                    Image returnImage = Image.FromStream(ms);
                     return returnImage;
                 }
             }

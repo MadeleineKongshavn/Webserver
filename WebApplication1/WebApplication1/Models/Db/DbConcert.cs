@@ -218,7 +218,7 @@ namespace WebApplication1.Models
                     // 1 friends, 2 inviter concert, 3 bekreftelse
                     n.InviteConcertNotifications.Accepted = true;
                     n.Seen = false;
-                    n.SendtTime = DateTime.Now;
+                    n.SendtTime = DateTime.UtcNow.AddHours(2);
 
                     Notifications conf = new Notifications()
                     {
@@ -253,7 +253,7 @@ namespace WebApplication1.Models
                 {
                     Notifications n = new Notifications()
                     {
-                        SendtTime = DateTime.Now,
+                        SendtTime = DateTime.UtcNow.AddHours(2),
                         Seen = false,
                         Type = 2,
                         UserId = toUsr,

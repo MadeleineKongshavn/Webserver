@@ -153,18 +153,15 @@ namespace WebApplication1.Models
                 using (var db = new ApplicationDbContext())
                 {
 
-                    var adminBands = (from b in db.BandDb
-                                                    where b.UserId == userId
-                                                    select b).ToList();
-                    var adminList = new List<MemberClass>(); 
-
-                    foreach (Band b in adminBands)
-                    {
-                        adminList.Add(new MemberClass { Id=b.BandId, BandName=b.BandName});
-                    }
-
-                  
-                    return adminList;
+                    var adminBands = await (from b in db.BandDb
+                        where b.UserId == userId
+                        select new MemberClass()
+                        {
+                            Id = b.BandId,
+                            BandName = b.BandName,
+                            Url = b.BitmapSmalUrl,
+                        }).ToListAsync();
+                    return adminBands;
                 }
             }
             catch (Exception)

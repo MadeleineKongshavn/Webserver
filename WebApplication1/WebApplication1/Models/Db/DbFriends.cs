@@ -51,7 +51,7 @@ namespace WebApplication1.Models.Db
                 {
                     db.NotificationsDb.Add(new Notifications()
                     {
-                        SendtTime = DateTime.UtcNow,
+                        SendtTime = DateTime.UtcNow.AddHours(2),
                         Seen = false,
                         UserId = friendId,
                         Type = 1,
@@ -89,11 +89,11 @@ namespace WebApplication1.Models.Db
                     int friendIde = n.UserId;
 
                     n.FriendRequestNotifications.Accepted = true;
-                    n.SendtTime = DateTime.Now;
+                    n.SendtTime = DateTime.UtcNow.AddHours(2);
 
                     db.NotificationsDb.Add(new Notifications()
                     {
-                        SendtTime = DateTime.Now,
+                        SendtTime = DateTime.UtcNow.AddHours(2),
                         Seen = false,
                         UserId = userIde,
                         Type = 1,

@@ -24,9 +24,9 @@ namespace WebApplication1.Controllers.Api
         [Route("api/Concert/GetRandomConcert/{userId}")]
         public async Task<List<BandsImagesClass>> GetRandomConcert(int userId)
         {
-            using (var bmgr = ManagerFactory.GetBandManager())
+            using (var bmgr = ManagerFactory.GetConcertManager())
             {
-                return await bmgr.GetRandomBands(userId);
+                return await bmgr.GetRandomConcert(userId);
             }
         }
         [HttpGet]

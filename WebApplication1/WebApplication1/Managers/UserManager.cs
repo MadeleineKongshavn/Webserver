@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -32,9 +34,51 @@ namespace WebApplication1.Managers
         {
             var cacheKey = String.Format("User_Get_{0}", uid);
             RemoveCacheKeysByPrefix(cacheKey);
-            var imgUrl = await UploadImage(image);
+            Image i = await CompressBitmap(image);
+            var imgUrl = await UploadImage(i);
             var db = new DbUser();
             return await db.ChangePic(uid, imgUrl);       
+        }
+        public async Task<Image> CompressBitmap(Image images)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    Image i = images.GetThumbnailImage(70, 70, null, new IntPtr());
+
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+                    var myEncoderParameters = new EncoderParameters(1);
+                    var myEncoderParameter = new EncoderParameter(myEncoder,25L);
+
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+                    MemoryStream ms = new MemoryStream();
+                    i.Save(ms, jpgEncoder, myEncoderParameters);
+                    Byte[] m = ms.ToArray();
+                    MemoryStream ms2 = new MemoryStream(m);
+                    Image returnImage = Image.FromStream(ms);
+                    return returnImage;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
         public async Task<int> CheckEmail(String email)
         {
