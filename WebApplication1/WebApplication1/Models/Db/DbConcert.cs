@@ -222,7 +222,7 @@ namespace WebApplication1.Models
 
                     Notifications conf = new Notifications()
                     {
-                        SendtTime = DateTime.Now,
+                        SendtTime =  DateTime.UtcNow.AddHours(2),
                         Seen = false,
                         UserId = friendUsr,
                         Type = 3,
