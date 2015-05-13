@@ -51,7 +51,7 @@ namespace WebApplication1.Managers
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
                     var myEncoderParameters = new EncoderParameters(1);
-                    var myEncoderParameter = new EncoderParameter(myEncoder, 15L);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 5L);
 
                     myEncoderParameters.Param[0] = myEncoderParameter;
 
