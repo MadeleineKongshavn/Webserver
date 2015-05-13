@@ -114,7 +114,7 @@ namespace WebApplication1.Models.Db
                         UserId = friendIde,
                         Friend = userIde,
                     });
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     return true;
                 }
             }

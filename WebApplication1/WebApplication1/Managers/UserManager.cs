@@ -39,14 +39,20 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.ChangePic(uid, imgUrl);       
         }
-        public async Task<Image> CompressBitmap(Image images)
+        public async Task<Image> CompressBitmap(Image i)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    Image i = images.GetThumbnailImage(70, 70, null, new IntPtr());
+                    try
+                    {
+                         i = i.GetThumbnailImage(70, 70, null, new IntPtr());
+                    }
+                    catch (Exception e)
+                    {
 
+                    }
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 

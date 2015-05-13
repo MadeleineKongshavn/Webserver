@@ -37,17 +37,21 @@ namespace WebApplication1.Managers
             var db = new DbBand();
             return await db.ChangePic(bid, imgUrl, imgSmallUrl);
         }
-        public async Task<Image> CompressBitmap(Image i)
+
+        public async Task<Image> CompressBitmap(Image images)
         {
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
+
+                    Image i = images.GetThumbnailImage(100, 100, null, new IntPtr());
+
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
                     var myEncoderParameters = new EncoderParameters(1);
-                    var myEncoderParameter = new EncoderParameter(myEncoder, 10L);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 15L);
 
                     myEncoderParameters.Param[0] = myEncoderParameter;
 
@@ -64,6 +68,7 @@ namespace WebApplication1.Managers
                 return null;
             }
         }
+
         private ImageCodecInfo GetEncoder(ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
