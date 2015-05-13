@@ -9,6 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Security.Policy;
+using System.Text;
 using System.Threading.Tasks;
 using WebApplication1.Managers;
 using WebApplication1.Models.Class;
@@ -270,6 +271,81 @@ namespace WebApplication1.Models
             return true;
         }
 
+        public async Task<bool> updateFbLink(int bandid,string postfix)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from b in db.BandDb
+                                where b.BandId == bandid
+                                select b).FirstOrDefault();
+
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append("https://www.facebook.com/");
+                    builder.Append(postfix);
+                    string link = builder.ToString();
+                    band.UrlFacebook = link;
+                    db.SaveChanges();
+                    
+                }
+            }catch(Exception){
+                return false;
+            }
+            return true;
+            
+        }
+
+        public async Task<bool> updateSoundCloudLink(int bandid, string postfix)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from b in db.BandDb
+                                where b.BandId == bandid
+                                select b).FirstOrDefault();
+
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append("https://www.soundcloud.com/");
+                    builder.Append(postfix);
+                    band.UrlSoundCloud = builder.ToString();
+                    db.SaveChanges();
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+        public async Task<bool> updateWwwLink(int bandid,string link){
+
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var band = (from b in db.BandDb
+                                where b.BandId == bandid
+                                select b).FirstOrDefault();
+
+                    band.UrlRandom = link;
+                    db.SaveChanges();
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+
+         }
+
+        
         public async Task<bool> UpdateBandLinks(int bandid, string www, string fb,string soundcloud)
         {
             try

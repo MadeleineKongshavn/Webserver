@@ -19,6 +19,9 @@ namespace WebApplication1.Managers
 {
     public class BandManager : BaseManager
     {
+        public static readonly int TYPE_FB = 1;
+        public static readonly int TYPE_SC = 2;
+        public static readonly int TYPE_WWW = 3;
 
         private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
@@ -142,10 +145,24 @@ namespace WebApplication1.Managers
             return await db.UpdateBandName(bandId,name);
         }
 
-        public async Task<bool> updateBandLinks(int bandid, string www, string fb, string soundcloud)
+        public async Task<bool> updateBandLink(int bandid, int type, string link)
         {
-            var db = new DbBand();  
-            bool ok= await db.UpdateBandLinks(bandid,www,fb,soundcloud);
+            var db = new DbBand();
+            var ok = false;
+            
+            if(type==TYPE_FB){
+                    ok=await db.updateFbLink(bandid, link);
+            }
+            else if (type == TYPE_SC)
+            {
+                ok = await db.updateSoundCloudLink(bandid, link);
+            }
+            else
+            {
+                ok = await db.updateWwwLink(bandid, link);
+            }
+
+
             var cacheKey = String.Format("Band_Get_{0}", bandid);
             RemoveCacheKeysByPrefix(cacheKey);
             return ok;

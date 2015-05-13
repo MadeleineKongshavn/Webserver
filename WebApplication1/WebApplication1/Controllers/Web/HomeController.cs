@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using WebApplication1.Controllers.Api;
+using WebApplication1.Managers;
 using WebApplication1.Models;
 using WebApplication1.Models.Args;
 using WebApplication1.Models.Class;
@@ -23,36 +24,11 @@ namespace WebApplication1.Controllers
 
         public async Task<ActionResult> About()
         {
-            /*
-                   int userid = 1;
-                   int bandid = 11;
-                   BandClass b;
-                   double x=0;
-                   double y=0;
-                   string bandname="jaffa cake revival";
-                   string refer = "CoQBdAAAACIg0nIvOsdxqJKbL3HffQaFUUVLvCLXqVwLeyNVPtlJvsFR1DFbUCeh2N-gu7dLMW50vIGaIrH-mzk0rInbuV5Twy7lphbZKH1O-V5o1CEf3Kr7lxBBYK8tAiJMcdsf6CFZ7m8M0VSmSTayEviqqoysiVKLhXZ8dJ6Wcj9WWRO_EhA3ny5p9aIA1aAeCjMTil_oGhRDVTJJdS2kGniFpCeobF4PifX1mA";
-                   char[] input = refer.ToCharArray();
+            WwwLinkArgs args = new WwwLinkArgs();
+            args.setId(8);
+            args.setLink("http://semitone.azurewebsites.net/");
 
-                   UserController uc=new UserController();*/
-            DbBand bc = new DbBand();
-            GenreController gc = new GenreController();
-
-
-            Double v = bc.Distance(59.941761, 10.760368, 59.941761, 10.757493);
-
-
-            // var v = await new ConcertController().FindConcertBasedOnQuery("t");
-
-           /// var i = await bc.GetBandsCoordinates(59.911449, 10.750401);
-           /// 
-           /// 
-            /// 59,923302   10,752547           59,941761   10,760368
-
-         //  List<BandsImagesClass> list = await bc.GetRandomBands(3);
-            UserController c = new UserController();
-            List<GetGenreArgs> l= await c.GetAllGenres(7);
-
-            ViewBag.Message = "Here's hoping! "; //+ o;
+            ViewBag.Message = "Here's hoping!\nuSC: ";
 
             return View();
         }     

@@ -35,4 +35,21 @@ namespace WebApplication1.Models.Args
         public string email { get; set; }
         public string password { get; set; }
     }
+
+    public class WwwLinkArgs
+    {
+        public int id { get; set; }
+        public string link{ get; set;}
+
+
+        internal void setId(int id)
+        {
+            this.id = id;
+        }
+        internal void setLink(string link)
+        {
+            this.link = link;
+        }
+
+    }
 }
