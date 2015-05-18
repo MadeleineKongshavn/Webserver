@@ -311,8 +311,8 @@ namespace WebApplication1.Models
 
 
                         if (type == 1) ny.Url = c.FriendRequestNotifications.User.Url;
-                        if (type == 2) ny.Url = c.InviteConcertNotifications.Concert.BitmapSmalUrl;
-                        if (type == 3) ny.Url = c.AcceptConcertInvitation.Concert.BitmapSmalUrl;
+                        if (type == 2) ny.Url = c.InviteConcertNotifications.User.Url;
+                        if (type == 3) ny.Url = c.AcceptConcertInvitation.User.Url;
 
                         if (type == 1) ny.Accepted = c.FriendRequestNotifications.Accepted;
                         if (type == 2) ny.Accepted = c.InviteConcertNotifications.Accepted;

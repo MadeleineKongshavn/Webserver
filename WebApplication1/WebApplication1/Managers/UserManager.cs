@@ -30,6 +30,7 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.ChangeRadius(radius, userId);
         }
+
         public async Task<bool> ChangePic(int uid, Image image)
         {
             var cacheKey = String.Format("User_Get_{0}", uid);
@@ -39,6 +40,7 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.ChangePic(uid, imgUrl);       
         }
+
         public async Task<Image> CompressBitmap(Image i)
         {
             try
@@ -47,7 +49,7 @@ namespace WebApplication1.Managers
                 {
                     try
                     {
-                         i = i.GetThumbnailImage(70, 70, null, new IntPtr());
+                         i = i.GetThumbnailImage(50, 50, null, new IntPtr());
                     }
                     catch (Exception e)
                     {

@@ -45,13 +45,43 @@ namespace WebApplication1.Managers
                 using (var db = new ApplicationDbContext())
                 {
 
-                    Image i = images.GetThumbnailImage(100, 100, null, new IntPtr());
+                    Image i = images.GetThumbnailImage(80, 100, null, new IntPtr());
 
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
                     var myEncoderParameters = new EncoderParameters(1);
-                    var myEncoderParameter = new EncoderParameter(myEncoder, 5L);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 40L);
+
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+                    MemoryStream ms = new MemoryStream();
+                    i.Save(ms, jpgEncoder, myEncoderParameters);
+                    Byte[] m = ms.ToArray();
+                    MemoryStream ms2 = new MemoryStream(m);
+                    Image returnImage = Image.FromStream(ms);
+                    return returnImage;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public async Task<Image> CompressLargeBitmap(Image images)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    Image i = images.GetThumbnailImage(70, 70, null, new IntPtr());
+
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+                    var myEncoderParameters = new EncoderParameters(1);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
 
                     myEncoderParameters.Param[0] = myEncoderParameter;
 

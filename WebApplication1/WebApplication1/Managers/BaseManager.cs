@@ -51,15 +51,17 @@ namespace WebApplication1.Managers
             newImage.Save(stream, ImageFormat.Jpeg);
             stream.Seek(0, SeekOrigin.Begin);
 
-            var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["BlobStorage"].ConnectionString);
+            var storageAccount = CloudStorageAccount.Parse
+                (ConfigurationManager.ConnectionStrings["BlobStorage"].ConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference("gfx");
             var blob = container.GetBlockBlobReference(Guid.NewGuid().ToString());
             blob.Properties.ContentType = "image/jpeg";
-            //await blob.UploadFromByteArrayAsync(arBytes,0,arBytes.Length);
             await blob.UploadFromStreamAsync(stream);
             return blob.StorageUri.PrimaryUri.AbsoluteUri;
         }   
+
+
         public async Task<string> UploadImage(byte[] arBytes)
         {
             var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["BlobStorage"].ConnectionString);

@@ -30,8 +30,6 @@ namespace WebApplication1.Controllers.Api
                 using (var mngr = ManagerFactory.GetUserManager())
                 {
                     var image = Image.FromStream(filee.InputStream);
-                    //int inte = pic.name.Length;
-                    //return "kom til server";
                     return await mngr.ChangePic(userid, image);
                 }
             }
