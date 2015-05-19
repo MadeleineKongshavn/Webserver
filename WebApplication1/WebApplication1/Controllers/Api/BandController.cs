@@ -21,7 +21,7 @@ namespace WebApplication1.Controllers.Api
     public class BandController : ApiController
     {
         [HttpGet]
-        [Route("api/Band/GetRandomBands/{userId}")]
+        [Route("api/Band/GetRandom/{userId}")]
         public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
         {
             using (var bmgr = ManagerFactory.GetBandManager())
