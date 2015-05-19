@@ -177,6 +177,7 @@ namespace WebApplication1.Models
                         where c.Title.Contains(query)
                         select new ConcertClass()
                         {
+                            Date = c.Date,
                             Bandname = c.Band.BandName,
                             ConcertId = c.ConcertId,
                             Title = c.Title,

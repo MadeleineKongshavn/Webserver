@@ -521,7 +521,7 @@ namespace WebApplication1.Models
             return null;
         }
 
-        public async Task<List<BandClass>>  FindBandBasedOnQuery(String query) // delvis under oppbygning
+        public async Task<List<BandClass>>  FindBandBasedOnQuery(String query) 
         {
             using (var db = new ApplicationDbContext())
             {
@@ -529,20 +529,17 @@ namespace WebApplication1.Models
                 {
 
                     query = query.Trim();
-                    List<Band> allBands = (from b in db.BandDb where b.BandName.Contains(query) select b).ToList();
-
-                    allBands.OrderBy(b => b.BandName).ToList();
-                    List<BandClass> bands = new List<BandClass>();
-                    foreach (var b in allBands)
-                    {
-                        BandClass newB = new BandClass();
-                        newB.Area = b.Area;
-                        newB.BandName = b.BandName;
-                        newB.SmallBitmapUrl = b.BitmapSmalUrl;
-                        newB.BandId = b.BandId;
-                        bands.Add(newB);
-                    }
-                    return bands;
+                     var allBands = await (from b in db.BandDb
+                        where b.BandName.Contains(query)
+                        select new BandClass
+                        {
+                            Member = b.User.ProfileName,
+                            Area = b.Area,
+                            BandName = b.BandName,
+                            SmallBitmapUrl = b.BitmapSmalUrl,
+                            BandId = b.BandId,
+                        }).OrderBy(b=> b.BandName).ToListAsync();
+                     return allBands;
                 }
                 catch (Exception)
                 {
@@ -567,7 +564,7 @@ namespace WebApplication1.Models
                                       Area = v.Band.Area,
                                       BandId = v.Band.BandId,
                                       BandName = v.Band.BandName,
-                                      Member = v.User.ProfileName,
+                                      Member = v.Band.User.ProfileName,
                                       SmallBitmapUrl = v.Band.BitmapSmalUrl,  
                                       Xcoordinates = v.Band.Xcoordinates,
                                       Ycoordinates = v.Band.Ycoordinates

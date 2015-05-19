@@ -28,7 +28,10 @@ namespace WebApplication1.Controllers
             args.setId(8);
             args.setLink("http://semitone.azurewebsites.net/");
 
-            ViewBag.Message = "Here's hoping!\nuSC: ";
+
+            var v = await new BandController().FindBandBasedOnQuery("b"); 
+
+            ViewBag.Message = "Here's hoping!\nuSC: " + v.First().Member ;
 
             return View();
         }     
