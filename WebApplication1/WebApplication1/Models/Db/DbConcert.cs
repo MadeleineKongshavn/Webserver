@@ -127,11 +127,18 @@ namespace WebApplication1.Models
                 {
                     var c = await (from friend in db.FriendsDb
                                    where friend.UserId == userId
-                                   join con in db.ConcertFollowersDb on friend.Friend equals con.UserId select friend).ToListAsync();
+                                   join con in db.ConcertFollowersDb on friend.Friend equals con.UserId select con).ToListAsync();
+
+                    int n = 0;
+                    foreach (var fe in c)
+                    {
+                        if (fe.ConcertId == concertId) n++;
+                    }
+                    
                     ConcertInfoClass co =  new ConcertInfoClass()
                     {
                         ConcertId = concertId,
-                        FriendsAttending = c.Count,
+                        FriendsAttending = n,
                         Added = await ConcertAlreadyAdded(concertId, userId),
                     };
                     return co;
