@@ -64,7 +64,7 @@ namespace WebApplication1.Controllers.Api
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
-                return await mngr.SetFriendAccept(id, ok);
+                return await mngr.SetFriendAccept(requestId, ok);
             }
         }
 
