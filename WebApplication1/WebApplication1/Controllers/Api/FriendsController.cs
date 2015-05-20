@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers.Api
 
         //api/Friends/FriendsToUser/{id} ||endret || sjekk
         [HttpGet]
-        [Route("api/Friends/GetFriends/{userid}")]
+        [Route("api/Friends/GetList/{userid}")]
         public async Task<List<FriendsClass>> FriendsToUser(int userid)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
@@ -36,11 +36,11 @@ namespace WebApplication1.Controllers.Api
         //api/Friends/FindFriend/{name},{uid} || endret || sjekk
         [HttpGet]
         [Route("api/Friends/Query/{name},{userid}")]
-        public async Task<FriendsClass> FindFriend(String name, int uid)
+        public async Task<FriendsClass> FindFriend(String name, int userid)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
-                return await mngr.FindFriend(name, uid);
+                return await mngr.FindFriend(name, userid);
             }
         }
 
@@ -60,7 +60,7 @@ namespace WebApplication1.Controllers.Api
         //api/Friends/SetFriendAccept/{id},{ok} ||endret || sjekk
         [HttpPost]
         [Route("api/Friends/Respond/{requestId},{ok}")]
-        public async Task<Boolean> SetFriendAccept(int id, Boolean ok)
+        public async Task<Boolean> SetFriendAccept(int requestId, Boolean ok)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
