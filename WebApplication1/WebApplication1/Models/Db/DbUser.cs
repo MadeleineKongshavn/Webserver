@@ -94,14 +94,22 @@ namespace WebApplication1.Models
             {
                 using (var db = new ApplicationDbContext())
                 {
+                      var user = await (from v in db.UserDb
+                        where v.ProfileName == name || v.Password.Email == email
+                        select v).FirstOrDefaultAsync();
+
+                    if (user != null && user.ProfileName.Equals(name)) return -3;
+                    if (user != null && user.Password.Email.Equals(email)) return -2;
+
                     byte[] password = Encoding.UTF8.GetBytes(pass);
                     byte[] salt = GetNewSalt();
                     User u = new User()
                     {
                         Radius = 500,
                         ProfileName = name,
-                        Ycoordinates = 0,
-                        Xcoordinates = 0,
+                        Ycoordinates = 59.911032,
+                        Xcoordinates = 10.752408,
+                        Area = "Oslo Sentralstasjon, Oslo, Norway",
                         Password = new Password()
                         {
                             Email = email,
