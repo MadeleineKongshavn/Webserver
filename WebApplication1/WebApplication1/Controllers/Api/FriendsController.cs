@@ -13,14 +13,23 @@ namespace WebApplication1.Controllers.Api
 {
     public class FriendsController : ApiController
     {
+
+        
+        [HttpGet]
+        [Route("api/Friends/me")]
+        public string test(){
+            return "her";
+            
+        }
+
         //api/Friends/FriendsToUser/{id} ||endret || sjekk
         [HttpGet]
         [Route("api/Friends/GetFriends/{userid}")]
-        public async Task<List<FriendsClass>> FriendsToUser(int id)
+        public async Task<List<FriendsClass>> FriendsToUser(int userid)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
-                return await mngr.GetFriendsFromUserId(id);
+                return await mngr.GetFriendsFromUserId(userid);
             }
         }
 
