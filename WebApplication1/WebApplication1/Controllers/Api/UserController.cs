@@ -18,6 +18,72 @@ namespace WebApplication1.Controllers.Api
 {
     public class UserController : ApiController
     {
+        //api/User/GetUserById/{id} || endret
+        [HttpGet]
+        [Route("api/User/Get/{userid}")]
+        public async Task<UserClass> GetUserById(int userid)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.GetUserById(userid);
+            }
+        }
+
+        //api/User/CheckUserName/{name} || endret
+        [HttpGet]
+        [Route("api/User/CheckName/{name}")]
+        public async Task<int> CheckUserName(String name)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.CheckUserName(name);
+            }
+        }
+
+        
+        [HttpGet]
+        [Route("api/User/CheckEmail/{email}")]
+        public async Task<int> CheckEmail(String email)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.CheckEmail(email);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/User/CheckNewNotifications/{id}")]
+        public async Task<Boolean> CheckNewNotifications(int id)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                return await mngr.CheckNewNotifications(id);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/User/GetAllGenres/{id}")]
+        public async Task<List<GetGenreArgs>> GetAllGenres(int id)
+        {
+            return await ManagerFactory.GetUserManager().GetAllGenres(id);
+        }
+
+        //api/User/GetAllNotifications/{id} || endret
+        [HttpGet]
+        [Route("api/User/GetNotifications/{id}")]
+        public async Task<List<NotificationsClass>> GetAllNotifications(int id)
+        {
+            using (var mngr = ManagerFactory.GetUserManager())
+            {
+                List<NotificationsClass> not = await mngr.GetNotificationByUserId(id);
+                mngr.ReadAllNotifications(id);
+                return not;
+            }
+        }
+        
+
+
+
         [HttpPost]
         [Route("api/User/ChangePic/{userid}")]
         public async Task<bool> ChangePic(int userid)
@@ -35,7 +101,10 @@ namespace WebApplication1.Controllers.Api
             }
             return false;
         }
-        [HttpGet]
+
+
+        //!!HttpPost
+        [HttpPost]
         [Route("api/User/ChangeRadius/{radius},{userId}")]
         public async Task<bool> ChangeRadius(int radius, int userId)
         {
@@ -44,35 +113,11 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.ChangeRadius(radius, userId);
             }
         }
-        [HttpGet]
-        [Route("api/User/GetUserById/{id}")]
-        public async Task<UserClass> GetUserById(int id)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.GetUserById(id);
-            }
-        }
-        [HttpGet]
-        [Route("api/User/CheckUserName/{name}")]
-        public async Task<int> CheckUserName(String name)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.CheckUserName(name);
-            }
-        }
-        [HttpGet]
-        [Route("api/User/CheckEmail/{email}")]
-        public async Task<int> CheckEmail(String email)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.CheckEmail(email);
-            }
-        }
-        [HttpGet]
-        [Route("api/User/AddFaceUser/{uid},{profilename},{path}")]
+
+        //!!HttpPost
+        //api/User/AddFaceUser/{uid},{profilename},{path} || endret
+        [HttpPost]
+        [Route("api/User/RegisterFacebook/{uid},{profilename},{path}")]
         public async Task<int> AddFaceUser(long uid, String profilename, String path)
         {
             using (var mngr = ManagerFactory.GetUserManager())
@@ -81,9 +126,10 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-
-        [HttpGet]
-        [Route("api/User/NormalLogin/{pass},{email}")]
+        //!!HttPost
+        //api/User/NormalLogin/{pass},{email} || endret
+        [HttpPost]
+        [Route("api/User/Login/{pass},{email}")]
         public async Task<int> NormalLogin(String pass, String email)
         {
             using (var mngr = ManagerFactory.GetUserManager())
@@ -92,18 +138,9 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        [HttpGet]
-        [Route("api/User/NormalRegister/{name},{email},{pass}")]
-        public async Task<int> NormalRegister(String name, String email, String pass)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.NormalRegister(name, email, pass, 0, 0);
-            }
-        }
-
+        //api/User/NormalRegister || endret
         [HttpPost]
-        [Route("api/User/NormalRegister")]
+        [Route("api/User/Register")]
         public async Task<int> NormalRegister([FromBody]RegisterUserArgs args)
         {
             var newUser = args;
@@ -112,57 +149,7 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.NormalRegister(newUser.userName,newUser.email, newUser.password, 0, 0);
             }
         }
-
-
-        [HttpPost]
-        [Route("api/User/ChangeUser/{u},{pic}")]
-        public async Task<Boolean> ChangeUser(UserClass u, Image pic)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.ChangeUser(u, pic);
-            }
-        }
-        [HttpPost]
-        [Route("api/User/AddUser/{u},{pic}")]
-        public async Task<Boolean> AddUser(UserClass u, Image pic) // Ny metode
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.AddUser(u, pic);
-            }
-        }
-        [HttpGet]
-        [Route("api/User/GetAllNotifications/{id}")]
-        public async Task<List<NotificationsClass>> GetAllNotifications(int id)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                List<NotificationsClass> not = await mngr.GetNotificationByUserId(id);
-                ReadNotifications(id);
-                return not;
-            }
-        }
-        [HttpGet]
-        [Route("api/User/UserHasReadNotification/{userId}")]
-        public void ReadNotifications(int userId)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                mngr.ReadAllNotifications(userId);
-            }
-        }
-
-        [HttpGet]
-        [Route("api/User/CheckNewNotifications/{id}")]
-        public async Task<Boolean> CheckNewNotifications(int id)
-        {
-            using (var mngr = ManagerFactory.GetUserManager())
-            {
-                return await mngr.CheckNewNotifications(id);
-            }
-        }
-
+        
 
         [HttpPost]
         [Route("api/User/UpdateGenres")]
@@ -184,21 +171,10 @@ namespace WebApplication1.Controllers.Api
         public async Task<bool> UpdateLocation([FromBody]UpdateLocationArgs args)
         {
             var location = args;
-      /*      int userid = location.id;
-            String area = location.area;
-            String placeId = location.placeId;*/
             UserManager mng = ManagerFactory.GetUserManager();
             return await mng.updateUserLocation(location.id, location.area, location.placeId);
 
         }
-
-        [HttpGet]
-        [Route("api/User/GetAllGenres/{id}")]
-        public async Task<List<GetGenreArgs>> GetAllGenres(int id)
-        {
-            return await ManagerFactory.GetUserManager().GetAllGenres(id);
-        }
-
 
 
     }
