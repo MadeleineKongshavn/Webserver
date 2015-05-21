@@ -282,11 +282,9 @@ namespace WebApplication1.Models
                                 select b).FirstOrDefault();
 
                     StringBuilder builder = new StringBuilder();
-                    builder.Append("https://www.facebook.com/");
-                    builder.Append(postfix);
-                    string link = builder.ToString();
-                    band.UrlFacebook = link;
-                    db.SaveChanges();
+                    band.UrlFacebook = postfix;
+                    await db.SaveChangesAsync();
+
                     
                 }
             }catch(Exception){
@@ -307,10 +305,8 @@ namespace WebApplication1.Models
                                 select b).FirstOrDefault();
 
                     StringBuilder builder = new StringBuilder();
-                    builder.Append("https://www.soundcloud.com/");
-                    builder.Append(postfix);
-                    band.UrlSoundCloud = builder.ToString();
-                    db.SaveChanges();
+                    band.UrlSoundCloud = postfix;
+                    await db.SaveChangesAsync();
 
                 }
             }
@@ -346,31 +342,7 @@ namespace WebApplication1.Models
          }
 
         
-        public async Task<bool> UpdateBandLinks(int bandid, string www, string fb,string soundcloud)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var band = (from b in db.BandDb
-                                where b.BandId == bandid
-                                select b).FirstOrDefault();
-                    if(!(www.Equals("---")))
-                    band.UrlRandom = www;
-                    if(!(fb.Equals("---")))
-                    band.UrlFacebook = fb;
-                    if(!(soundcloud.Equals("---")))
-                    band.UrlSoundCloud = soundcloud;
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-
-            }
-        }
+       
 
         public async Task<bool> UpdateBandLocation(int bandid, string area, double x, double y)
         {
