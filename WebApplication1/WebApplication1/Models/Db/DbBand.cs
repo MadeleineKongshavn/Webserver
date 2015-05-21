@@ -54,7 +54,7 @@ namespace WebApplication1.Models
     {
         return x * Math.PI / 180;
     }
-        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
+        public async Task<List<ImageClass>> GetRandomBands(int userId)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace WebApplication1.Models
                     Double lang = user.Ycoordinates;
                     int rad = user.Radius;
 
-                    var val = await (from c in db.BandDb select new BandsImagesClass()
+                    var val = await (from c in db.BandDb select new ImageClass()
                          {
                              OpositeXCoordinates = lat,
                              OpositeYCoordinates = lang,
@@ -75,13 +75,13 @@ namespace WebApplication1.Models
                              XCoordinates = c.Xcoordinates,
                              YCoordinates = c.Ycoordinates,
                          }).ToListAsync();
-                    List<BandsImagesClass> images = new List<BandsImagesClass>();
+                    List<ImageClass> images = new List<ImageClass>();
                     foreach (var v in val)
                     {
                         Double vals = Distance(lat, lang, v.XCoordinates, v.YCoordinates);
                         if(rad >= ((int) vals)) images.Add(v);
                     }
-                    IList<BandsImagesClass> t = await Shuffle<BandsImagesClass>(images);
+                    IList<ImageClass> t = await Shuffle<ImageClass>(images);
                     return t.Take(15).ToList();
                 }
             }catch (Exception e)
@@ -631,7 +631,7 @@ namespace WebApplication1.Models
                                  where userid == o.UserId && bandid == o.BandId
                                  select o).FirstOrDefaultAsync();
                         db.BandFollowersDb.Remove(v);
-                        db.SaveChanges();
+                        await db.SaveChangesAsync();
                     }
                     return true;
                 }

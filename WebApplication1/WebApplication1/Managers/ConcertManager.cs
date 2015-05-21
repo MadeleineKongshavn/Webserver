@@ -17,7 +17,7 @@ namespace WebApplication1.Managers
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
         private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
 
-        public async Task<List<BandsImagesClass>> GetRandomConcert(int userId)
+        public async Task<List<ImageClass>> GetRandomConcert(int userId)
         {
             var db = new DbConcert();
             return await db.GetRandomConcert(userId);            

@@ -32,7 +32,7 @@ namespace WebApplication1.Models
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return ((RADIUS_EARTH * c) * 1000);
         }
-        public async Task<List<BandsImagesClass>> GetRandomConcert(int userId)
+        public async Task<List<ImageClass>> GetRandomConcert(int userId)
         {
             try
             {
@@ -44,24 +44,24 @@ namespace WebApplication1.Models
                     int rad = user.Radius;
 
                     var val = await (from c in db.ConcertDb
-                                     select new BandsImagesClass()
+                                     select new ImageClass()
                                      {
                                          OpositeXCoordinates = lat,
                                          OpositeYCoordinates = lang,
-                                         BandId = c.BandId,
+                                         BandId = c.ConcertId,
                                          Title = c.Title,
                                          UnderTitle = c.Band.BandName,
                                          SmallBitmapUrl = c.BitmapSmalUrl,
                                          XCoordinates = c.Xcoordinates,
                                          YCoordinates = c.Ycoordinates,
                                      }).ToListAsync();
-                    List<BandsImagesClass> images = new List<BandsImagesClass>();
+                    List<ImageClass> images = new List<ImageClass>();
                     foreach (var v in val)
                     {
                         Double vals = Distance(lat, lang, v.XCoordinates, v.YCoordinates);
                         if (rad >= ((int)vals)) images.Add(v);
                     }
-                    IList<BandsImagesClass> t = await Shuffle<BandsImagesClass>(images);
+                    IList<ImageClass> t = await Shuffle<ImageClass>(images);
                     return t.Take(15).ToList();
                 }
             }
