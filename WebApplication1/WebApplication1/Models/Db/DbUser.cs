@@ -105,7 +105,7 @@ namespace WebApplication1.Models
                     byte[] salt = GetNewSalt();
                     User u = new User()
                     {
-                        Radius = 250000,
+                        Radius = 100000,
                         ProfileName = name,
                         Ycoordinates = 59.911032,
                         Xcoordinates = 10.752408,
