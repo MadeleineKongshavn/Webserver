@@ -119,7 +119,7 @@ namespace WebApplication1.Managers
             var db = new DbBand();
             return await db.FindBandBasedOnQuery(query);
         }
-        public async Task<List<BandsImagesClass>> GetRandomBands(int userId)
+        public async Task<List<ImageClass>> GetRandomBands(int userId)
         {
             var db = new DbBand();
             return await db.GetRandomBands(userId);
