@@ -48,7 +48,7 @@ namespace WebApplication1.Models
                                      {
                                          OpositeXCoordinates = lat,
                                          OpositeYCoordinates = lang,
-                                         BandId = c.BandId,
+                                         BandId = c.ConcertId,
                                          Title = c.Title,
                                          UnderTitle = c.Band.BandName,
                                          SmallBitmapUrl = c.BitmapSmalUrl,

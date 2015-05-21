@@ -31,7 +31,10 @@ namespace WebApplication1.Managers
         {
             var cacheKey = String.Format("Band_Get_{0}", bid);
             RemoveCacheKeysByPrefix(cacheKey);
-            var imgUrl = await UploadImage(image);
+
+            var imageLarge = await CompressLargeBitmap(image);
+            var imgUrl = await UploadImage(imageLarge);
+
             var ImageSmall = await CompressBitmap(image);
             var imgSmallUrl = await UploadImage(ImageSmall);
             var db = new DbBand();
@@ -75,13 +78,13 @@ namespace WebApplication1.Managers
                 using (var db = new ApplicationDbContext())
                 {
 
-                    Image i = images.GetThumbnailImage(70, 70, null, new IntPtr());
+                    Image i = images.GetThumbnailImage(700, 700, null, new IntPtr());
 
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
                     var myEncoderParameters = new EncoderParameters(1);
-                    var myEncoderParameter = new EncoderParameter(myEncoder, 20L);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 80L);
 
                     myEncoderParameters.Param[0] = myEncoderParameter;
 
