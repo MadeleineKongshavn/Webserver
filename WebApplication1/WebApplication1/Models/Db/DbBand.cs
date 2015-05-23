@@ -69,17 +69,15 @@ namespace WebApplication1.Models
                     var UserGenre = from usr in db.UserGenreDb
                                     where usr.UserId == userId
                                     select usr;
-                    var genrelist = UserGenre.ToList();
                     var Bands = db.BandDb;
-                    var sorted = from e in BandGenre
+                    var prefUser = (from e in BandGenre
                                  join d in UserGenre on e.GenreId equals d.GenreId
                                  join b in Bands on e.BandId equals b.BandId
-                                 select b;
-                    var toList = sorted.ToList();
+                                 select b);
+                    var prefUserDist = prefUser.Distinct();
 
 
-
-                    var val = await (from c in sorted select new ImageClass()
+                    var val = await (from c in prefUserDist select new ImageClass()
                          {
                              OpositeXCoordinates = lat,
                              OpositeYCoordinates = lang,
