@@ -74,10 +74,13 @@ namespace WebApplication1.Models
                                  join d in UserGenre on e.GenreId equals d.GenreId
                                  join b in Bands on e.BandId equals b.BandId
                                  select b);
-                    var prefUserDist = prefUser.Distinct();
 
+                    var bandlist = prefUser.Distinct();
+                    if (bandlist.Count() == 0)
+                        bandlist = Bands;
+                    
 
-                    var val = await (from c in prefUserDist select new ImageClass()
+                    var val = await (from c in bandlist select new ImageClass()
                          {
                              OpositeXCoordinates = lat,
                              OpositeYCoordinates = lang,
