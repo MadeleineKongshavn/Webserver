@@ -208,9 +208,7 @@
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Args\Models.cs" />
     <Compile Include="Models\Class\BandClass.cs" />
-    <Compile Include="Models\Class\BandsImagesClass.cs" />
     <Compile Include="Models\Class\ConcertInfoClass.cs" />
-    <Compile Include="Models\Class\DistanceAlgorithm.cs" />
     <Compile Include="Models\Class\GenreClass.cs" />
     <Compile Include="Models\Class\ConcertClass.cs" />
     <Compile Include="Models\Class\ImageClass.cs" />
@@ -239,35 +237,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="images\Band\Ariana.jpg" />
-    <Content Include="images\Band\Chris.jpg" />
-    <Content Include="images\Band\Izzy.jpg" />
-    <Content Include="images\Band\Jessie.jpg" />
-    <Content Include="images\Band\MIKA.jpg" />
-    <Content Include="images\Band\P!ink_02.jpg" />
-    <Content Include="images\Band\Purple_Apple_10.jpg" />
-    <Content Include="images\Band\Selena_Gomez_07.jpg" />
-    <Content Include="images\Band\Spider_Band_08.jpg" />
-    <Content Include="images\Band\taylor.jpg" />
-    <Content Include="images\Band\white_feather_09.jpg" />
-    <Content Include="images\Concert\Purple_swan_Concert.jpg" />
-    <Content Include="images\Concert\The_black_concert.jpg" />
-    <Content Include="images\Concert\The_Ivory_Concert.jpg" />
-    <Content Include="images\Band\mumford_and_sons_01.jpg" />
-    <Content Include="images\Band\passenger_00.jpg" />
-    <Content Include="images\Band\Sam_Smith_06.jpg" />
-    <Content Include="images\Band\white_feather_02.jpg" />
-    <Content Include="images\Profile\profile_1000.png" />
-    <Content Include="images\Profile\profile_1001.png" />
-    <Content Include="images\Profile\profile_1002.png" />
-    <Content Include="images\Profile\profile_1003.png" />
-    <Content Include="images\Profile\profile_1004.png" />
-    <Content Include="images\Profile\profile_1005.png" />
-    <Content Include="images\Profile\profile_1006.png" />
-    <Content Include="images\Profile\profile_1007.png" />
-    <Content Include="images\Profile\profile_1008.png" />
-    <Content Include="images\Profile\profile_1009.png" />
-    <Content Include="images\Profile\profile_1010.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Semitone - FTP %282%29.pubxml" />
@@ -316,7 +285,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="images\Band\" />
+    <Folder Include="images\Concert\" />
     <Folder Include="images\NewFolder1\" />
+    <Folder Include="images\Profile\" />
     <Folder Include="music\" />
     <Folder Include="Views\Semitone\" />
   </ItemGroup>

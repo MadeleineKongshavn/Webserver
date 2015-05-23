@@ -65,7 +65,21 @@ namespace WebApplication1.Models
                     Double lang = user.Ycoordinates;
                     int rad = user.Radius;
 
-                    var val = await (from c in db.BandDb select new ImageClass()
+                    var BandGenre = db.BandGenreDb;
+                    var UserGenre = from usr in db.UserGenreDb
+                                    where usr.UserId == userId
+                                    select usr;
+                    var genrelist = UserGenre.ToList();
+                    var Bands = db.BandDb;
+                    var sorted = from e in BandGenre
+                                 join d in UserGenre on e.GenreId equals d.GenreId
+                                 join b in Bands on e.BandId equals b.BandId
+                                 select b;
+                    var toList = sorted.ToList();
+
+
+
+                    var val = await (from c in sorted select new ImageClass()
                          {
                              OpositeXCoordinates = lat,
                              OpositeYCoordinates = lang,
