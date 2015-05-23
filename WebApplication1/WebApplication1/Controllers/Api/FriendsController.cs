@@ -70,8 +70,8 @@ namespace WebApplication1.Controllers.Api
 
         //api/Friends/CancelFriendTask/{uid},{friendId} || endret || sjekk
         [HttpPost]
-        [Route("api/Friends/Remove/{userid},{friendId}")]
-        public async Task<bool> CancelFriendTask(int uid, int friendId)
+        [Route("api/Friends/Remove/{uid},{friendId}")]
+        public async Task<bool> Remove(int uid, int friendId)
         {
             using (var mngr = ManagerFactory.GetFriendManager())
             {
