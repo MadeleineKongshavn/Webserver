@@ -58,8 +58,8 @@ namespace WebApplication1.Managers
         public async Task<Boolean> SetAttendingConcertTask(int cid, int uid, Boolean ok)
         {
             var db = new DbConcert();
-            var cacheKey = String.Format("Concert_User_Get_{0}", cid);
-            RemoveCacheKeysByPrefix(cacheKey); 
+            //var cacheKey = String.Format("Concert_User_Get_{0}", cid);
+           // RemoveCacheKeysByPrefix(cacheKey); 
             return await db.SetAttendingConcertTask(cid, uid, ok);
         }
 
@@ -71,8 +71,8 @@ namespace WebApplication1.Managers
 
             if (ok)
             {
-                var cacheKey = String.Format("Concert_User_Get_{0}", k);
-                RemoveCacheKeysByPrefix(cacheKey);
+             //   var cacheKey = String.Format("Concert_User_Get_{0}", k);
+             //   RemoveCacheKeysByPrefix(cacheKey);
                 return true;
             }
             return true;
@@ -86,8 +86,8 @@ namespace WebApplication1.Managers
         public async Task<Boolean> AddConcertToUser(int userId, int concertId, bool ok)
         {
             var db = new DbConcert();
-            var cacheKey = String.Format("Concert_User_Get_{0}", userId);
-            RemoveCacheKeysByPrefix(cacheKey);
+         //   var cacheKey = String.Format("Concert_User_Get_{0}", userId);
+        //    RemoveCacheKeysByPrefix(cacheKey);
             return await db.AddConcertToUser(userId, concertId, ok);
         }
         public async Task<Boolean> ChangeConcert(ConcertClass c, Byte[] pic)
@@ -152,21 +152,21 @@ namespace WebApplication1.Managers
             //return db.FindAllConcertToUser(id);
 
 
-            List<ConcertClass> objectDto;
+        /*    List<ConcertClass> objectDto;
             var cacheKey = String.Format("Concert_User_Get_{0}", userId);
             if ((objectDto = (List<ConcertClass>)Cache.Get(cacheKey)) != null)
                 return objectDto;
             try
-            {
+            {*/
                 var db = new DbConcert();
-                objectDto = await db.FindAllConcertToUser(userId);
-                if (objectDto != null)
-                    Cache.Insert(cacheKey, objectDto, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
+               var objectDto = await db.FindAllConcertToUser(userId);
+            //    if (objectDto != null)
+          /*          Cache.Insert(cacheKey, objectDto, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
             }
             catch (Exception)
             {
                 return null;
-            }
+            }*/
             return objectDto;
 
         }
