@@ -174,7 +174,9 @@ namespace WebApplication1.Models
                 return null;
             }
         }
-        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
+
+
+        public async Task<List<ConcertClass>> FindConcertWithName(String query)
         {
             try
             {
@@ -203,6 +205,158 @@ namespace WebApplication1.Models
             }
  
         }
+        public async Task<List<ConcertClass>> FindConcertWithDate(String query)
+        {
+            List<ConcertClass> concerts = new List<ConcertClass>();
+            string[] date = query.Split('.');
+            if (date.Length == 1)
+            {
+                if (date[0].Equals(""))
+                    return concerts;
+                if (date.Length == 1)
+                    concerts = await FindDay(date[0]);
+            }
+            else if (date.Length == 2)
+                concerts = await FindDayMonth(date);
+            else if (date.Length == 3)
+                concerts = await FindDayMonthYear(date);
+            
+            return concerts;
+            
+        }
+
+        private async Task<List<ConcertClass>> FindDay(string day)
+        {
+            List<ConcertClass> concerts = new List<ConcertClass>();
+
+            int dayInt;
+            bool isDate = int.TryParse(day, out dayInt) && dayInt>0 && dayInt<32;
+            if (!isDate)
+                return concerts;
+
+            DateTime date = new DateTime(2200, 12, dayInt);
+
+            try
+            {
+                using (var db=new ApplicationDbContext()){
+
+                  concerts= await
+                      (from c in db.ConcertDb
+                           where c.Date.Day==date.Day
+                           select new ConcertClass()
+                        {
+                            Date = c.Date,
+                            Bandname = c.Band.BandName,
+                            ConcertId = c.ConcertId,
+                            Title = c.Title,
+                            SmallBitmapUrl = c.BitmapSmalUrl,
+                        }).ToListAsync();
+                   
+                }
+
+            }catch(Exception){
+
+            }
+
+
+            return concerts;
+        }
+
+        private async Task<List<ConcertClass>> FindDayMonth(string[] date)
+        {
+            List<ConcertClass> concerts = new List<ConcertClass>();
+
+            int dayInt, monthInt;
+            bool isDay = int.TryParse(date[0], out dayInt) && dayInt > 0 && dayInt < 32;
+            bool isMonth = int.TryParse(date[1], out monthInt) && monthInt>0 && monthInt<13;
+            if (isMonth && isDay && monthInt == 2)
+                if (dayInt > 28)
+                    isDay = false;
+            if (!isDay || !isMonth)
+                return concerts;
+
+            DateTime dateTime = new DateTime(2015, monthInt, dayInt);
+          
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    concerts = await
+                        (from c in db.ConcertDb
+                         where c.Date.Day == dateTime.Day && c.Date.Month==dateTime.Month
+                         select new ConcertClass()
+                         {
+                             Date = c.Date,
+                             Bandname = c.Band.BandName,
+                             ConcertId = c.ConcertId,
+                             Title = c.Title,
+                             SmallBitmapUrl = c.BitmapSmalUrl,
+                         }).ToListAsync();
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+            return concerts;
+        }
+
+        private async Task<List<ConcertClass>> FindDayMonthYear(string[] date)
+        {
+            List<ConcertClass> concerts = new List<ConcertClass>();
+
+            String year = date[2];
+            if (year.Length == 2)
+                year = "20" + year;
+
+            int dayInt, monthInt,yearInt;
+            bool isDay = int.TryParse(date[0], out dayInt) && dayInt>0 && dayInt<32; 
+            bool isMonth = int.TryParse(date[1], out monthInt) && monthInt > 0 && monthInt < 13;
+            if (isMonth && isDay && monthInt == 2)
+                if (dayInt > 28)
+                    isDay = false;
+            
+            bool isYear = int.TryParse(year, out yearInt);
+            if (!isDay || !isMonth || !isYear)
+                return concerts;
+
+                DateTime dateTime = new DateTime(yearInt, monthInt, dayInt);
+
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    concerts = await
+                        (from c in db.ConcertDb
+                         where c.Date.Day == dateTime.Day && c.Date.Month==dateTime.Month && c.Date.Year==dateTime.Year
+                         select new ConcertClass()
+                         {
+                             Date = c.Date,
+                             Bandname = c.Band.BandName,
+                             ConcertId = c.ConcertId,
+                             Title = c.Title,
+                             SmallBitmapUrl = c.BitmapSmalUrl,
+                         }).ToListAsync();
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+            return concerts;
+        }
+
+
         public async Task<int> AcceptConcertRequest(Boolean ok, int id)
         {
             try

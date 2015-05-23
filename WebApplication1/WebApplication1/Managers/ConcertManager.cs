@@ -37,11 +37,18 @@ namespace WebApplication1.Managers
             var db = new DbConcert();
             return await db.FindFriendsGoingToConcert(concertId, userId);
         }
-        public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
+        public async Task<List<ConcertClass>> FindConcertWithName(string query)
         {
             var db = new DbConcert();
-            return await db.FindConcertBasedOnQuery(query);
+            return await db.FindConcertWithName(query);
         }
+
+        public async Task<List<ConcertClass>> FindConcertWithDate(string query)
+        {
+            var db = new DbConcert();
+            return await db.FindConcertWithDate(query);
+        }
+
         public async Task<Boolean> GetAttendingConcerTask(int cid, int uid)
         {
             var db = new DbConcert();
@@ -168,7 +175,7 @@ namespace WebApplication1.Managers
         {
             var db = new DbConcert();
             double[] coordinates = GetCoordinates(apiRef);
-            return coordinates; //await db.UpdateConcertLocation(concertid, area, coordinates[0], coordinates[1]);
+            return coordinates; 
         }
 
         private double[] GetCoordinates(String placesRef)

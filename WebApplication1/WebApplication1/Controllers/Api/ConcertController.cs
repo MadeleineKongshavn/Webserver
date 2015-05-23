@@ -23,7 +23,6 @@ namespace WebApplication1.Controllers.Api
         
         //GET
 
-        //OK || endret || sjekk
         [HttpGet]
         [Route("api/Concert/GetRandom/{userId}")]
         public async Task<List<ImageClass>> GetRandomConcert(int userId)
@@ -34,8 +33,7 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Concert/GetConcertinfo/{id} || endret 
-
+       
         [Route("api/Concert/Get/{id}")]
         public async Task<ConcertClass> GetConcertInfo(int id)
         {
@@ -45,18 +43,39 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Concert/FindConcertBasedOnQuery/{query} ||endret
         [HttpGet]
         [Route("api/Concert/Query/{query}")]
         public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
         {
-            using (var bmgr = ManagerFactory.GetConcertManager())
+            List<ConcertClass> concertList=new List<ConcertClass>();
+            string value = null;
+            ConcertManager mng;
+            string[] split = query.Split('=');
+            if (split.Length < 2)
+                return concertList;
+
+            string type = split[0];
+            value=split[1];
+             
+            if (type.Equals("&name"))
             {
-                return await bmgr.FindConcertBasedOnQuery(query);
+                using (var cMgr = ManagerFactory.GetConcertManager())
+                {
+                    concertList = await cMgr.FindConcertWithName(value);
+                }
             }
+            else if (type.Equals("&date"))
+            {
+                using (var cMgr = ManagerFactory.GetConcertManager())
+                {
+                    concertList = await cMgr.FindConcertWithDate(value);
+                }
+
+            }
+
+                return concertList;
         }
 
-        //api/Concert/FindAllConcertToUser/{id} || endret
         [HttpGet]
         [Route("api/Concert/GetUsersList/{id}")]
         public async Task<List<ConcertClass>> FindAllConcertToUser(int id)
@@ -67,7 +86,6 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Concert/NumberGoingToConcert/{concertId},{userId} ||endret
         [HttpGet]
         [Route("api/Concert/GetFriendsAttendanceNumber/{concertId},{userId}")]
         public async Task<ConcertInfoClass> NumberGoingToConcert(int concertId, int userId)
@@ -78,7 +96,6 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Concert/FindFriendsGoingToConcert/{concertId},{userId} || endret
         [HttpGet]
         [Route("api/Concert/GetAttendingFriends/{concertId},{userId}")]
         public async Task<List<FriendsClass>> FindFriendsGoingToConcert(int concertId, int userId)
@@ -90,13 +107,8 @@ namespace WebApplication1.Controllers.Api
         }
 
 
-
-
-
         //POST
-
-        
-        //api/Concert/AddConcertToUser/{userId},{concertId},{ok} || endret || sjekk
+ 
         [HttpPost]
         [Route("api/Concert/AddToUserList/{userId},{concertId},{ok}")]
         public async Task<Boolean> AddConcertToUser(int userId, int concertId, bool ok)
@@ -107,7 +119,6 @@ namespace WebApplication1.Controllers.Api
             }
         }
         
-        //api/Concert/AcceptConcertRequest/{id},{ok} || endret || Sjekk
         [HttpPost]
         [Route("api/Concert/AcceptInvitation/{id},{ok}")]
         public async Task<bool> AcceptConcertInvitation(int id, Boolean ok)
@@ -118,7 +129,6 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Concert/AddConcertRequest/{fromUsr},{toUsr},{ConcertId} || endret || sjekk
         [HttpPost]
         [Route("api/Concert/SendInvitation/{from},{to},{concertid}")]
         public async Task<bool> AddConcertRequest(int from, int to, int concertid)
@@ -129,7 +139,6 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Concert/AddConcert/ || endret || sjekk
         [HttpPost]
         [Route("api/Concert/Add/")]
         public async Task<Boolean> AddConcert(ConcertArgsClass args)
