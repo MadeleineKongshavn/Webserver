@@ -654,7 +654,7 @@ namespace WebApplication1.Models
                                             Bandname = c.Band.BandName,
                                             Title = c.Title,
                                             Date = c.Date,
-                                        }).ToListAsync();
+                                        }).OrderBy(u => u.Date).ToListAsync();
                     return result;
                 }
                 catch (Exception)
