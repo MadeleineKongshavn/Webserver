@@ -64,7 +64,7 @@ namespace WebApplication1.Models
                                          BandId = c.ConcertId,
                                          Title = c.Title,
                                          UnderTitle = c.Band.BandName,
-                                         SmallBitmapUrl = c.BitmapSmalUrl,
+                                         SmallBitmapUrl = c.Band.BitmapSmalUrl,
                                          XCoordinates = c.Xcoordinates,
                                          YCoordinates = c.Ycoordinates,
                                      }).ToListAsync();
