@@ -43,10 +43,10 @@ namespace WebApplication1.Managers
             return await db.FindConcertWithName(query);
         }
 
-        public async Task<List<ConcertClass>> FindConcertWithDate(string query)
+        public async Task<List<ConcertClass>> FindConcertWithDate(string query,int userid)
         {
             var db = new DbConcert();
-            return await db.FindConcertWithDate(query);
+            return await db.FindConcertWithDate(query,userid);
         }
 
         public async Task<Boolean> GetAttendingConcerTask(int cid, int uid)

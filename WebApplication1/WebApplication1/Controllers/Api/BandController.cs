@@ -20,7 +20,8 @@ namespace WebApplication1.Controllers.Api
 
     public class BandController : ApiController
     {
-        //OK
+        //GET
+
         [HttpGet]
         [Route("api/Band/GetRandom/{userId}")]
         public async Task<List<ImageClass>> GetRandomBands(int userId)
@@ -31,8 +32,6 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-
-        //api/Band/FindBandBasedOnQuery/{query} || endret ||sjekk
         [HttpGet]
         [Route("api/Band/Query/{query}")]
         public async Task<List<BandClass>> FindBandBasedOnQuery(String query)
@@ -54,7 +53,7 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Band/GetBandById/{id} || endret || sjekk
+        
         [HttpGet]
         [Route("api/Band/Get/{id}")]
         public async Task<BandClass> GetBandById(int id)
@@ -65,7 +64,7 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //api/Band/GetAllAdminBands/{userId} || endret || sjekk
+       
         [HttpGet]
         [Route("api/Band/GetProfiles/{userId}")]
         public async Task<List<MemberClass>> GetAllAdminBands(int userId)
@@ -76,7 +75,7 @@ namespace WebApplication1.Controllers.Api
             }
         }
 
-        //OK
+        
         [HttpGet]
         [Route("api/Band/GetAllGenres/{id}")]
         public async Task<List<GetGenreArgs>> GetAllGenres(int id)
@@ -84,7 +83,7 @@ namespace WebApplication1.Controllers.Api
             return await ManagerFactory.GetBandManager().GetAllGenres(id);
         }
 
-        //api/Band/GetIfBandIsAdded/{userId},{bandId} || endret || sjekk
+        
         [HttpGet]
         [Route("api/Band/IsAdded/{userId},{bandId}")]
         public async Task<bool> GetIfBandIsAdded(int userId, int bandId)
@@ -93,8 +92,8 @@ namespace WebApplication1.Controllers.Api
         }
 
 
-
-        //api/Band/AddBand/{name},{userId} || endret ||sjekk
+        //POST
+        
         [HttpPost]
         [Route("api/Band/Add/{name},{userId}")]
         public async Task<bool> AddBand(string name, int userId)
@@ -106,7 +105,7 @@ namespace WebApplication1.Controllers.Api
 
         }
 
-        //api/Band/updateBandName/{name},{bandId} ||endret ||sjekk
+        
         [HttpPost]
         [Route("api/Band/UpdateName/{name},{bandId}")]
         public async Task<bool> UpdateBandName(String name, int bandId)

@@ -118,7 +118,6 @@ namespace WebApplication1.Models
             }
             
         }
-
         public async Task<ConcertInfoClass> NumberGoingToConcert(int concertId, int userId)
         {
             try
@@ -174,8 +173,6 @@ namespace WebApplication1.Models
                 return null;
             }
         }
-
-
         public async Task<List<ConcertClass>> FindConcertWithName(String query)
         {
             try
@@ -205,9 +202,12 @@ namespace WebApplication1.Models
             }
  
         }
-        public async Task<List<ConcertClass>> FindConcertWithDate(String query)
+        public async Task<List<ConcertClass>> FindConcertWithDate(String query,int userid)
         {
             List<ConcertClass> concerts = new List<ConcertClass>();
+            List<ConcertClass> inArea = new List<ConcertClass>();
+            User usr=null;
+            
             string[] date = query.Split('.');
             if (date.Length == 1)
             {
@@ -220,10 +220,77 @@ namespace WebApplication1.Models
                 concerts = await FindDayMonth(date);
             else if (date.Length == 3)
                 concerts = await FindDayMonthYear(date);
-            
+
+            if (userid > 0)
+            {
+                usr = getUserLocation(userid);
+
+                if (usr != null)
+                {
+                    foreach (var concert in concerts)
+                    {
+                        Double vals = Distance(usr.Xcoordinates, usr.Ycoordinates, concert.Xcoordinates, concert.Ycoordinates);
+                        if (usr.Radius >= ((int)vals)) inArea.Add(concert);
+                    }
+
+                    if (inArea.Count > 0)
+                    {
+                        if (inArea.Count > 5)
+                            concerts = sortOnUserGenre(usr.UserId, inArea);
+                        else
+                            concerts = inArea;
+
+                    }
+                }
+            }
             return concerts;
             
         }
+
+
+        private List<ConcertClass> sortOnUserGenre(int userid, List<ConcertClass> concertlist){
+
+            List<ConcertClass> withGenre = new List<ConcertClass>();
+            using (var db = new ApplicationDbContext())
+            {
+                var BandGenre = db.BandGenreDb;
+                var UserGenre = from usr in db.UserGenreDb
+                                where usr.UserId == userid
+                                select usr;
+                var Concert = db.ConcertDb;
+                var prefUser = (from band in BandGenre
+                                join user in UserGenre on band.GenreId equals user.GenreId
+                                join concert in Concert on band.BandId equals concert.BandId
+                                select concert.ConcertId);
+                int[] ids = prefUser.ToArray();
+                withGenre = concertlist.Where(x => ids.Contains(x.ConcertId)).ToList();
+            }
+            if (withGenre.Count > 0)
+                return withGenre;
+
+            else return concertlist;
+        }
+
+        private User getUserLocation(int userid)
+        {
+            User usr = null;
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var v =(from u in db.UserDb where u.UserId == userid select u).FirstOrDefault();
+                    usr = v;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                usr = null;
+            }
+            return usr;
+
+        }
+
 
         private async Task<List<ConcertClass>> FindDay(string day)
         {
@@ -250,6 +317,8 @@ namespace WebApplication1.Models
                             ConcertId = c.ConcertId,
                             Title = c.Title,
                             SmallBitmapUrl = c.BitmapSmalUrl,
+                            Xcoordinates=c.Xcoordinates,
+                            Ycoordinates=c.Ycoordinates
                         }).ToListAsync();
                    
                 }

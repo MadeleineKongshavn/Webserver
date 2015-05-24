@@ -49,26 +49,36 @@ namespace WebApplication1.Controllers.Api
         {
             List<ConcertClass> concertList=new List<ConcertClass>();
             string value = null;
-            ConcertManager mng;
-            string[] split = query.Split('=');
+            string[] split = query.Split('=','&');
             if (split.Length < 2)
                 return concertList;
 
-            string type = split[0];
-            value=split[1];
+            string type = split[1];
+            value=split[2];
              
-            if (type.Equals("&name"))
+            if (type.Equals("name"))
             {
                 using (var cMgr = ManagerFactory.GetConcertManager())
                 {
                     concertList = await cMgr.FindConcertWithName(value);
                 }
             }
-            else if (type.Equals("&date"))
+            else if (type.Equals("date"))
             {
+                int userid=0;
+                bool hasId = true;
+                if (split.Length == 5)
+                {
+                    hasId = int.TryParse(split[4], out userid);
+                }
+                if (!hasId)
+                    userid = 0;
+             
+
                 using (var cMgr = ManagerFactory.GetConcertManager())
                 {
-                    concertList = await cMgr.FindConcertWithDate(value);
+                    
+                    concertList = await cMgr.FindConcertWithDate(value,userid);
                 }
 
             }
