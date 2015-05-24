@@ -42,8 +42,21 @@ namespace WebApplication1.Models
                     Double lat = user.Xcoordinates;
                     Double lang = user.Ycoordinates;
                     int rad = user.Radius;
+                    var BandGenre = db.BandGenreDb;
+                    var UserGenre = from usr in db.UserGenreDb
+                                    where usr.UserId == userId
+                                    select usr;
+                    var Concerts = db.ConcertDb;
+                    var prefUser = (from e in BandGenre
+                                 join d in UserGenre on e.GenreId equals d.GenreId
+                                 join b in Concerts on e.BandId equals b.BandId
+                                 select b);
 
-                    var val = await (from c in db.ConcertDb
+                    var concertlist = prefUser.Distinct();
+                    if (concertlist.Count() == 0)
+                        concertlist = Concerts;
+
+                    var val = await (from c in concertlist
                                      select new ImageClass()
                                      {
                                          OpositeXCoordinates = lat,
@@ -270,6 +283,9 @@ namespace WebApplication1.Models
 
             else return concertlist;
         }
+
+
+
 
         private User getUserLocation(int userid)
         {
