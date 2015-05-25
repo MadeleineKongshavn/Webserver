@@ -12,27 +12,22 @@ namespace WebApplication1.Managers
         public async Task<GenreClass> GetGenreById(int id)
         {
             DbGenre db = new DbGenre();
-            return await db.getGenreById(id);
+            return await db.GetGenreById(id);
         }
-
-
         public async Task<List<GenreClass> >GetGenres()
         {
             DbGenre db = new DbGenre();
-            return await db.getGenres();
+            return await db.GetGenres();
         }
-
         public async Task<GenreClass> GetGenreByName(string name)
         {
             DbGenre db = new DbGenre();
-            return await db.getGenreByName(name);
-
+            return await db.GetGenreByName(name);
         }
-
         public async Task<bool> AddGenre(string name)
         {
             DbGenre db = new DbGenre();
-            return await db.addGenre(name);
+            return await db.AddGenre(name);
         }
     }
 }

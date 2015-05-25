@@ -13,16 +13,13 @@ using System.Web.Caching;
 using WebApplication1.Models;
 using WebApplication1.Models.Class;
 using WebApplication1.Models.Args;
-
 namespace WebApplication1.Managers
 {
     public class UserManager : BaseManager
     {
-
         private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
         private String TEST_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJxWPAXxiPckYRs58i2e6idts&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
-
         public async Task<bool> ChangeRadius(int radius, int userId)
         {
             var cacheKey = String.Format("User_Get_{0}", userId);
@@ -30,7 +27,6 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.ChangeRadius(radius, userId);
         }
-
         public async Task<bool> ChangePic(int uid, Image image)
         {
             var cacheKey = String.Format("User_Get_{0}", uid);
@@ -40,7 +36,6 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.ChangePic(uid, imgUrl);       
         }
-
         public async Task<Image> CompressBitmap(Image i)
         {
             try
@@ -88,16 +83,6 @@ namespace WebApplication1.Managers
             }
             return null;
         }
-        public async Task<int> CheckEmail(String email)
-        {
-            var db = new DbUser();
-            return await db.CheckEmail(email);
-        }
-        public async Task<int> CheckUserName(String name)
-        {
-            var db = new DbUser();
-            return await db.CheckUserName(name);
-        }
         public async Task<int> NormalRegister(String name, String email, String pass, double yCord, double xCord)
         {
             var db = new DbUser();
@@ -125,7 +110,6 @@ namespace WebApplication1.Managers
             u.Url = imgUrl;
             return await db.AddUser(u);
         }
-
         public async Task<Boolean> ChangeUser(UserClass u, Image pic)
         {
             UpdateUser(u.UserId);
@@ -134,12 +118,11 @@ namespace WebApplication1.Managers
             u.Url = imgUrl;
             return await db.ChangeUser(u);
         }
-
         public async Task<UserClass> GetUserById(int userId)
         {
             UserClass objectDto;
             var cacheKey = String.Format("User_Get_{0}", userId);
-            if ((objectDto = (UserClass)Cache.Get(cacheKey)) != null)//if object is in cache
+            if ((objectDto = (UserClass)Cache.Get(cacheKey)) != null)
                 return objectDto;
             try
             {
@@ -153,28 +136,22 @@ namespace WebApplication1.Managers
                 return null;
             }
             return objectDto;
-        }
-        
-
+        }       
         public void UpdateUser(int userId)
         {
-            //Husk å fjerne cache, det gjelder alt som oppdateres :)
             var cacheKey = String.Format("User_Get_{0}", userId);
             RemoveCacheKeysByPrefix(cacheKey);
         }
-        
         public async Task<List<NotificationsClass>> GetNotificationByUserId(int userId)
         {
             var db = new DbUser();
             return await db.GetAllNotifications(userId);
         }
-
         public void ReadAllNotifications(int userId)
         {
             var db = new DbUser();
             db.UserHasSeenAllNotifications(userId);
         }
-
         public async Task<bool> UpdateUserGenres(int userid,string[] genres)
         {
             var cacheKey = String.Format("User_Get_{0}", userid);
@@ -182,10 +159,9 @@ namespace WebApplication1.Managers
             var db = new DbUser();
             return await db.UpdateUserGenres(userid, genres);
         }
-
         public async Task<List<GetGenreArgs>> GetAllGenres(int userid)
         {
-            List<GenreClass> allGenres = await new DbGenre().getGenres();
+            List<GenreClass> allGenres = await new DbGenre().GetGenres();
             List<GenreClass> userGenres = await new DbUser().GetUserGenres(userid);
             List<GetGenreArgs> args = new List<GetGenreArgs>();
 
@@ -198,8 +174,6 @@ namespace WebApplication1.Managers
                 {
                     genreid=toList.GenreId,genreName=toList.GenreName,isChosen=true
                 });
-
-
             }
             if(allGenres.Count()!=0)
                 foreach (GenreClass genre in allGenres)
@@ -208,12 +182,9 @@ namespace WebApplication1.Managers
                     {  genreid = genre.GenreId, genreName = genre.GenreName,
                         isChosen = false
                     });
-
                 }
-
             return args;
         }
-
         public async Task<bool> updateUserLocation(int userid, string area, string apiRef)
         {
             var cacheKey = String.Format("User_Get_{0}", userid);
@@ -223,7 +194,6 @@ namespace WebApplication1.Managers
             double[] coordinates = GetCoordinates(apiRef);
             return await db.UpdateUserLocation(userid, area, coordinates[0], coordinates[1]);
         }
-
         private double[] GetCoordinates(String placesRef)
         {
             StringBuilder builder = new StringBuilder(PLACES_API_QUERY);
@@ -237,7 +207,6 @@ namespace WebApplication1.Managers
             HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
             return RequestCompleted(response);
         }
-
         private double[] RequestCompleted(HttpWebResponse res)
         {
             if (res.ContentLength == null)
@@ -261,9 +230,7 @@ namespace WebApplication1.Managers
 
                 Console.Write(resp.ToString());
             }
-
             return coord;
         }
-
     }
 }

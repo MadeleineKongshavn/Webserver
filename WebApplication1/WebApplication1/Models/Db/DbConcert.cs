@@ -140,13 +140,11 @@ namespace WebApplication1.Models
                     var c = await (from friend in db.FriendsDb
                                    where friend.UserId == userId
                                    join con in db.ConcertFollowersDb on friend.Friend equals con.UserId select con).ToListAsync();
-
                     int n = 0;
                     foreach (var fe in c)
                     {
                         if (fe.ConcertId == concertId) n++;
-                    }
-                    
+                    } 
                     ConcertInfoClass co =  new ConcertInfoClass()
                     {
                         ConcertId = concertId,
@@ -154,7 +152,6 @@ namespace WebApplication1.Models
                         Added = await ConcertAlreadyAdded(concertId, userId),
                     };
                     return co;
-
                 }
             }
             catch (Exception e)
@@ -186,6 +183,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }
+
         public async Task<List<ConcertClass>> FindConcertWithName(String query)
         {
             try
@@ -200,7 +198,7 @@ namespace WebApplication1.Models
                             Bandname = c.Band.BandName,
                             ConcertId = c.ConcertId,
                             Title = c.Title,
-                            SmallBitmapUrl = c.BitmapSmalUrl,
+                            SmallBitmapUrl = c.Band.BitmapSmalUrl,
                         }).ToListAsync();
                     return con;
 
@@ -213,7 +211,6 @@ namespace WebApplication1.Models
                 v.Add(c);
                 return v;
             }
- 
         }
         public async Task<List<ConcertClass>> FindConcertWithDate(String query,int userid)
         {
@@ -252,15 +249,11 @@ namespace WebApplication1.Models
                             concerts = sortOnUserGenre(usr.UserId, inArea);
                         else
                             concerts = inArea;
-
                     }
                 }
             }
-            return concerts;
-            
+            return concerts;       
         }
-
-
         private List<ConcertClass> sortOnUserGenre(int userid, List<ConcertClass> concertlist){
 
             List<ConcertClass> withGenre = new List<ConcertClass>();
@@ -278,15 +271,8 @@ namespace WebApplication1.Models
                 int[] ids = prefUser.ToArray();
                 withGenre = concertlist.Where(x => ids.Contains(x.ConcertId)).ToList();
             }
-            if (withGenre.Count > 0)
-                return withGenre;
-
-            else return concertlist;
+            if (withGenre.Count > 0) return withGenre; else return concertlist;
         }
-
-
-
-
         private User getUserLocation(int userid)
         {
             User usr = null;
@@ -296,18 +282,14 @@ namespace WebApplication1.Models
                 {
                     var v =(from u in db.UserDb where u.UserId == userid select u).FirstOrDefault();
                     usr = v;
-                }
-                
+                }  
             }
             catch (Exception ex)
             {
                 usr = null;
             }
             return usr;
-
         }
-
-
         private async Task<List<ConcertClass>> FindDay(string day)
         {
             List<ConcertClass> concerts = new List<ConcertClass>();
@@ -332,21 +314,15 @@ namespace WebApplication1.Models
                             Bandname = c.Band.BandName,
                             ConcertId = c.ConcertId,
                             Title = c.Title,
-                            SmallBitmapUrl = c.BitmapSmalUrl,
+                            SmallBitmapUrl = c.Band.BitmapSmalUrl,
                             Xcoordinates=c.Xcoordinates,
                             Ycoordinates=c.Ycoordinates
-                        }).ToListAsync();
-                   
+                        }).ToListAsync(); 
                 }
-
             }catch(Exception){
-
             }
-
-
             return concerts;
         }
-
         private async Task<List<ConcertClass>> FindDayMonth(string[] date)
         {
             List<ConcertClass> concerts = new List<ConcertClass>();
@@ -355,18 +331,13 @@ namespace WebApplication1.Models
             bool isDay = int.TryParse(date[0], out dayInt) && dayInt > 0 && dayInt < 32;
             bool isMonth = int.TryParse(date[1], out monthInt) && monthInt>0 && monthInt<13;
             if (isMonth && isDay && monthInt == 2)
-                if (dayInt > 28)
-                    isDay = false;
-            if (!isDay || !isMonth)
-                return concerts;
-
+                if (dayInt > 28)isDay = false;
+            if (!isDay || !isMonth) return concerts;
             DateTime dateTime = new DateTime(2015, monthInt, dayInt);
-          
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
-
                     concerts = await
                         (from c in db.ConcertDb
                          where c.Date.Day == dateTime.Day && c.Date.Month==dateTime.Month
@@ -376,41 +347,28 @@ namespace WebApplication1.Models
                              Bandname = c.Band.BandName,
                              ConcertId = c.ConcertId,
                              Title = c.Title,
-                             SmallBitmapUrl = c.BitmapSmalUrl,
+                             SmallBitmapUrl = c.Band.BitmapSmalUrl,
                          }).ToListAsync();
-
                 }
-
             }
             catch (Exception)
             {
-
             }
-
-
             return concerts;
         }
-
         private async Task<List<ConcertClass>> FindDayMonthYear(string[] date)
         {
             List<ConcertClass> concerts = new List<ConcertClass>();
-
             String year = date[2];
-            if (year.Length == 2)
-                year = "20" + year;
-
+            if (year.Length == 2) year = "20" + year;
             int dayInt, monthInt,yearInt;
             bool isDay = int.TryParse(date[0], out dayInt) && dayInt>0 && dayInt<32; 
             bool isMonth = int.TryParse(date[1], out monthInt) && monthInt > 0 && monthInt < 13;
             if (isMonth && isDay && monthInt == 2)
-                if (dayInt > 28)
-                    isDay = false;
-            
+                if (dayInt > 28) isDay = false;
             bool isYear = int.TryParse(year, out yearInt);
-            if (!isDay || !isMonth || !isYear)
-                return concerts;
-
-                DateTime dateTime = new DateTime(yearInt, monthInt, dayInt);
+            if (!isDay || !isMonth || !isYear) return concerts;
+            DateTime dateTime = new DateTime(yearInt, monthInt, dayInt);
 
             try
             {
@@ -426,22 +384,15 @@ namespace WebApplication1.Models
                              Bandname = c.Band.BandName,
                              ConcertId = c.ConcertId,
                              Title = c.Title,
-                             SmallBitmapUrl = c.BitmapSmalUrl,
+                             SmallBitmapUrl = c.Band.BitmapSmalUrl,
                          }).ToListAsync();
-
                 }
-
             }
             catch (Exception)
             {
-
             }
-
-
             return concerts;
         }
-
-
         public async Task<int> AcceptConcertRequest(Boolean ok, int id)
         {
             try
@@ -449,11 +400,9 @@ namespace WebApplication1.Models
                 using (var db = new ApplicationDbContext())
                 {
                     Notifications n = (from x in db.NotificationsDb where x.NotificationsId == id select x).FirstOrDefault();
-
                     int Usrid = n.UserId;
                     int concrtId = n.InviteConcertNotifications.ConcertId;
-                    int friendUsr = n.InviteConcertNotifications.UserId;
-                    
+                    int friendUsr = n.InviteConcertNotifications.UserId;      
                     if (!ok)
                     {
                         db.InviteConcertNotificationsDb.Remove(n.InviteConcertNotifications);
@@ -480,9 +429,7 @@ namespace WebApplication1.Models
                         UserId = Usrid,
                         ConcertId = concrtId,
                     };
-
                     AddConcertToUser(Usrid, concrtId, true);
-
                     db.SaveChanges();
                     return Usrid;
                 }
@@ -553,25 +500,8 @@ namespace WebApplication1.Models
             catch (Exception e)
             {
                 return false;
-                // return e.Message + " " + e.ToString() + " feil";
             }
         }
-        public async Task <Boolean> ConcertAlreadyAdded(int concertId, int UserId)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var concert = await (from v in db.ConcertFollowersDb where v.ConcertId == concertId && v.UserId == UserId select v).FirstOrDefaultAsync();
-                    if (concert == null) return false; else  return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-        // legger til en konsert, pic er bilde som skal inn
         public async Task<Boolean> AddConcert(ConcertClass c, Boolean getBitmapUrl)
         {
             try
@@ -585,7 +515,6 @@ namespace WebApplication1.Models
                         BandBitmapUrl = (from b in db.BandDb where b.BandId == c.BandId select b.BitmapUrl).FirstOrDefault();
                         SmallBandBitmapUrl = (from b in db.BandDb where b.BandId == c.BandId select b.BitmapSmalUrl).FirstOrDefault();
                     }
-                    
                     var c1 = new Concert()
                     {
                         Title = c.Title,
@@ -607,54 +536,23 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-        // endrer på en konsert med den gitte ideen inni ConcertClass
-        public async Task<Boolean> ChangeConcert(ConcertClass c, Byte[] pic)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var c1 = (from con in db.ConcertDb
-                              where con.ConcertId == c.ConcertId
-                              select con).FirstOrDefault();
-
-                    // lagre pic i bitmapurl og bitmapsmallurl
-
-                    c1.Title = c.Title;
-                    c1.Xcoordinates = c.Xcoordinates;
-                    c1.Ycoordinates = c.Ycoordinates;
-                    c1.BandId = c.BandId;
-                    c1.BitmapUrl = "stor url her :)";
-                    c1.BitmapSmalUrl = "small url her :)";
-                    c1.VenueName = c.VenueName;
-                    c1.Date = Convert.ToDateTime(c.Time);
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }  
-        }
-        public async Task<List<ConcertClass>> FindAllConcertToUser(int id) // Find all concerts to a user 
+        public async Task<List<ConcertClass>> FindAllConcertToUser(int id) 
         {
             using (var db = new ApplicationDbContext())
             {
                 try
                 {
-                    //Mye bedre :)
                     var result = await (from v in db.ConcertFollowersDb
                                         where v.UserId == id
                                         join c in db.ConcertDb on v.ConcertId equals c.ConcertId
                                         select new ConcertClass()
                                         {
-                                            SmallBitmapUrl = c.BitmapSmalUrl,
+                                            SmallBitmapUrl = c.Band.BitmapSmalUrl,
                                             ConcertId = c.ConcertId,
                                             Bandname = c.Band.BandName,
                                             Title = c.Title,
                                             Date = c.Date,
-                                        }).OrderBy(u => u.Date).ToListAsync();
+                                        }).OrderByDescending(u => u.Date).ToListAsync();
                     return result;
                 }
                 catch (Exception)
@@ -663,7 +561,7 @@ namespace WebApplication1.Models
                 }
             }
         }
-        public async Task<ConcertClass> GetConcertById(int id) // find one concert
+        public async Task<ConcertClass> GetConcertById(int id) 
         {
             using (var db = new ApplicationDbContext())
             {
@@ -680,8 +578,8 @@ namespace WebApplication1.Models
                                              Ycoordinates = v.Ycoordinates,
                                              Bandname = v.Band.BandName,
                                              Date = v.Date,
-                                             BitmapUrl = v.BitmapUrl,
-                                             SmallBitmapUrl = v.BitmapSmalUrl
+                                             BitmapUrl = v.Band.BitmapUrl,
+                                             SmallBitmapUrl = v.Band.BitmapSmalUrl
                                          }
                         ).FirstOrDefaultAsync();
                     return concert;
@@ -693,35 +591,19 @@ namespace WebApplication1.Models
                 }
             }
         }
-
-        public async Task<List<UserClass>> FriendsGoingToConcert(int userId, int concertId) // Finds all your friends that are going to the same concert 
+        public async Task<Boolean> ConcertAlreadyAdded(int concertId, int UserId)
         {
-            using (var db = new ApplicationDbContext())
+            try
             {
-                try
+                using (var db = new ApplicationDbContext())
                 {
-
-                    //var f = (from v in db.FriendsDb
-                    //             where v.UserId )
-                    //var co = (from c in db.ConcertDb
-                    //    where c.ConcertId == concertId
-                    //    select c);
-
-                    var cf = await (from fu in db.ConcertFollowersDb
-                                    where fu.ConcertId == concertId && fu.User.Friends.Any(i =>  i.Friend == userId)
-                                    //select fu 
-                                    select new UserClass()
-                                {
-                                    Name = fu.User.ProfileName,
-                                    Url = "?"
-                                }
-                            ).ToListAsync();
-                    return cf;
+                    var concert = await (from v in db.ConcertFollowersDb where v.ConcertId == concertId && v.UserId == UserId select v).FirstOrDefaultAsync();
+                    if (concert == null) return false; else return true;
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
         public async Task<Boolean> GetAttendingConcerTask(int cid, int uid)
@@ -774,33 +656,6 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
-        public async Task<bool> UpdateConcertLocation(int concertid, string area, double x, double y)
-        {
-            if (concertid == 0 || area == null)
-                return false;
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-
-                    var concert = (from c in db.ConcertDb
-                                where c.ConcertId == concertid
-                                select c).FirstOrDefault();
-                   concert.Xcoordinates = x;
-                   concert.Ycoordinates = y;
-                    db.SaveChanges();
-                    return true;
-                }
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-
 
     }
 }

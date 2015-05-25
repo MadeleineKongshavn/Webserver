@@ -26,7 +26,6 @@ namespace WebApplication1.Managers
         private String PLACES_API_QUERY = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         private String SERVER_API_KEY = "&key=AIzaSyDMdRA7ma1FxaL82Ev3OU8kX2YXIw44ImA";
         
-
         public async Task<bool> ChangePic(int bid, Image image)
         {
             var cacheKey = String.Format("Band_Get_{0}", bid);
@@ -40,7 +39,6 @@ namespace WebApplication1.Managers
             var db = new DbBand();
             return await db.ChangePic(bid, imgUrl, imgSmallUrl);
         }
-
         public async Task<Image> CompressBitmap(Image images)
         {
             try
@@ -49,7 +47,6 @@ namespace WebApplication1.Managers
                 {
 
                     Image i = images.GetThumbnailImage(80, 100, null, new IntPtr());
-
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
@@ -101,7 +98,6 @@ namespace WebApplication1.Managers
                 return null;
             }
         }
-
         private ImageCodecInfo GetEncoder(ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
@@ -124,13 +120,11 @@ namespace WebApplication1.Managers
             var db = new DbBand();
             return await db.GetRandomBands(userId);
         }
-
         public async Task<bool> AddBand(String name, int userId)
         {
             var db = new DbBand();
             return await db.AddBand(name, userId);
         }
-        
         public async Task<List<MemberClass>> GetAllAdminBands(int userId)
         {
             var db = new DbBand();
@@ -141,8 +135,7 @@ namespace WebApplication1.Managers
         {
             var db = new DbBand();
             return await db.UpdateMusicUrl(bandId, url);
-        }
-        
+        }      
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {
             var db = new DbBand();
@@ -150,12 +143,10 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
             return await db.AddBandToUser(userId, bandId);
         }
-        
         public async Task<String> Upload(Byte[] pic)
         {
             return await UploadImage(pic);
         }
-      
         public async Task<BandClass> GetBandById(int bandId)
         {
             BandClass bandClass;
@@ -174,7 +165,6 @@ namespace WebApplication1.Managers
             }
             return bandClass;
         }
-
         public async Task<bool> UpdateBandName(String name, int bandId)
         {
             var db=new DbBand();
@@ -182,30 +172,26 @@ namespace WebApplication1.Managers
             RemoveCacheKeysByPrefix(cacheKey);
             return await db.UpdateBandName(bandId,name);
         }
-
         public async Task<bool> updateBandLink(int bandid, int type, string link)
         {
             var db = new DbBand();
             var ok = false;
             
             if(type==TYPE_FB){
-                    ok=await db.updateFbLink(bandid, link);
+                    ok=await db.UpdateFbLink(bandid, link);
             }
             else if (type == TYPE_SC)
             {
-                ok = await db.updateSoundCloudLink(bandid, link);
+                ok = await db.UpdateSoundCloudLink(bandid, link);
             }
             else
             {
-                ok = await db.updateWwwLink(bandid, link);
+                ok = await db.UpdateWwwLink(bandid, link);
             }
-
-
             var cacheKey = String.Format("Band_Get_{0}", bandid);
             RemoveCacheKeysByPrefix(cacheKey);
             return ok;
         }
-
         public async Task<bool> updateBandLocation(int bandid, string area, string apiRef)
         {
 
@@ -218,7 +204,6 @@ namespace WebApplication1.Managers
             else
             return await db.UpdateBandLocation(bandid, area, coordinates[0], coordinates[1]);
         }
-
         private double[] GetCoordinates(String placesRef)
         {
             StringBuilder builder = new StringBuilder(PLACES_API_QUERY);
@@ -232,7 +217,6 @@ namespace WebApplication1.Managers
             HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
             return RequestCompleted(response);
         }
-
         private double[] RequestCompleted(HttpWebResponse res)
         {
             if (res.ContentLength == null)
@@ -256,10 +240,8 @@ namespace WebApplication1.Managers
 
                 Console.Write(resp.ToString());
             }
-
             return coord;
         }
-
         public async Task<bool> updateBandGenres(int bandid, string[] newGenres)
         {
             var db = new DbBand();
@@ -269,41 +251,19 @@ namespace WebApplication1.Managers
 
             return ok;
         }
-
         public async Task<List<BandClass>> FindAllBandsToUser(int userId)
         {
-            List<BandClass> bandList;
-            //Ingen grunn å cache noe som er så brukerspesefikt
-            //cacher :D
-   //         var cacheKey = String.Format("Band_GetBandToUser_{0}", userId);
-   //         if ((bandList = (List<BandClass>)Cache.Get(cacheKey)) != null)
-   //         return bandList;
-
-            try
-            {
-                var db = new DbBand();
-                bandList = await db.FindAllBandsToUser(userId);
-     //           if (bandList != null)
-     //               Cache.Insert(cacheKey, bandList, null, DateTime.Today.AddDays(1), Cache.NoSlidingExpiration);
-
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            return bandList;
+            var db = new DbBand();
+            return await db.FindAllBandsToUser(userId);
+     
         }
-
         public async Task<bool> AddToUserList(int userid,int bandid, bool ok)
         {
-            var cacheKey = String.Format("Band_GetBandToUser_{0}", userid);
-            RemoveCacheKeysByPrefix(cacheKey);
-                    return await new DbBand().AddToUserList(userid, bandid, ok);
+            return await new DbBand().AddToUserList(userid, bandid, ok);
         }
-
         public async Task<List<GetGenreArgs>> GetAllGenres(int userid)
         {
-            List<GenreClass> allGenres = await new DbGenre().getGenres();
+            List<GenreClass> allGenres = await new DbGenre().GetGenres();
             List<GenreClass> bandGenres = await new DbBand().GetBandGenres(userid);
             List<GetGenreArgs> args = new List<GetGenreArgs>();
 
@@ -319,8 +279,6 @@ namespace WebApplication1.Managers
                         genreName = toList.GenreName,
                         isChosen = true
                     });
-
-
                 }
             if (allGenres.Count() != 0)
                 foreach (GenreClass genre in allGenres)
@@ -331,12 +289,9 @@ namespace WebApplication1.Managers
                         genreName = genre.GenreName,
                         isChosen = false
                     });
-
                 }
-
             return args;
         }
-
         public async Task<bool> GetIfBandIsAdded(int userId, int bandId)
         {
             var db = new DbBand();

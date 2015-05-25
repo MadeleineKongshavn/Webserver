@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Web;
-
 namespace WebApplication1.Models.Class
 {
     public class NotificationsClass
@@ -17,16 +16,11 @@ namespace WebApplication1.Models.Class
         public int Type { get; set; }
         public DateTime Date { get; set; }
 
-        // hvis det er en venneforespørsel
         public int FriendId { get; set; }
         public Boolean Accepted { get; set; }
-        public Boolean Answered { get; set; }
         public int NotificationsId { get; set; }
         public String FriendName { get; set; }
         public String Url { get; set; }
-        public Byte[] ByteArray { get; set; }
         public String ConcertName { get; set; }
-
-
     }
 }

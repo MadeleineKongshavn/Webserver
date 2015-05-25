@@ -20,8 +20,6 @@ namespace WebApplication1.Controllers.Api
 
     public class BandController : ApiController
     {
-        //GET
-
         [HttpGet]
         [Route("api/Band/GetRandom/{userId}")]
         public async Task<List<ImageClass>> GetRandomBands(int userId)
@@ -31,7 +29,6 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.GetRandomBands(userId);
             }
         }
-
         [HttpGet]
         [Route("api/Band/Query/{query}")]
         public async Task<List<BandClass>> FindBandBasedOnQuery(String query)
@@ -41,8 +38,6 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.FindBandBasedOnQuery(query);
             }
         }
-
-        //api/Band/FindAllBandsToUser/{id} || endret || sjekk
         [HttpGet]
         [Route("api/Band/GetUsersList/{id}")]
         public async Task<List<BandClass>> FindAllBandsToUser(int id)
@@ -51,9 +46,7 @@ namespace WebApplication1.Controllers.Api
             {
                 return await bmgr.FindAllBandsToUser(id);
             }
-        }
-
-        
+        }      
         [HttpGet]
         [Route("api/Band/Get/{id}")]
         public async Task<BandClass> GetBandById(int id)
@@ -62,9 +55,7 @@ namespace WebApplication1.Controllers.Api
             {
                 return await bmngr.GetBandById(id);
             }
-        }
-
-       
+        }       
         [HttpGet]
         [Route("api/Band/GetProfiles/{userId}")]
         public async Task<List<MemberClass>> GetAllAdminBands(int userId)
@@ -73,27 +64,19 @@ namespace WebApplication1.Controllers.Api
             {
                 return await bmngr.GetAllAdminBands(userId);
             }
-        }
-
-        
+        }        
         [HttpGet]
         [Route("api/Band/GetAllGenres/{id}")]
         public async Task<List<GetGenreArgs>> GetAllGenres(int id)
         {
             return await ManagerFactory.GetBandManager().GetAllGenres(id);
-        }
-
-        
+        }      
         [HttpGet]
         [Route("api/Band/IsAdded/{userId},{bandId}")]
         public async Task<bool> GetIfBandIsAdded(int userId, int bandId)
         {
             return await ManagerFactory.GetBandManager().GetIfBandIsAdded(userId, bandId);
         }
-
-
-        //POST
-        
         [HttpPost]
         [Route("api/Band/Add/{name},{userId}")]
         public async Task<bool> AddBand(string name, int userId)
@@ -103,9 +86,7 @@ namespace WebApplication1.Controllers.Api
                 return await bmngr.AddBand(name, userId);
             }
 
-        }
-
-        
+        }  
         [HttpPost]
         [Route("api/Band/UpdateName/{name},{bandId}")]
         public async Task<bool> UpdateBandName(String name, int bandId)
@@ -118,8 +99,6 @@ namespace WebApplication1.Controllers.Api
                 return await mng.UpdateBandName(name, bandId);
             }
         }
-
-
         [HttpPost]
         [Route("api/Band/UpdateLocation")]
         public async Task<bool> UpdateLocation([FromBody]UpdateLocationArgs args)
@@ -132,7 +111,6 @@ namespace WebApplication1.Controllers.Api
             return await mng.updateBandLocation(bandid, area, placeId);
 
         }
-
         [HttpPost]
         [Route("api/Band/UpdateWwwLink/")]
         public async Task<bool> UpdateWwwLink([FromBody]WwwLinkArgs args)
@@ -143,7 +121,6 @@ namespace WebApplication1.Controllers.Api
                 return await mng.updateBandLink(args.id, BandManager.TYPE_WWW, args.link);
             }
         }
-
         [HttpPost]
         [Route("api/Band/UpdateScLink/{bandid},{postfix}")]
         public async Task<bool> UpdateScLink(int bandid, string postfix)
@@ -163,8 +140,6 @@ namespace WebApplication1.Controllers.Api
                 return await mng.updateBandLink(bandid, BandManager.TYPE_FB, postfix);
             }
         }
-
-        //OK
         [HttpPost]
         [Route("api/Band/ChangePic/{bandid}")]
         public async Task<bool> ChangePic(int bandid)
@@ -182,8 +157,6 @@ namespace WebApplication1.Controllers.Api
             }
             return false;
         }
-
-        //OK
         [HttpPost]
         [Route("api/Band/UpdateGenres")]
         public async Task<bool> UpdateGenres([FromBody] UpdateGenreArgs args)
@@ -198,9 +171,6 @@ namespace WebApplication1.Controllers.Api
                 return await mng.updateBandGenres(bandid, genres);
             }
         }
-
-
-        //OK
         [HttpPost]
         [Route("api/Band/AddToUserList/{userid},{bandid},{ok}")]
         public async Task<bool> AddToUserList(int userid, int bandid, bool ok)

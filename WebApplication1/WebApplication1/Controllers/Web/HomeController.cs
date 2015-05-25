@@ -24,15 +24,6 @@ namespace WebApplication1.Controllers
 
         public async Task<ActionResult> About()
         {
-            WwwLinkArgs args = new WwwLinkArgs();
-            args.setId(8);
-            args.setLink("http://semitone.azurewebsites.net/");
-
-
-            var v = await new BandController().FindBandBasedOnQuery("b"); 
-
-            ViewBag.Message = "Here's hoping!\nuSC: " + v.First().Member ;
-
             return View();
         }     
     }

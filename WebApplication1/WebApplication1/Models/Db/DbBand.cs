@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.SqlServer;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using WebApplication1.Managers;
 using WebApplication1.Models.Class;
 namespace WebApplication1.Models
 {
@@ -35,7 +27,6 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
         public Double Distance(double lat1, double lon1, double lat2, double lon2)
         {
             int RADIUS_EARTH = 6371;
@@ -50,10 +41,10 @@ namespace WebApplication1.Models
            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
            return ((RADIUS_EARTH * c) * 1000);
         }
-    private static double GetRad(double x)
-    {
-        return x * Math.PI / 180;
-    }
+        private static double GetRad(double x)
+        {
+            return x * Math.PI / 180;
+        }
         public async Task<List<ImageClass>> GetRandomBands(int userId)
         {
             try
@@ -115,7 +106,6 @@ namespace WebApplication1.Models
                     await db.SaveChangesAsync();
                     return true;
                 }
-
             }
             catch (Exception)
             {
@@ -136,7 +126,6 @@ namespace WebApplication1.Models
             }
             return list;
         }
-
         public async Task<bool> AddBand(String name, int userId)
         {
             try
@@ -154,8 +143,6 @@ namespace WebApplication1.Models
                     db.SaveChanges();
                     return true;
                 }
-
-
             }
             catch (Exception)
             {
@@ -202,7 +189,6 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
         public async Task<bool> AddBandToUser(int userId, int bandId)
         {
             try
@@ -221,10 +207,8 @@ namespace WebApplication1.Models
             catch (Exception)
             {
                 return false;
-            }
-            
+            }       
         }
-
         public async Task<bool> UpdateBandGenres(int bandid, String[] genres)
         {
             try
@@ -238,19 +222,15 @@ namespace WebApplication1.Models
                     {
                         db.BandGenreDb.Remove(obj);
                     }
-
-
                     var allGenres=(from g in db.GenreDb
                                    select g);
-
                     var newGenres = allGenres.Where(x => genres.Contains(x.GenreName));
                   
                     foreach(Genre obj in newGenres)
                     {
                         BandGenre bg = new BandGenre { GenreId=obj.GenreId, BandId=bandid};
                         db.BandGenreDb.Add(bg);
-                    }
-                  
+                    }                 
                     db.SaveChanges();
                 }
 
@@ -258,12 +238,10 @@ namespace WebApplication1.Models
             }
             catch (Exception)
             {
-
                 return false;
             }
         
         }
-
         public async Task<bool> UpdateBandName(int bandid,string name)
         {
             try 
@@ -273,20 +251,16 @@ namespace WebApplication1.Models
                     var band= (from getBand in db.BandDb
                               where getBand.BandId==bandid
                               select getBand).FirstOrDefault();
-
                     band.BandName = name;
                     db.SaveChanges();
-
                 }
             }
             catch(Exception){
                 return false;
             }
-
             return true;
         }
-
-        public async Task<bool> updateFbLink(int bandid,string postfix)
+        public async Task<bool> UpdateFbLink(int bandid,string postfix)
         {
             try
             {
@@ -298,9 +272,7 @@ namespace WebApplication1.Models
 
                     StringBuilder builder = new StringBuilder();
                     band.UrlFacebook = postfix;
-                    await db.SaveChangesAsync();
-
-                    
+                    await db.SaveChangesAsync();          
                 }
             }catch(Exception){
                 return false;
@@ -309,7 +281,7 @@ namespace WebApplication1.Models
             
         }
 
-        public async Task<bool> updateSoundCloudLink(int bandid, string postfix)
+        public async Task<bool> UpdateSoundCloudLink(int bandid, string postfix)
         {
             try
             {
@@ -318,11 +290,8 @@ namespace WebApplication1.Models
                     var band = (from b in db.BandDb
                                 where b.BandId == bandid
                                 select b).FirstOrDefault();
-
-                    StringBuilder builder = new StringBuilder();
                     band.UrlSoundCloud = postfix;
                     await db.SaveChangesAsync();
-
                 }
             }
             catch (Exception)
@@ -333,7 +302,7 @@ namespace WebApplication1.Models
 
         }
 
-        public async Task<bool> updateWwwLink(int bandid,string link){
+        public async Task<bool> UpdateWwwLink(int bandid,string link){
 
             try
             {
@@ -342,10 +311,8 @@ namespace WebApplication1.Models
                     var band = (from b in db.BandDb
                                 where b.BandId == bandid
                                 select b).FirstOrDefault();
-
                     band.UrlRandom = link;
                     db.SaveChanges();
-
                 }
             }
             catch (Exception)
@@ -353,19 +320,14 @@ namespace WebApplication1.Models
                 return false;
             }
             return true;
-
          }
-
-        
-       
-
         public async Task<bool> UpdateBandLocation(int bandid, string area, double x, double y)
         {
-            if (bandid == null || area == null)
-                return false;
+            if (bandid == null || area == null) return false;
             try
             {
-                using(var db=new ApplicationDbContext()) {
+                using(var db=new ApplicationDbContext()) 
+                {
 
                     var band=(from b in db.BandDb
                                where b.BandId==bandid
@@ -376,138 +338,10 @@ namespace WebApplication1.Models
                     db.SaveChanges();
                     return true;
                 }
-
             }catch(Exception){
                 return false;
             }
         }
-
-        public async Task<bool> UpdateBandImage(int bandid,string bitmapUrl,string bitmapSmallUrl)
-        {
-            if (bitmapUrl == null || bitmapSmallUrl == null)
-                return false;
-
-            try
-            {
-                using(var db=new ApplicationDbContext())
-                {
-                    var band=(from b in db.BandDb
-                              where b.BandId==bandid
-                              select b).FirstOrDefault();
-
-                    band.BitmapUrl = bitmapUrl;
-                    band.BitmapSmalUrl = bitmapSmallUrl;
-                    db.SaveChanges();
-                    return true;
-
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        
-        private Byte[] ConvertBitmapToByte(Bitmap bitmap)
-        {
-            try
-            {
-                MemoryStream ms = new MemoryStream();
-                bitmap.Save(ms, ImageFormat.Bmp);
-                return ms.ToArray();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        private Bitmap ConvertByteToBitmap(Byte[] bytAarray)
-        {
-            try
-            {
-                Bitmap bmp;
-                using (var mse = new MemoryStream(bytAarray))
-                {
-                    bmp = new Bitmap(mse);
-                    return bmp;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public  async Task<String> CompressBitmap()
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var result = await (from v in db.BandDb select v).ToListAsync();
-                    foreach (var b in result)
-                    {
-
-                        var request = WebRequest.Create(b.BitmapSmalUrl);
-
-                        Image i;
-                        using (var response = request.GetResponse())
-                        using (var stream = response.GetResponseStream())
-                        {
-
-                            i = Bitmap.FromStream(stream);
-                        }
-
-                        ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-                        System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
-
-                        var myEncoderParameters = new EncoderParameters(1);
-                        var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
-
-                        myEncoderParameters.Param[0] = myEncoderParameter;
-
-                        Byte[] arr;
-                        using (var ms = new MemoryStream())
-                        {
-                            i.Save(ms, jpgEncoder, myEncoderParameters);
-                            arr = ms.ToArray();
-
-                        }
-                        using (var bmgr = ManagerFactory.GetBandManager())
-                        {
-                            var v = await bmgr.Upload(arr);
-                            b.BitmapSmalUrl = v;
-                            db.SaveChanges();
-                        }                  
-                    }
-                    return "funket";
-
-                }
-            }
-            catch (Exception e)
-            {
-                return e.Message + "";
-            }
-       
-
-        }
-
-        private ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
-            }
-            return null;
-        }
-
         public async Task<List<BandClass>>  FindBandBasedOnQuery(String query) 
         {
             using (var db = new ApplicationDbContext())
@@ -593,7 +427,7 @@ namespace WebApplication1.Models
                             Area = b.Area,
                         }).FirstOrDefaultAsync();
 
-                    band.Genre = getGenreArray(id); 
+                    band.Genre = GetGenreArray(id); 
                     return band;
                 }
             }
@@ -602,9 +436,7 @@ namespace WebApplication1.Models
                 return null;
             }
         }
-
-
-        public string[] getGenreArray(int bandid)
+        public string[] GetGenreArray(int bandid)
         {
             string[] genres = null;
             using(var db=new ApplicationDbContext()){
@@ -686,7 +518,6 @@ namespace WebApplication1.Models
             }
 
         }
-
         public async Task<Boolean> GetIfBandIsAdded(int userId, int bandId)
         {
             try
@@ -702,46 +533,5 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
     }
 }
-/*
-  var ob = await (from c in db.BandDb
-                                    where SqlFunctions.Acos(SqlFunctions.Sin(lat) * SqlFunctions.Sin(c.Xcoordinates) +
-                                         SqlFunctions.Cos(lat) * SqlFunctions.Cos(c.Xcoordinates) * SqlFunctions.Cos(c.Ycoordinates - (lang))) *
-                                         6371 <= rad
-                         select new BandsImagesClass()
-                         {
-                             OpositeXCoordinates = lat,
-                             OpositeYCoordinates = lang,
-                             BandId = c.BandId,
-                             Title = c.BandName,
-                             SmallBitmapUrl = c.BitmapSmalUrl,
-                             XCoordinates = c.Xcoordinates,
-                             YCoordinates = c.Ycoordinates,
-                         }).ToListAsync();
-
-                     DbBand.Shuffle(ob);
-                     var o = ob.Take(15);
-                     return o.ToList();*/
-/* private String CompressExistingByteArrayBitmap(Byte[] bytAarray, int number)
- {
-     try
-     {
-         ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-         System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
-
-         var myEncoderParameters = new EncoderParameters(1);
-         var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
-
-         myEncoderParameters.Param[0] = myEncoderParameter;
-         var mse = new MemoryStream(bytAarray);
-         var bmp = new Bitmap(mse);
-
-         bmp.Save(@"c:\Band " + number + ".jpg", jpgEncoder, myEncoderParameters);
-     }
-     catch (Exception)
-     {
-         return null;
-     }
- }*/

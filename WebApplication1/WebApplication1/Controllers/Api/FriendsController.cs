@@ -13,16 +13,6 @@ namespace WebApplication1.Controllers.Api
 {
     public class FriendsController : ApiController
     {
-
-        
-        [HttpGet]
-        [Route("api/Friends/me")]
-        public string test(){
-            return "her";
-            
-        }
-
-        //api/Friends/FriendsToUser/{id} ||endret || sjekk
         [HttpGet]
         [Route("api/Friends/GetList/{userid}")]
         public async Task<List<FriendsClass>> FriendsToUser(int userid)
@@ -32,8 +22,6 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.GetFriendsFromUserId(userid);
             }
         }
-
-        //api/Friends/FindFriend/{name},{uid} || endret || sjekk
         [HttpGet]
         [Route("api/Friends/Query/{name},{userid}")]
         public async Task<FriendsClass> FindFriend(String name, int userid)
@@ -43,10 +31,6 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.FindFriend(name, userid);
             }
         }
-
-
-
-        //api/Friends/AddFriendRequest/{userId},{friendId} || endret
         [HttpPost]
         [Route("api/Friends/SendRequest/{userId},{friendId}")]
         public async Task<Boolean> AddFriendRequest(int userId, int friendId)
@@ -56,8 +40,6 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.AddFriendRequest(userId, friendId);
             }
         }
-
-        //api/Friends/SetFriendAccept/{id},{ok} ||endret || sjekk
         [HttpPost]
         [Route("api/Friends/Respond/{requestId},{ok}")]
         public async Task<Boolean> SetFriendAccept(int requestId, Boolean ok)
@@ -67,8 +49,6 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.SetFriendAccept(requestId, ok);
             }
         }
-
-        //api/Friends/CancelFriendTask/{uid},{friendId} || endret || sjekk
         [HttpPost]
         [Route("api/Friends/Remove/{uid},{friendId}")]
         public async Task<bool> Remove(int uid, int friendId)
@@ -78,7 +58,5 @@ namespace WebApplication1.Controllers.Api
                 return await mngr.CancelFriendTask(friendId, uid);
             }
         }
-
-
     }
 }

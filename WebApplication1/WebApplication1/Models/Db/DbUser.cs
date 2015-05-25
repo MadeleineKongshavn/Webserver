@@ -12,12 +12,10 @@ using System.Threading.Tasks;
 using System.Web;
 using WebApplication1.Models.Class;
 using WebApplication1.Models.Db;
-
 namespace WebApplication1.Models
 {
     public class DbUser
     {
-
         public async Task<bool> ChangeRadius(int radius, int userId)
         {
             try
@@ -29,7 +27,6 @@ namespace WebApplication1.Models
                     await db.SaveChangesAsync();
                     return true;
                 }
-
             }
             catch (Exception)
             {
@@ -51,41 +48,6 @@ namespace WebApplication1.Models
             catch (Exception)
             {
                 return false;
-            }
-        }
-        public async Task<int> CheckEmail(String email)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var val = await (from v in db.PasswordDb where v.Email.Equals(email) select v).FirstOrDefaultAsync();
-                    if (val != null) return 1;
-                    else return -1;
-                }
-
-            }
-            catch (Exception e)
-            {
-                return -2;
-            }
-        }
-
-        public async Task<int> CheckUserName(String name)
-        {
-            try
-            {
-                using (var db = new ApplicationDbContext())
-                {
-                    var val = await (from v in db.UserDb where v.ProfileName.Equals(name) select v).FirstOrDefaultAsync();
-                    if (val != null) return 1;
-                    else return -1;
-                }
-
-            }
-            catch (Exception e)
-            {
-                return -2;
             }
         }
         public async Task<int> NormalRegister(String name, String email, String pass, double yCord, double xCord)
@@ -125,8 +87,7 @@ namespace WebApplication1.Models
             catch (Exception)
             {
                 return -1;
-            }
-            
+            }   
         }
         public async Task<int> NormalLogin(String pass, String name)
         {
@@ -206,7 +167,6 @@ namespace WebApplication1.Models
                 return false;
             }            
         }
-        // legger til basisk funksjonene til en bruker
         public async Task<Boolean> AddUser(UserClass u) 
         {
             try
@@ -231,7 +191,6 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
         public async Task<int> AddFaceUser(long uid, String profilename, String path, double xCord, double yCord)
         {
             using (var db = new ApplicationDbContext())
@@ -257,7 +216,6 @@ namespace WebApplication1.Models
                 return u1.UserId;
             }
         }
-        // endrer basisk funksjonene til en bruker
         public async Task<Boolean> ChangeUser(UserClass u1) 
         {
             try
@@ -267,9 +225,6 @@ namespace WebApplication1.Models
                     var u2 = (from u in db.UserDb
                               where u1.UserId == u.UserId
                               select u).FirstOrDefault();
-
-                    // lagre nytt bilde her?
-
                     u2.Url = u1.Url;
                     u2.Radius = u1.Radius;
                     u2.ProfileName = u1.Name;
@@ -281,7 +236,6 @@ namespace WebApplication1.Models
             }
             catch (Exception e)
             {
-                
                 return false;
             }
         }
@@ -340,38 +294,17 @@ namespace WebApplication1.Models
             catch (Exception e)
             {
                 return new List<NotificationsClass>();
-                //List<NotificationsClass>
             }
         }
-
         public static String Geturl(int Type, Notifications n)
         {
              if(Type==1) return n.FriendRequestNotifications.User.Url;  
              if (Type==2)  return  n.InviteConcertNotifications.Concert.BitmapSmalUrl;
              if(Type==3)  return  n.AcceptConcertInvitation.Concert.BitmapSmalUrl;
             return null;
-
-        }
-
-        public static Boolean GetAccepted(int type, Notifications n)
-        {
-            if(type==1) return n.FriendRequestNotifications.Accepted;
-            if(type==2) return n.InviteConcertNotifications.Accepted;
-            return false;
-
-        }
-
-        public static String getTitle(int type, Notifications n)
-        {
-            if (type == 1) return  n.FriendRequestNotifications.User.ProfileName;
-            if (type == 2) return  n.InviteConcertNotifications.Concert.Title;
-            if (type == 3) return  n.AcceptConcertInvitation.Concert.Title;
-            return "Not specified";
         }
         public void UserHasSeenAllNotifications(int userId)
         {
-           //ThreadPool.QueueUserWorkItem(delegate//Kjør når du får tid :) funker ikke?
-           //  {
             try
             {
                 using (var db = new ApplicationDbContext())
@@ -389,11 +322,7 @@ namespace WebApplication1.Models
             {
                 
             }
-
-           // });
         }
-
-
         public async Task<UserClass> GetUserById(int id)
         {
             using (var db = new ApplicationDbContext())
@@ -413,24 +342,6 @@ namespace WebApplication1.Models
                 return result;
             }
         }
-
-        private Bitmap ConvertByteToBitmap(Byte[] bytAarray)
-        {
-            try
-            {
-                Bitmap bmp;
-                using (var mse = new MemoryStream(bytAarray))
-                {
-                    bmp = new Bitmap(mse);
-                    return bmp;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public async Task<bool> UpdateUserGenres(int userid, String[] genres)
         {
             try
@@ -444,32 +355,22 @@ namespace WebApplication1.Models
                     {
                         db.UserGenreDb.Remove(obj);
                     }
-
-
-                    var allGenres = (from g in db.GenreDb
-                                     select g);
-
+                    var allGenres = (from g in db.GenreDb select g);
                     var newGenres = allGenres.Where(x => genres.Contains(x.GenreName));
-
                     foreach (Genre obj in newGenres)
                     {
                         UserGenre ug = new UserGenre { GenreId = obj.GenreId, UserId = userid };
                         db.UserGenreDb.Add(ug);
                     }
-
                     db.SaveChanges();
                 }
-
                 return true;
             }
             catch (Exception)
             {
-
                 return false;
             }
-
         }
-
         public async Task<List<GenreClass>> GetUserGenres(int userid)
         {
             List<GenreClass> userGenres = null;
@@ -483,10 +384,7 @@ namespace WebApplication1.Models
                                   {
                                       GenreId=ug.GenreId
                                   }).ToList();
-
-
                 }
-
                 return userGenres;
             }
             catch (Exception)
@@ -494,14 +392,7 @@ namespace WebApplication1.Models
 
                 return null;
             }
-
         }
-
-
-
-
-
-
         public async Task<bool> UpdateUserLocation(int userid, string area, double x, double y)
         {
             if (userid == null || area == null)
@@ -514,11 +405,11 @@ namespace WebApplication1.Models
                     var user = (from u in db.UserDb
                                 where u.UserId == userid
                                 select u).FirstOrDefault();
-                  user.Xcoordinates = x;
+                   user.Xcoordinates = x;
                    user.Ycoordinates = y;
                    user.Area = area;
-                    db.SaveChanges();
-                    return true;
+                   db.SaveChanges();
+                   return true;
                 }
 
             }
@@ -527,40 +418,5 @@ namespace WebApplication1.Models
                 return false;
             }
         }
-
-
     }
 }
-
-
-
-
-/*  select new NotificationsClass()
-           {
-               FriendId = n.FriendRequestNotifications.UserId,
-               Seen = n.Seen,
-               Day = n.SendtTime.Day,
-               Hour = n.SendtTime.Hour,
-               Minute = n.SendtTime.Minute,
-               Month = n.SendtTime.Month,
-               Type = n.Type,
-               Date = n.SendtTime,
-               Year = n.SendtTime.Year,
-               NotificationsId = n.NotificationsId,
-           }).OrderByDescending( d => d.Date).ToList();
-foreach (var c in not)
-{
-    int type;
-
-    if (type == 1) c.Url = n.FriendRequestNotifications.User.Url;
-    if (type == 2) c.Url = n.InviteConcertNotifications.Concert.BitmapSmalUrl;
-    if (type == 3) c.Url = n.AcceptConcertInvitation.Concert.BitmapSmalUrl;
-
-    if (type == 1) c.Accepted = n.FriendRequestNotifications.Accepted;
-    if (type == 2) c.Accepted = n.InviteConcertNotifications.Accepted;
-
-    if (type == 1) c.FriendName = n.FriendRequestNotifications.User.ProfileName;
-    if (type == 2) c.FriendName = n.InviteConcertNotifications.Concert.Title;
-    if (type == 3) c.FriendName = n.AcceptConcertInvitation.Concert.Title;
-
-}*/

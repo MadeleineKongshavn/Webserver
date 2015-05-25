@@ -17,9 +17,8 @@ namespace WebApplication1
 {
     public class DbGenre
     {
-
-        public async Task<List<GenreClass>> getGenres(){
-
+        public async Task<List<GenreClass>> GetGenres()
+        {
             try
             {
                 using (var db = new ApplicationDbContext())
@@ -28,22 +27,17 @@ namespace WebApplication1
                                         select new GenreClass
                                         {
                                             GenreId=g.GenreId,
-                                            GenreName=g.GenreName
-                                      
+                                            GenreName=g.GenreName                    
                                          }).ToListAsync();
-
                     return genres.ToList();
-
                 }
             }
             catch
             {
                 return null;
             }
-        
         }
-
-        public async Task<GenreClass> getGenreById(int genreId)
+        public async Task<GenreClass> GetGenreById(int genreId)
         {
             try
             {
@@ -52,7 +46,6 @@ namespace WebApplication1
                     var genres=await(from g in db.GenreDb
                                      where g.GenreId==genreId   
                                      select g).FirstOrDefaultAsync();
-
                     return new GenreClass { GenreId = genres.GenreId, GenreName = genres.GenreName };
                 }
             }
@@ -61,8 +54,7 @@ namespace WebApplication1
                 return null;
             }
         }
-
-        public async Task<GenreClass> getGenreByName(string genreName)
+        public async Task<GenreClass> GetGenreByName(string genreName)
         {
             try
             {
@@ -78,20 +70,18 @@ namespace WebApplication1
             {
                 return null;
             }
-
         }
-
-        public async Task<bool> addGenre(string genreName)
+        public async Task<bool> AddGenre(string genreName)
         {
             try
             {
-                using(var db=new ApplicationDbContext()){
+                using(var db=new ApplicationDbContext())
+                {
                 Genre g=new Genre{ GenreName=genreName};
                 
                     db.GenreDb.Add(g);
                     db.SaveChanges();
                 }
-                
                 return true;
             }
             catch (Exception)
@@ -99,6 +89,5 @@ namespace WebApplication1
                 return false;
             }
         }
-
     }
 }

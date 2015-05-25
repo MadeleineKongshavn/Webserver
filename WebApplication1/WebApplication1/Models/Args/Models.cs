@@ -34,8 +34,6 @@ namespace WebApplication1.Models.Args
     {
         public int id { get; set; }
         public string link{ get; set;}
-
-
         internal void setId(int id)
         {
             this.id = id;

@@ -13,22 +13,18 @@ namespace WebApplication1.Managers
         {
             return new BandManager();
         }
-
         public static ConcertManager GetConcertManager()
         {
             return new ConcertManager();
         }
-
         public static UserManager GetUserManager()
         {
             return new UserManager();
         }
-
         public static GenreManager GetGenreManager()
         {
             return new GenreManager();
         }
-
         public static FriendManager GetFriendManager()
         {
             return new FriendManager();

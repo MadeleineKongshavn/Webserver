@@ -20,7 +20,6 @@ namespace WebApplication1.Managers
         {
             GC.SuppressFinalize(this);
         }
-        
         protected Cache Cache
         {
             get
@@ -30,20 +29,17 @@ namespace WebApplication1.Managers
                     : HttpContext.Current.Cache;
             }
         }
-
         protected void RemoveCacheKeysByPrefix(string prefix)
         {
             var ide = Cache.GetEnumerator();
             while (ide.MoveNext())
             {
-                //Debug.WriteLine(ide.Key.ToString());
                 if (ide.Key.ToString().StartsWith(prefix))
                 {
                     Cache.Remove(ide.Key.ToString());
                 }
             }
         }
-
         public async Task<string> UploadImage(Image newImage)
         {
 
@@ -60,8 +56,6 @@ namespace WebApplication1.Managers
             await blob.UploadFromStreamAsync(stream);
             return blob.StorageUri.PrimaryUri.AbsoluteUri;
         }   
-
-
         public async Task<string> UploadImage(byte[] arBytes)
         {
             var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["BlobStorage"].ConnectionString);
@@ -70,7 +64,6 @@ namespace WebApplication1.Managers
             var blob = container.GetBlockBlobReference(Guid.NewGuid().ToString());
             blob.Properties.ContentType = "image/jpeg";
             await blob.UploadFromByteArrayAsync(arBytes, 0, arBytes.Length);
-            //await blob.UploadFromStreamAsync(stream);
             return blob.StorageUri.PrimaryUri.AbsoluteUri;
         }
     }

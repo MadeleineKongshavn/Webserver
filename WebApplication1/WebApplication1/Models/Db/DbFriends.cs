@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 using Antlr.Runtime;
-
 namespace WebApplication1.Models.Db
 {
     public class DbFriends
@@ -42,7 +41,6 @@ namespace WebApplication1.Models.Db
           
             }
         }
-        // legger til et nytt vennerequest userid er personen som får requestet 
         public async Task<Boolean> AddFriendRequest(int userId, int friendId)
         {
             try
@@ -70,7 +68,6 @@ namespace WebApplication1.Models.Db
                 return false;
             }
         }
-        // aksepterer eller sier nei til en venneforespørsel
         public async Task<Boolean> SetFriendAccept(int id, Boolean ok)
         {
             try
@@ -123,12 +120,9 @@ namespace WebApplication1.Models.Db
                 return false;
             }
         }
-
-
         public async Task<List<FriendsClass>> GetFriendsByUserId(int id)
         {
             var friendsclass = new List<FriendsClass>();
-
             try
             {
                 using (var db = new ApplicationDbContext())
@@ -145,7 +139,6 @@ namespace WebApplication1.Models.Db
                                           }).ToListAsync();
                     return friendsclass;
                 }
-
             }
             catch (Exception)
             {
@@ -153,7 +146,6 @@ namespace WebApplication1.Models.Db
                 
             }
         }
-        // finds a friend based on a query
         public async Task<FriendsClass> FindFriend(String name, int uid)
         {
             try

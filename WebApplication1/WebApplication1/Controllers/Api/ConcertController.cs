@@ -17,12 +17,8 @@ namespace WebApplication1.Controllers.Api
         public int bandId, year, month, day,hour, min;
         public Boolean getBitmapUrl;
     }
-
     public class ConcertController : ApiController
     {
-        
-        //GET
-
         [HttpGet]
         [Route("api/Concert/GetRandom/{userId}")]
         public async Task<List<ImageClass>> GetRandomConcert(int userId)
@@ -32,8 +28,6 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.GetRandomConcert(userId);
             }
         }
-
-       
         [Route("api/Concert/Get/{id}")]
         public async Task<ConcertClass> GetConcertInfo(int id)
         {
@@ -42,7 +36,6 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.GetConcertById(id);
             }
         }
-
         [HttpGet]
         [Route("api/Concert/Query/{query}")]
         public async Task<List<ConcertClass>> FindConcertBasedOnQuery(String query)
@@ -50,12 +43,10 @@ namespace WebApplication1.Controllers.Api
             List<ConcertClass> concertList=new List<ConcertClass>();
             string value = null;
             string[] split = query.Split('=','&');
-            if (split.Length < 2)
-                return concertList;
+            if (split.Length < 2)  return concertList;
 
             string type = split[1];
-            value=split[2];
-             
+            value=split[2]; 
             if (type.Equals("name"))
             {
                 using (var cMgr = ManagerFactory.GetConcertManager())
@@ -71,21 +62,15 @@ namespace WebApplication1.Controllers.Api
                 {
                     hasId = int.TryParse(split[4], out userid);
                 }
-                if (!hasId)
-                    userid = 0;
-             
-
+                if (!hasId) userid = 0;
                 using (var cMgr = ManagerFactory.GetConcertManager())
                 {
                     
                     concertList = await cMgr.FindConcertWithDate(value,userid);
                 }
-
             }
-
                 return concertList;
         }
-
         [HttpGet]
         [Route("api/Concert/GetUsersList/{id}")]
         public async Task<List<ConcertClass>> FindAllConcertToUser(int id)
@@ -95,7 +80,6 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.GetAllConcertFromUser(id);
             }
         }
-
         [HttpGet]
         [Route("api/Concert/GetFriendsAttendanceNumber/{concertId},{userId}")]
         public async Task<ConcertInfoClass> NumberGoingToConcert(int concertId, int userId)
@@ -115,10 +99,6 @@ namespace WebApplication1.Controllers.Api
                 return await bmgr.FindFriendsGoingToConcert(concertId, userId);
             }
         }
-
-
-        //POST
- 
         [HttpPost]
         [Route("api/Concert/AddToUserList/{userId},{concertId},{ok}")]
         public async Task<Boolean> AddConcertToUser(int userId, int concertId, bool ok)
@@ -128,7 +108,6 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.AddConcertToUser(userId, concertId, ok);
             }
         }
-        
         [HttpPost]
         [Route("api/Concert/AcceptInvitation/{id},{ok}")]
         public async Task<bool> AcceptConcertInvitation(int id, Boolean ok)
@@ -138,7 +117,6 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.AcceptConcertRequest(ok, id);
             }
         }
-
         [HttpPost]
         [Route("api/Concert/SendInvitation/{from},{to},{concertid}")]
         public async Task<bool> AddConcertRequest(int from, int to, int concertid)
@@ -148,7 +126,6 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.AddConcertRequest(from, to, concertid);
             }
         }
-
         [HttpPost]
         [Route("api/Concert/Add/")]
         public async Task<Boolean> AddConcert(ConcertArgsClass args)
@@ -164,68 +141,5 @@ namespace WebApplication1.Controllers.Api
                 return await cMgr.AddConcert(c, a.locRef, a.getBitmapUrl);
             }
         }
-
-
-        //----------------------------------------Metoder ikke funnet i appen--------------------
-
-        //api/Concert/GetAttendingConcertTask/{cid},{uid}
-        [HttpGet]
-        [Route("api/Concert/GetAttending/{cid},{uid}")]
-        public async Task<Boolean> GetAttendingConcertTask(int cid, int uid)
-        {
-            using (var cMgr = ManagerFactory.GetConcertManager())
-            {
-                return await cMgr.GetAttendingConcerTask(cid, uid);
-            }
-        }
-
-
-        //api/Concert/SetAttendingConcertTask/{cid},{uid},{ok}
-        [HttpGet]
-        [Route("api/Concert/SetAttending/{cid},{uid},{ok}")]
-        public async Task<Boolean> SetAttendingConcertTask(int cid, int uid, Boolean ok)
-        {
-            using (var cMgr = ManagerFactory.GetConcertManager())
-            {
-                return await cMgr.SetAttendingConcertTask(cid, uid, ok);
-            }
-        }
-
-        //AddRemoveConcertToUser/{concertId},{userId},{ok} !!POST
-        [HttpPost]
-        [Route("api/Concert/AddRemoveConcertToUser/{concertId},{userId},{ok}")]
-        public async Task<bool> AddRemoveConcertToUser(int concertId, int userId, bool ok)
-        {
-            using (var bmgr = ManagerFactory.GetConcertManager())
-            {
-                return await bmgr.AddRemoveConcertToUser(concertId, userId, ok);
-            }
-        }
-
-
-        //api/Concert/GetConcertInfoWithFriends/{id}/{userid}
-
-        [Route("api/Concert/GetFriendsAttending/{id}/{userid}")]
-        public async Task<List<UserClass>> GetConcertInfoWithFriends(int id, int userid)
-        {
-            using (var cMgr = ManagerFactory.GetConcertManager())
-            {
-                return await cMgr.GetFriendsGoingToConcertById(id, userid);
-            }
-        }
-
-
-        //"api/Concert/ChangeConcert/{c},{pic}" || endret
-        [HttpPost]
-        [Route("api/Concert/UpdateConcert/{c},{pic}")]
-        public async Task<Boolean> ChangeConcert(ConcertClass c, Byte[] pic)
-        {
-            using (var cMgr = ManagerFactory.GetConcertManager())
-            {
-                return await cMgr.ChangeConcert(c, pic);
-            }
-        }
-
-
     }
 }
